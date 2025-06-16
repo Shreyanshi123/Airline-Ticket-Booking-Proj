@@ -1,0 +1,44 @@
+# .NET Core
+bin/
+obj/
+
+# ASP.NET Core specific
+wwwroot/
+
+# User-specific files
+*.swp
+*.*~
+*.suo
+*.user
+*.rsuser
+*.sln.docstates
+
+# Visual Studio Code
+.vscode/
+
+# Rider
+.idea/
+
+# Logs
+logs/
+*.log
+
+# Database
+*.mdf
+*.ldf
+*.sqlite
+
+# Entity Framework Migrations
+Migrations/
+
+# Configuration files
+appsettings.Development.json
+
+# Package management
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Build artifacts
+dist/
+publish/
