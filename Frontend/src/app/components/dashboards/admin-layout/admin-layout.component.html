@@ -1,0 +1,213 @@
+<!-- <div class="admin-container">
+  <app-admin-sidebar></app-admin-sidebar>
+  <div class="admin-content">
+    <router-outlet></router-outlet> 
+  </div>
+</div> -->
+
+
+<!-- <div class="admin-container">
+<!-- Sidebar Component -->
+<!-- <app-admin-sidebar></app-admin-sidebar> -->
+<!-- Mobile Overlay -->
+<!-- <div class="mobile-overlay" [class.active]="sidebarOpen" (click)="closeSidebar()"></div> -->
+<!-- Main Content Area -->
+<!-- <div class="admin-content"> -->
+<!-- Top Header Bar -->
+<!-- <header class="admin-header"> -->
+<!-- <div class="header-left">
+<button class="mobile-menu-btn" (click)="toggleSidebar()">
+<span class="hamburger-line"></span>
+<span class="hamburger-line"></span>
+<span class="hamburger-line"></span>
+</button>
+<div class="breadcrumb">
+<span class="breadcrumb-item">Admin</span>
+<span class="breadcrumb-separator">›</span>
+<span class="breadcrumb-item current">Dashboard</span>
+</div>
+</div>
+<div class="header-right">
+<div class="search-container">
+<input type="text" placeholder="Search..." class="search-input">
+<span class="search-icon">🔍</span>
+</div>
+<div class="header-actions">
+<button class="action-btn notification-btn">
+<span class="notification-icon">🔔</span>
+<span class="notification-badge">3</span>
+</button>
+<button class="action-btn settings-btn">
+<span class="settings-icon">⚙️</span>
+</button>
+<div class="user-menu">
+<img src="https://via.placeholder.com/40x40/667eea/ffffff?text=A" alt="Admin" class="user-avatar">
+<div class="user-dropdown">
+<span class="user-name">Admin User</span>
+<span class="user-status">●</span>
+</div>
+</div>
+</div>
+</div>
+</header>
+
+<main class="content-wrapper">
+<div class="content-inner"> -->
+<!-- Dynamic Content from Router -->
+<!-- <router-outlet></router-outlet> -->
+<!-- Default Dashboard Content (when no specific route) -->
+<!-- <div class="dashboard-overview" *ngIf="showDefaultContent"> -->
+<!-- Stats Cards -->
+<!-- <div class="stats-grid"> -->
+<!-- <div class="stat-card" *ngFor="let stat of dashboardStats"> -->
+<!-- <div class="stat-icon" [style.background]="stat.color"> -->
+
+                <!-- {{ stat.icon }} -->
+<!-- </div> -->
+<!-- <div class="stat-content"> -->
+<!-- <h3 class="stat-value">{{ stat.value }}</h3> -->
+<!-- <p class="stat-label">{{ stat.label }}</p> -->
+<!-- <span class="stat-change" [class]="stat.changeType"> -->
+
+                  <!-- {{ stat.change }} -->
+<!-- </span> -->
+<!-- </div>
+</div>
+</div>
+<div class="charts-section">
+<div class="chart-card">
+<div class="card-header">
+<h3>Flight Bookings Overview</h3>
+<div class="chart-actions">
+<button class="chart-btn active">7D</button>
+<button class="chart-btn">30D</button>
+<button class="chart-btn">3M</button>
+</div>
+</div>
+<div class="chart-placeholder">
+<div class="chart-bars">
+<div class="bar" style="height: 60%"></div>
+<div class="bar" style="height: 80%"></div>
+<div class="bar" style="height: 45%"></div>
+<div class="bar" style="height: 90%"></div>
+<div class="bar" style="height: 70%"></div>
+<div class="bar" style="height: 95%"></div>
+<div class="bar" style="height: 65%"></div>
+</div>
+<div class="chart-labels">
+<span>Mon</span>
+<span>Tue</span>
+<span>Wed</span>
+<span>Thu</span>
+<span>Fri</span>
+<span>Sat</span>
+<span>Sun</span>
+</div>
+</div>
+</div>
+<div class="chart-card">
+<div class="card-header">
+<h3>Popular Destinations</h3>
+</div>
+<div class="destinations-list">
+<div class="destination-item" *ngFor="let dest of popularDestinations">
+<div class="destination-info">
+<span class="destination-flag">{{ dest.flag }}</span>
+<div class="destination-details">
+<span class="destination-name">{{ dest.name }}</span>
+<span class="destination-bookings">{{ dest.bookings }} bookings</span>
+</div>
+</div>
+<div class="destination-progress">
+<div class="progress-bar" [style.width.%]="dest.percentage"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="activity-section">
+<div class="activity-card">
+<div class="card-header">
+<h3>Recent Activity</h3>
+<a href="#" class="view-all">View All</a>
+</div>
+<div class="activity-list">
+<div class="activity-item" *ngFor="let activity of recentActivities">
+<div class="activity-icon" [style.background]="activity.iconColor">
+
+                    {{ activity.icon }}
+</div>
+<div class="activity-content">
+<p class="activity-text">{{ activity.text }}</p>
+<span class="activity-time">{{ activity.time }}</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div> --> 
+ 
+
+<div class="admin-container">
+  <!-- Sidebar Component -->
+  <app-admin-sidebar [class.open]="sidebarOpen"></app-admin-sidebar>
+
+  <!-- Mobile Overlay -->
+  <div class="mobile-overlay" [class.active]="sidebarOpen" (click)="closeSidebar()"></div>
+
+  <!-- Main Content Area -->
+  <div class="admin-content">
+    <!-- Top Header Bar -->
+   
+    <!-- Main Content Wrapper -->
+    <main class="content-wrapper">
+      <div class="content-inner">
+        
+        <!-- Default Dashboard Content -->
+        <!-- <div class="dashboard-overview" *ngIf="showDefaultContent">
+          <!-- Stats Cards -->
+          <!-- <div class="stats-grid">
+            <div class="stat-card" *ngFor="let stat of dashboardStats">
+              <div class="stat-icon" [style.background]="stat.color">{{ stat.icon }}</div>
+              <div class="stat-content">
+                <h3 class="stat-value">{{ stat.value }}</h3>
+                <p class="stat-label">{{ stat.label }}</p>
+                <span class="stat-change" [class]="stat.changeType">{{ stat.change }}</span>
+              </div>
+            </div>
+          </div> -->
+
+          <!-- Recent Activity -->
+         <!-- <div class="activity-section" *ngIf="recentActivities.length > 0">
+  <div class="activity-card">
+    <div class="card-header">
+      <h3>Recent Activity</h3>
+      <a href="#" class="view-all">View All</a>
+    </div>
+    <div class="activity-list">
+      <div class="activity-item" *ngFor="let activity of recentActivities">
+        <div class="activity-icon" [style.background]="activity.iconColor">
+          {{ activity.icon }}
+        </div>
+        <div class="activity-content">
+          <p class="activity-text">{{ activity.text }}</p>
+          <span class="activity-time">{{ activity.time }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        </div>  -->
+
+          <div class="content-inner">
+        <router-outlet></router-outlet> <!-- ✅ Displays the correct content -->
+      </div>
+
+      </div>
+    </main>
+  </div>
+</div>

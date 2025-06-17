@@ -1,0 +1,244 @@
+<!-- <div class="container mt-4">
+<h2>User Management Dashboard</h2>
+ 
+  <div *ngIf="loading" class="alert alert-info">Loading users...</div>
+<div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+ 
+  <table class="table table-bordered table-striped" *ngIf="users.length > 0">
+<thead>
+<tr>
+<th>#</th>
+<th>Name</th>
+<th>Email</th>
+<th>Role</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr *ngFor="let user of users; let i = index">
+<td>{{ i + 1 }}</td>
+<td>{{ user.firstName}} {{user.lastName}}</td>
+<td>{{ user.email }}</td>
+<td>{{ user.role ===0 ?  'User':'Admin'}}</td>
+<td>
+<button class="btn btn-danger btn-sm" (click)="deleteUser(user.id)">
+            Delete
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+ 
+  <div *ngIf="users.length === 0 && !loading" class="alert alert-warning">
+    No users found.
+</div>
+</div> -->
+
+
+<!-- <div class="container mt-4">
+<h2>User Management Dashboard</h2>
+ 
+  <div *ngIf="loading" class="alert alert-info">Loading users...</div>
+<div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+ 
+  <table class="table table-bordered table-striped" *ngIf="users.length > 0">
+<thead>
+<tr>
+<th>#</th>
+<th>Name</th>
+<th>Email</th>
+<th>Role</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr *ngFor="let user of users; let i = index">
+<td>{{ i + 1 }}</td>
+<td>{{ user.firstName}} {{user.lastName}}</td>
+<td>{{ user.email }}</td>
+<td>{{ user.role ===0 ?  'User':'Admin'}}</td>
+<td>
+<button class="btn btn-danger btn-sm" (click)="deleteUser(user.id)">
+            Delete
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+ 
+  <div *ngIf="users.length === 0 && !loading" class="alert alert-warning">
+    No users found.
+</div>
+</div> -->
+
+
+
+
+<div class="dashboard-container">
+  <!-- Header Section -->
+  <div class="dashboard-header">
+    <div class="header-content">
+      <div class="header-left">
+        <h1 class="dashboard-title">
+          <i class="fas fa-users-cog"></i>
+          User Management Dashboard
+        </h1>
+        <p class="dashboard-subtitle">Manage your system users efficiently</p>
+      </div>
+      <div class="header-right">
+        <div class="user-stats" *ngIf="users.length > 0">
+          <div class="stat-card">
+            <div class="stat-number">{{ users.length }}</div>
+            <div class="stat-label">Total Users</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">{{ getAdminCount() }}</div>
+            <div class="stat-label">Admins</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <div class="loading-spinner">
+      <div class="spinner"></div>
+    </div>
+    <p class="loading-text">Loading users...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error" class="error-container" [@slideIn]>
+    <div class="error-card">
+      <i class="fas fa-exclamation-triangle"></i>
+      <h3>Oops! Something went wrong</h3>
+      <p>{{ error }}</p>
+      <button class="retry-btn" (click)="loadUsers()">
+        <i class="fas fa-redo"></i>
+        Try Again
+      </button>
+    </div>
+  </div>
+
+  <!-- Users Table -->
+  <div *ngIf="users.length > 0 && !loading" class="table-container" [@fadeIn]>
+    <div class="table-header">
+      <div class="table-actions">
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input 
+            type="text" 
+            placeholder="Search users..." 
+            [(ngModel)]="searchTerm"
+            (input)="onSearch()"
+            class="search-input">
+        </div>
+        <button class="refresh-btn" (click)="loadUsers()" [disabled]="loading">
+          <i class="fas fa-sync-alt" [class.spinning]="loading"></i>
+          Refresh
+        </button>
+      </div>
+    </div>
+
+    <div class="table-wrapper">
+      <table class="users-table">
+        <thead>
+          <tr>
+            <th class="th-index">#</th>
+            <th class="th-name">
+              <i class="fas fa-user"></i>
+              Name
+            </th>
+            <th class="th-email">
+              <i class="fas fa-envelope"></i>
+              Email
+            </th>
+            <th class="th-role">
+              <i class="fas fa-shield-alt"></i>
+              Role
+            </th>
+            <th class="th-actions">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr 
+            *ngFor="let user of filteredUsers; let i = index; trackBy: trackByUserId" 
+            class="user-row"
+            [@slideInRow]="i"
+            [style.animation-delay]="i * 50 + 'ms'">
+            <td class="td-index">
+              <div class="index-badge">{{ i + 1 }}</div>
+            </td>
+            <td class="td-name">
+              <div class="user-info">
+                <div class="user-avatar">
+                  <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="user-details">
+                  <div class="user-name">{{ user.firstName }} {{ user.lastName }}</div>
+                  <div class="user-id">ID: {{ user.id }}</div>
+                </div>
+              </div>
+            </td>
+            <td class="td-email">
+              <div class="email-container">
+                <i class="fas fa-envelope email-icon"></i>
+                <span class="email-text">{{ user.email }}</span>
+              </div>
+            </td>
+            <td class="td-role">
+              <div class="role-badge" [ngClass]="user.role === 0 ? 'role-user' : 'role-admin'">
+                <i class="fas" [ngClass]="user.role === 0 ? 'fa-user' : 'fa-crown'"></i>
+                {{ user.role === 0 ? 'User' : 'Admin' }}
+              </div>
+            </td>
+            <td class="td-actions">
+              <div class="action-buttons">
+                <button 
+                  class="action-btn edit-btn" 
+                  title="Edit User"
+                  (click)="editUser(user)">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button 
+                  class="action-btn delete-btn" 
+                  title="Delete User"
+                  (click)="deleteUser(user.id)"
+                  [disabled]="deletingUserId === user.id">
+                  <i class="fas fa-trash" *ngIf="deletingUserId !== user.id"></i>
+                  <i class="fas fa-spinner fa-spin" *ngIf="deletingUserId === user.id"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="users.length === 0 && !loading && !error" class="empty-state" [@fadeIn]>
+    <div class="empty-illustration">
+      <i class="fas fa-users"></i>
+    </div>
+    <h3>No Users Found</h3>
+    <p>There are currently no users in the system.</p>
+    <button class="refresh-btn" (click)="loadUsers()">
+      <i class="fas fa-plus"></i>
+      Add First User
+    </button>
+  </div>
+</div>
+
+<!-- Success Toast -->
+<div class="toast success-toast" [ngClass]="{'show': showSuccessToast}" [@slideInOut]>
+  <i class="fas fa-check-circle"></i>
+  <span>{{ successMessage }}</span>
+</div>
+
+<!-- Error Toast -->
+<div class="toast error-toast" [ngClass]="{'show': showErrorToast}" [@slideInOut]>
+  <i class="fas fa-exclamation-circle"></i>
+  <span>{{ errorMessage }}</span>
+</div>

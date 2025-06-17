@@ -1,0 +1,89 @@
+<!-- <h2>Popular Flights</h2>
+<table class="table table-striped">
+<thead>
+<tr>
+<th>Origin</th>
+<th>Destination</th>
+<th>Total Reservations</th>
+</tr>
+</thead>
+<tbody>
+<tr *ngFor="let flight of popularFlights">
+<td>{{ flight.origin }}</td>
+<td>{{ flight.destination }}</td>
+<td>{{ flight.totalReservations }}</td>
+</tr>
+</tbody>
+</table>
+
+
+<ngx-charts-bar-vertical
+  [results]="chartData"
+  [xAxis]="true"
+  [yAxis]="true"
+  [legend]="false"
+  [showDataLabel]="true">
+</ngx-charts-bar-vertical>
+ -->
+
+
+  <div class="table-container">
+  <h2>Popular Flights</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Origin</th>
+        <th>Destination</th>
+        <th>Total Reservations</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let flight of popularFlights">
+        <td>{{ flight.origin }}</td>
+        <td>{{ flight.destination }}</td>
+        <td>{{ flight.totalReservations }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <ngx-charts-bar-vertical
+    [results]="chartData"
+    [xAxis]="true"
+    [yAxis]="true"
+    [legend]="false"
+    [showDataLabel]="true">
+  </ngx-charts-bar-vertical>
+</div> 
+
+
+
+<!-- <div class="table-container">
+  <h2>Popular Flights</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Origin</th>
+        <th>Destination</th>
+        <th>Total Reservations</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let flight of popularFlights">
+        <td>{{ flight.origin }}</td>
+        <td>{{ flight.destination }}</td>
+        <td>{{ flight.totalReservations }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Improved Chart with Fixed Width -->
+  <!-- <ngx-charts-bar-vertical
+    [results]="chartData"
+    [xAxis]="true"
+    [yAxis]="true"
+    [legend]="false"
+    [showDataLabel]="true"
+    [customColors]="customColors">
+  </ngx-charts-bar-vertical>
+</div> --> 

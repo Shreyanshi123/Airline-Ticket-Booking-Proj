@@ -1,0 +1,488 @@
+<div class="payment-page">
+  <!-- Header Section - IMPROVED -->
+  <!-- <div class="payment-header">
+    <div class="container">
+      <div class="header-content">
+        <div class="logo">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="logo-icon">
+            <path d="M15 4H18C19.1046 4 20 4.89543 20 6V18C20 19.1046 19.1046 20 18 20H6C4.89543 20 4 19.1046 4 18V6C4 4.89543 4.89543 4 6 4H9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M15 8L12 5L9 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 5V15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <span class="logo-text">SkyBooking</span>
+        </div>
+        
+        <div class="step-indicator">
+          <div class="step completed">
+            <div class="step-circle">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <span class="step-label">Booking</span>
+          </div>
+          <div class="step-line completed"></div>
+          <div class="step active">
+            <div class="step-circle">
+              <span>2</span>
+            </div>
+            <span class="step-label">Payment</span>
+          </div>
+          <div class="step-line"></div>
+          <div class="step">
+            <div class="step-circle">
+              <span>3</span>
+            </div>
+            <span class="step-label">Confirmation</span>
+          </div>
+        </div>
+        
+        <div class="security-badges">
+          <div class="security-badge">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 22S8 18 8 13V6L12 4L16 6V13C16 18 12 22 12 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>SSL Secured</span>
+          </div>
+          <div class="security-badge">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+              <circle cx="12" cy="16" r="1" stroke="currentColor" stroke-width="2"/>
+              <path d="M7 11V7C7 5.67392 7.52678 4.40215 8.46447 3.46447C9.40215 2.52678 10.6739 2 12 2C13.3261 2 14.5979 2.52678 15.5355 3.46447C16.4732 4.40215 17 5.67392 17 7V11" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            <span>256-bit Encryption</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+  <!-- Main Content -->
+  <div class="payment-content">
+    <div class="container">
+      <div class="payment-grid">
+        <!-- Payment Form -->
+        <div class="payment-form-section">
+          <div class="form-card" [class.processing]="isProcessing">
+            <div class="card-header">
+              <h2 class="card-title">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="1" y="4" width="22" height="16" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                  <line x1="1" y1="10" x2="23" y2="10" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                Payment Details
+              </h2>
+              <p class="card-subtitle">Complete your booking with secure payment</p>
+            </div>
+
+            <!-- Payment Methods -->
+            <div class="payment-methods">
+              <h3 class="section-title">Choose Payment Method</h3>
+              <div class="method-grid">
+                <label class="payment-method" [class.selected]="selectedPaymentMethod === 'Credit Card'">
+                  <input type="radio" name="paymentMethod" value="Credit Card" [(ngModel)]="selectedPaymentMethod" (change)="onPaymentMethodChange()">
+                  <div class="method-content">
+                    <div class="method-icon credit-card">
+                      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="1" y="4" width="22" height="16" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                        <line x1="1" y1="10" x2="23" y2="10" stroke="currentColor" stroke-width="2"/>
+                      </svg>
+                    </div>
+                    <div class="method-info">
+                      <span class="method-name">Credit Card</span>
+                      <span class="method-desc">Visa, Mastercard, Amex</span>
+                    </div>
+                    <div class="method-check">
+                      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </div>
+                  </div>
+                </label>
+
+                <label class="payment-method" [class.selected]="selectedPaymentMethod === 'Debit Card'">
+                  <input type="radio" name="paymentMethod" value="Debit Card" [(ngModel)]="selectedPaymentMethod" (change)="onPaymentMethodChange()">
+                  <div class="method-content">
+                    <div class="method-icon debit-card">
+                      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="1" y="4" width="22" height="16" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                        <line x1="1" y1="10" x2="23" y2="10" stroke="currentColor" stroke-width="2"/>
+                        <circle cx="6" cy="16" r="1" fill="currentColor"/>
+                      </svg>
+                    </div>
+                    <div class="method-info">
+                      <span class="method-name">Debit Card</span>
+                      <span class="method-desc">Direct bank payment</span>
+                    </div>
+                    <div class="method-check">
+                      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </div>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- Card Details Form -->
+            <div class="card-details-section" *ngIf="selectedPaymentMethod">
+              <h3 class="section-title">Card Information</h3>
+              
+              <!-- Saved Card Option -->
+              <div class="saved-card-option" *ngIf="hasSavedCard">
+                <label class="saved-card-label">
+                  <input type="checkbox" [(ngModel)]="useSavedCard" (change)="onUseSavedCardChange()">
+                  <div class="saved-card-content">
+                    <div class="saved-card-icon">
+                      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 14C19.5523 14 20 13.5523 20 13V6C20 5.44772 19.5523 5 19 5H5C4.44772 5 4 5.44772 4 6V13C4 13.5523 4.44772 14 5 14M19 14H5M19 14V18C19 18.5523 18.5523 19 18 19H6C5.44772 19 5 18.5523 5 18V14" stroke="currentColor" stroke-width="2"/>
+                      </svg>
+                    </div>
+                    <div class="saved-card-info">
+                      <span class="saved-card-text">Use saved card ending in {{savedCardLast4}}</span>
+                      <span class="saved-card-type">{{savedCardType}}</span>
+                    </div>
+                  </div>
+                </label>
+              </div>
+
+              <!-- Card Form -->
+              <form class="card-form" [class.disabled]="useSavedCard">
+                <div class="form-group">
+                  <label class="form-label">Cardholder Name</label>
+                  <div class="input-wrapper">
+                    <input 
+                      type="text" 
+                      class="form-input"
+                      placeholder="John Doe"
+                      [(ngModel)]="paymentData.cardHolderName"
+                      name="cardHolderName"
+                      [disabled]="useSavedCard"
+                      (input)="validateForm()"
+                      required>
+                    <div class="input-icon">
+                      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Card Number</label>
+                  <div class="input-wrapper">
+                    <input 
+                      type="text" 
+                      class="form-input card-number-input"
+                      placeholder="1234 5678 9012 3456"
+                      [(ngModel)]="paymentData.cardNumber"
+                      name="cardNumber"
+                      [disabled]="useSavedCard"
+                      (input)="formatCardNumber($event)"
+                      (keypress)="onCardNumberKeyPress($event)"
+                      maxlength="19"
+                      required>
+                    <div class="input-icon card-type-icon" [class]="detectedCardType">
+                      <svg *ngIf="!detectedCardType" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="1" y="4" width="22" height="16" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                        <line x1="1" y1="10" x2="23" y2="10" stroke="currentColor" stroke-width="2"/>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">Expiry Month</label>
+                    <div class="input-wrapper">
+                      <select 
+                        class="form-select"
+                        [(ngModel)]="paymentData.expiryMonth"
+                        name="expiryMonth"
+                        [disabled]="useSavedCard"
+                        (change)="validateForm()"
+                        required>
+                        <option value="">MM</option>
+                        <option *ngFor="let month of months" [value]="month.value">{{month.label}}</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Expiry Year</label>
+                    <div class="input-wrapper">
+                      <select 
+                        class="form-select"
+                        [(ngModel)]="paymentData.expiryYear"
+                        name="expiryYear"
+                        [disabled]="useSavedCard"
+                        (change)="validateForm()"
+                        required>
+                        <option value="">YYYY</option>
+                        <option *ngFor="let year of years" [value]="year">{{year}}</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">CVV</label>
+                    <div class="input-wrapper">
+                      <input 
+                        type="password" 
+                        class="form-input cvv-input"
+                        placeholder="123"
+                        [(ngModel)]="paymentData.cvv"
+                        name="cvv"
+                        [disabled]="useSavedCard"
+                        (input)="validateForm()"
+                        (keypress)="onCvvKeyPress($event)"
+                        maxlength="4"
+                        required>
+                      <div class="input-icon cvv-icon" (mouseenter)="showCvvTooltip = true" (mouseleave)="showCvvTooltip = false">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                          <path d="M9.09 9C9.3251 8.33167 9.78915 7.76811 10.4 7.40913C11.0108 7.05016 11.7289 6.91894 12.4272 7.03871C13.1255 7.15849 13.7588 7.52152 14.2151 8.06353C14.6713 8.60553 14.9211 9.29152 14.92 10C14.92 12 11.92 13 11.92 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                          <path d="M12 17H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                      </div>
+                      <div class="cvv-tooltip" [class.show]="showCvvTooltip">
+                        <div class="tooltip-content">
+                          <p>3-digit code on the back of your card</p>
+                          <div class="tooltip-image">
+                            <svg viewBox="0 0 100 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <rect x="5" y="10" width="90" height="40" rx="5" fill="#f3f4f6" stroke="#d1d5db"/>
+                              <rect x="5" y="20" width="90" height="8" fill="#374151"/>
+                              <rect x="70" y="35" width="20" height="8" fill="#ffffff" stroke="#d1d5db"/>
+                              <text x="80" y="41" text-anchor="middle" font-size="6" fill="#374151">CVV</text>
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Save Card Option -->
+                <div class="save-card-option">
+                  <label class="save-card-label">
+                    <input type="checkbox" [(ngModel)]="storeCard" name="storeCard">
+                    <div class="checkbox-custom">
+                      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </div>
+                    <span class="save-card-text">
+                      Save this card for future payments
+                      <small>Your card details will be securely encrypted</small>
+                    </span>
+                  </label>
+                </div>
+              </form>
+            </div>
+
+            <!-- Payment Button - IMPROVED -->
+            <div class="payment-actions">
+              <button 
+                class="pay-button"
+                [class.loading]="isProcessing"
+                [disabled]="!isFormValid || isProcessing"
+                (click)="processPayment()">
+                <div class="button-content" *ngIf="!isProcessing">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 1V23" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M17 5H9.5C8.57174 5 7.6815 5.36875 7.02513 6.02513C6.36875 6.6815 6 7.57174 6 8.5C6 9.42826 6.36875 10.3185 7.02513 10.9749C7.6815 11.6312 8.57174 12 9.5 12H14.5C15.4283 12 16.3185 12.3687 16.9749 13.0251C17.6312 13.6815 18 14.5717 18 15.5C18 16.4283 17.6312 17.3185 16.9749 17.9749C16.3185 18.6312 15.4283 19 14.5 19H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span>Pay ${{totalAmount}}</span>
+                </div>
+                <div class="button-loading" *ngIf="isProcessing">
+                  <div class="loading-spinner"></div>
+                  <span>Processing Payment...</span>
+                </div>
+              </button>
+              
+              <div class="payment-security">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 22S8 18 8 13V6L12 4L16 6V13C16 18 12 22 12 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Your payment information is secure and encrypted</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="order-summary-section">
+          <div class="summary-card">
+            <div class="summary-header">
+              <h3 class="summary-title">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 11H15M9 15H15M17 21H7C5.89543 21 5 20.1046 5 19V5C5 3.89543 5.89543 3 7 3H12.5858C12.851 3 13.1054 3.10536 13.2929 3.29289L19.7071 9.70711C19.8946 9.89464 20 10.149 20 10.4142V19C20 20.1046 19.1046 21 18 21H17Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Order Summary
+              </h3>
+            </div>
+
+            <div class="booking-details">
+              <div class="flight-info">
+                <div class="flight-route">
+                  <div class="airport">
+                    <span class="airport-code">{{bookingInfo.departureAirport}}</span>
+                    <span class="airport-name">{{getDepartureAirportName()}}</span>
+                  </div>
+                  <div class="flight-path">
+                    <div class="flight-line"></div>
+                    <div class="flight-icon">
+                      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 16V8C21 6.89543 20.1046 6 19 6H5C3.89543 6 3 6.89543 3 8V16C3 17.1046 3.89543 18 5 18H19C20.1046 18 21 17.1046 21 16Z" stroke="currentColor" stroke-width="2"/>
+                        <path d="M3 10H21" stroke="currentColor" stroke-width="2"/>
+                        <path d="M7 14H17" stroke="currentColor" stroke-width="2"/>
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="airport">
+                    <span class="airport-code">{{bookingInfo.arrivalAirport}}</span>
+                    <span class="airport-name">{{getArrivalAirportName()}}</span>
+                  </div>
+                </div>
+                
+                <div class="flight-details">
+                  <div class="detail-item">
+                    <span class="detail-label">Date</span>
+                    <span class="detail-value">{{formatDate(bookingInfo.departureDate)}}</span>
+                  </div>
+                  <div class="detail-item">
+                    <span class="detail-label">Passengers</span>
+                    <span class="detail-value">{{bookingInfo.numberOfPassengers}} Adult(s)</span>
+                  </div>
+                  <div class="detail-item">
+                    <span class="detail-label">Class</span>
+                    <span class="detail-value">{{bookingInfo.flightClass}}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="price-breakdown">
+                <div class="price-item">
+                  <span class="price-label">Base Fare</span>
+                  <span class="price-value">${{calculateBaseFare()}}</span>
+                </div>
+                <div class="price-item">
+                  <span class="price-label">Taxes & Fees</span>
+                  <span class="price-value">${{calculateTaxes()}}</span>
+                </div>
+                <div class="price-item discount" *ngIf="hasDiscount">
+                  <span class="price-label">Discount</span>
+                  <span class="price-value">-${{discountAmount}}</span>
+                </div>
+                <div class="price-divider"></div>
+                <div class="price-item total">
+                  <span class="price-label">Total Amount</span>
+                  <span class="price-value">${{totalAmount}}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Promo Code -->
+            <div class="promo-section">
+              <div class="promo-toggle" (click)="togglePromoCode()">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2"/>
+                  <path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Have a promo code?</span>
+                <svg class="chevron" [class.rotated]="showPromoCode" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              
+              <div class="promo-form" [class.show]="showPromoCode">
+                <div class="promo-input-wrapper">
+                  <input 
+                    type="text" 
+                    class="promo-input"
+                    placeholder="Enter promo code"
+                    [(ngModel)]="promoCode"
+                    (keyup.enter)="applyPromoCode()">
+                  <button class="promo-apply-btn" (click)="applyPromoCode()" [disabled]="!promoCode">
+                    Apply
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Trust Indicators -->
+          <div class="trust-indicators">
+            <div class="trust-item">
+              <div class="trust-icon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 22S8 18 8 13V6L12 4L16 6V13C16 18 12 22 12 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="trust-content">
+                <span class="trust-title">Secure Payment</span>
+                <span class="trust-desc">256-bit SSL encryption</span>
+              </div>
+            </div>
+            
+            <div class="trust-item">
+              <div class="trust-icon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M22 12H18L15 21L9 3L6 12H2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="trust-content">
+                <span class="trust-title">Instant Confirmation</span>
+                <span class="trust-desc">Immediate booking confirmation</span>
+              </div>
+            </div>
+            
+            <div class="trust-item">
+              <div class="trust-icon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M22 16.92V19.92C22 20.52 21.52 21 20.92 21C9.4 21 0 11.6 0 0.08C0 -0.52 0.48 -1 1.08 -1H4.08C4.68 -1 5.16 -0.52 5.16 0.08C5.16 2.08 5.56 4.04 6.32 5.84C6.48 6.24 6.36 6.68 6.04 6.96L4.84 8.16C6.28 11.36 8.64 13.72 11.84 15.16L13.04 13.96C13.32 13.64 13.76 13.52 14.16 13.68C15.96 14.44 17.92 14.84 19.92 14.84C20.52 14.84 21 15.32 21 15.92V18.92Z" stroke="currentColor" stroke-width="2"/>
+                </svg>
+              </div>
+              <div class="trust-content">
+                <span class="trust-title">24/7 Support</span>
+                <span class="trust-desc">Round-the-clock assistance</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Processing Overlay -->
+  <div class="processing-overlay" [class.show]="isProcessing">
+    <div class="processing-content">
+      <div class="processing-animation">
+        <div class="processing-circle"></div>
+        <div class="processing-icon">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1" y="4" width="22" height="16" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+            <line x1="1" y1="10" x2="23" y2="10" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+      </div>
+      <h3 class="processing-title">Processing Your Payment</h3>
+      <p class="processing-text">Please wait while we securely process your transaction...</p>
+      <div class="processing-steps">
+        <div class="processing-step" [class.active]="processingStep >= 1">
+          <div class="step-dot"></div>
+          <span>Validating card details</span>
+        </div>
+        <div class="processing-step" [class.active]="processingStep >= 2">
+          <div class="step-dot"></div>
+          <span>Contacting bank</span>
+        </div>
+        <div class="processing-step" [class.active]="processingStep >= 3">
+          <div class="step-dot"></div>
+          <span>Confirming payment</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

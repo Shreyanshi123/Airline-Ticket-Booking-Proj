@@ -1,0 +1,236 @@
+<!-- <div class="container mt-4">
+<h2>Reschedule Flight</h2>
+ 
+  <form [formGroup]="rescheduleForm" (ngSubmit)="onSubmit()">
+<div class="form-group mb-3">
+<label>Departure Date & Time</label>
+<input type="text" class="form-control" formControlName="departureDateTime">
+</div>
+ 
+    <div class="form-group mb-3">
+<label>Arrival Date & Time</label>
+<input type="text" class="form-control" formControlName="arrivalDateTime">
+</div> -->
+ 
+    <!-- <div class="form-group mb-3">
+<label>Status</label>
+<select class="form-control" formControlName="status">
+<option value="1">Delayed ⏳</option>
+<option value="2">Cancelled ❌</option>
+<option value="3">Completed ✅</option>
+<option value="4">Rescheduled 🔄</option>
+</select>
+</div> -->
+ 
+    <!-- <button class="btn btn-primary" type="submit" [disabled]="rescheduleForm.invalid">Save Changes</button>
+</form>
+</div> -->
+
+
+<!-- reschedule-flight.component.html -->
+<div class="reschedule-container">
+  <!-- Header Section -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="header-icon">
+        <i class="fas fa-calendar-alt"></i>
+      </div>
+      <div class="header-info">
+        <h1 class="page-title">Reschedule Flight</h1>
+        <p class="page-subtitle" *ngIf="flightDetails">
+          Flight {{ flightDetails?.flightNumber }} - {{ flightDetails?.airline }}
+        </p>
+        <div class="breadcrumb">
+          <span class="breadcrumb-item">Dashboard</span>
+          <i class="fas fa-chevron-right"></i>
+          <span class="breadcrumb-item">Flight Schedules</span>
+          <i class="fas fa-chevron-right"></i>
+          <span class="breadcrumb-item active">Reschedule</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-section">
+    <div class="loading-spinner">
+      <div class="spinner"></div>
+      <p>Loading flight details...</p>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div *ngIf="!isLoading" class="content-wrapper">
+    <!-- Flight Info Card -->
+    <div class="flight-info-card" *ngIf="flightDetails">
+      <div class="flight-header">
+        <div class="flight-number">
+          <span class="flight-icon">✈️</span>
+          <strong>{{ flightDetails.flightNumber }}</strong>
+        </div>
+        <div class="airline-badge">{{ flightDetails.airline }}</div>
+      </div>
+      
+      <div class="flight-route">
+        <div class="route-point">
+          <div class="airport-code">{{ flightDetails.origin }}</div>
+          <div class="airport-label">Origin</div>
+        </div>
+        <div class="route-line">
+          <i class="fas fa-plane"></i>
+        </div>
+        <div class="route-point">
+          <div class="airport-code">{{ flightDetails.destination }}</div>
+          <div class="airport-label">Destination</div>
+        </div>
+      </div>
+
+      <div class="current-schedule">
+        <div class="schedule-item">
+          <div class="schedule-label">Current Departure</div>
+          <div class="schedule-time">{{ flightDetails.departureDateTime | date:'medium' }}</div>
+        </div>
+        <div class="schedule-item">
+          <div class="schedule-label">Current Arrival</div>
+          <div class="schedule-time">{{ flightDetails.arrivalDateTime | date:'medium' }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reschedule Form -->
+    <div class="form-card">
+      <div class="form-header">
+        <h2 class="form-title">
+          <i class="fas fa-edit"></i>
+          New Schedule Details
+        </h2>
+        <p class="form-subtitle">Please select the new departure and arrival times</p>
+      </div>
+
+      <form [formGroup]="rescheduleForm" (ngSubmit)="onSubmit()" class="reschedule-form">
+        <!-- Departure DateTime -->
+        <div class="form-group">
+          <label class="form-label">
+            <i class="fas fa-plane-departure"></i>
+            New Departure Date & Time
+          </label>
+          <div class="input-wrapper">
+            <input 
+              type="datetime-local" 
+              class="form-control"
+              [class.error]="isFieldInvalid('departureDateTime')"
+              formControlName="departureDateTime"
+              placeholder="Select departure date and time">
+            <div class="input-icon">
+              <i class="fas fa-calendar"></i>
+            </div>
+          </div>
+          <div class="error-message" *ngIf="isFieldInvalid('departureDateTime')">
+            {{ getErrorMessage('departureDateTime') }}
+          </div>
+        </div>
+
+        <!-- Arrival DateTime -->
+        <div class="form-group">
+          <label class="form-label">
+            <i class="fas fa-plane-arrival"></i>
+            New Arrival Date & Time
+          </label>
+          <div class="input-wrapper">
+            <input 
+              type="datetime-local" 
+              class="form-control"
+              [class.error]="isFieldInvalid('arrivalDateTime')"
+              formControlName="arrivalDateTime"
+              placeholder="Select arrival date and time">
+            <div class="input-icon">
+              <i class="fas fa-calendar"></i>
+            </div>
+          </div>
+          <div class="error-message" *ngIf="isFieldInvalid('arrivalDateTime')">
+            {{ getErrorMessage('arrivalDateTime') }}
+          </div>
+        </div>
+
+        <!-- Reason for Reschedule -->
+        <div class="form-group">
+          <label class="form-label">
+            <i class="fas fa-comment-alt"></i>
+            Reason for Reschedule
+          </label>
+          <div class="input-wrapper">
+            <select 
+              class="form-control"
+              [class.error]="isFieldInvalid('reason')"
+              formControlName="reason">
+              <option value="">Select reason</option>
+              <option value="weather">Weather Conditions</option>
+              <option value="technical">Technical Issues</option>
+              <option value="operational">Operational Requirements</option>
+              <option value="crew">Crew Scheduling</option>
+              <option value="airport">Airport Restrictions</option>
+              <option value="other">Other</option>
+            </select>
+            <div class="input-icon">
+              <i class="fas fa-chevron-down"></i>
+            </div>
+          </div>
+          <div class="error-message" *ngIf="isFieldInvalid('reason')">
+            {{ getErrorMessage('reason') }}
+          </div>
+        </div>
+
+        <!-- Form Validation Summary -->
+        <div class="validation-summary" *ngIf="rescheduleForm.hasError('invalidOrder')">
+          <div class="alert alert-warning">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span>Please ensure departure time is before arrival time</span>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="form-actions">
+          <button 
+            type="button" 
+            class="btn btn-secondary"
+            (click)="onCancel()"
+            [disabled]="isSubmitting">
+            <i class="fas fa-times"></i>
+            Cancel
+          </button>
+          
+          <button 
+            type="submit" 
+            class="btn btn-primary"
+            [disabled]="rescheduleForm.invalid || isSubmitting">
+            <div class="btn-content">
+              <div *ngIf="!isSubmitting" class="btn-text">
+                <i class="fas fa-save"></i>
+                Save Changes
+              </div>
+              <div *ngIf="isSubmitting" class="btn-loading">
+                <div class="btn-spinner"></div>
+                Saving...
+              </div>
+            </div>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Help Section -->
+    <div class="help-card">
+      <div class="help-header">
+        <i class="fas fa-info-circle"></i>
+        <h3>Important Notes</h3>
+      </div>
+      <ul class="help-list">
+        <li>All passengers will be automatically notified of the schedule change</li>
+        <li>New departure time must be at least 2 hours from now</li>
+        <li>Arrival time must be after departure time</li>
+        <li>Airport slot availability will be verified automatically</li>
+      </ul>
+    </div>
+  </div>
+</div>
+

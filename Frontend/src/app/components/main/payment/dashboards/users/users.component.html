@@ -1,0 +1,48 @@
+
+
+
+ <div class="container">
+  <h2>User Reservations</h2>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>{{ user.firstName }} {{ user.lastName }}</td>
+        <td>{{ user.email }}</td>
+        <td><button (click)="toggleReservations(user)">Toggle Reservations</button></td>
+      </tr>
+      <tr *ngIf="expandedUser">
+        <td colspan="3">
+          <table border="1">
+            <thead>
+              <tr>
+                <th>Booking Reference</th>
+                <th>Flight Details</th>
+                <th>Status</th>
+                <th>Total Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let reservation of expandedUser?.reservations">
+                <td>{{ reservation.bookingReference }}</td>
+                <td>
+                  Flight: {{ reservation.flight.flightNumber }} ({{ reservation.flight.airline }})<br>
+                  Departure: {{ reservation.flight.departureDateTime | date:'short' }}<br>
+                  Arrival: {{ reservation.flight.arrivalDateTime | date:'short' }}
+                </td>
+                <td>{{ reservation.status }}</td>
+                <td>{{ reservation.totalAmount | currency }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

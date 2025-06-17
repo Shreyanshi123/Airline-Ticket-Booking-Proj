@@ -1,0 +1,333 @@
+<!-- <h3>📈 User Analytics Dashboard</h3>
+ 
+<h5>Recent Users</h5>
+<table class="table">
+<thead>
+<tr><th>ID</th><th>Name</th><th>Email</th><th>Role</th><th>Reservations</th><th>Last Login</th></tr>
+</thead>
+<tbody>
+<tr *ngFor="let user of recentUsers">
+<td>{{user.id}}</td>
+<td>{{user.firstName}} {{user.lastName}}</td>
+<td>{{user.email}}</td>
+<td>{{user.role === 1 ? 'Admin' : 'User'}}</td>
+<td>{{user.reservationCount}}</td>
+<td>{{user.lastLoginDate | date:'short'}}</td>
+</tr>
+</tbody>
+</table>
+ 
+<h5>Sign Up Trends</h5>
+<ngx-charts-bar-vertical
+  [results]="userSignupData"
+  [xAxis]="true" [yAxis]="true"
+  [legend]="false" [showDataLabel]="true"
+  [gradient]="true" [animations]="true">
+</ngx-charts-bar-vertical>
+ 
+<h5>Role Distribution</h5>
+<ngx-charts-pie-chart
+  [results]="roleDistribution"
+  [legend]="true" [labels]="true">
+</ngx-charts-pie-chart>
+ 
+<h5>Active Users Today</h5>
+<ngx-charts-pie-chart
+  [results]="activeUserData"
+  [legend]="true" [labels]="true">
+</ngx-charts-pie-chart> 
+
+
+<h3>📈 User Analytics Dashboard</h3>
+
+<h5>Recent Users</h5>
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Role</th>
+      <th>Reservations</th>
+      <th>Last Login</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of recentUsers">
+      <td>{{ user.id }}</td>
+      <td>{{ user.firstName }} {{ user.lastName }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ user.role === 1 ? 'Admin' : 'User' }}</td>
+      <td>{{ user.reservationCount }}</td>
+      <td>{{ user.lastLoginDate | date:'short' }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Sign Up Trends</h5>
+<div class="chart-container">
+  <ngx-charts-bar-vertical
+    [results]="userSignupData"
+    [xAxis]="true" [yAxis]="true"
+    [legend]="false" [showDataLabel]="true"
+    [gradient]="true" [animations]="true">
+  </ngx-charts-bar-vertical>
+</div>
+
+<h5>Role Distribution</h5>
+<div class="chart-container">
+  <ngx-charts-pie-chart
+    [results]="roleDistribution"
+    [legend]="true" [labels]="true">
+  </ngx-charts-pie-chart>
+</div>
+
+<h5>Active Users Today</h5>
+<div class="chart-container">
+  <ngx-charts-pie-chart
+    [results]="activeUserData"
+    [legend]="true" [labels]="true">
+  </ngx-charts-pie-chart>
+</div> -->
+
+
+<!-- 
+
+<h3>📈 User Analytics Dashboard</h3>
+
+<h5>Recent Users</h5>
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Role</th>
+      <th>Reservations</th>
+      <th>Last Login</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of recentUsers">
+      <td>{{ user.id }}</td>
+      <td>{{ user.firstName }} {{ user.lastName }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ user.role === 1 ? 'Admin' : 'User' }}</td>
+      <td>{{ user.reservationCount }}</td>
+      <td>{{ user.lastLoginDate | date:'short' }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Sign Up Trends</h5>
+<div class="chart-container">
+  <ngx-charts-bar-vertical
+    [results]="userSignupData"
+    [xAxis]="true" [yAxis]="true"
+    [legend]="false" [showDataLabel]="true"
+    [gradient]="true" [animations]="true">
+  </ngx-charts-bar-vertical>
+</div>
+
+<h5>Role Distribution</h5>
+<div class="chart-container">
+  <ngx-charts-pie-chart
+    [results]="roleDistribution"
+    [legend]="true" [labels]="true">
+  </ngx-charts-pie-chart>
+</div>
+
+<h5>Active Users Today</h5>
+<div class="chart-container">
+  <ngx-charts-pie-chart
+    [results]="activeUserData"
+    [legend]="true" [labels]="true">
+  </ngx-charts-pie-chart>
+</div> -->
+
+<div class="analytics-dashboard">
+  <!-- Header Section -->
+  <div class="dashboard-header">
+    <div class="header-content">
+      <div class="header-text">
+        <h1 class="dashboard-title">
+          <i class="icon-analytics"></i>
+          User Analytics Dashboard
+        </h1>
+        <p class="dashboard-subtitle">Comprehensive insights into your user base</p>
+      </div>
+      <div class="header-stats">
+        <div class="stat-card">
+          <div class="stat-value">{{ recentUsers.length }}</div>
+          <div class="stat-label">Total Users</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">{{ getTodayActiveCount() }}</div>
+          <div class="stat-label">Active Today</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content Grid -->
+  <div class="dashboard-grid">
+    
+    <!-- Recent Users Table Card -->
+    <div class="dashboard-card table-card">
+      <div class="card-header">
+        <h3 class="card-title">
+          <i class="icon-users"></i>
+          Recent Users
+        </h3>
+        <div class="card-badge">{{ recentUsers.length }} users</div>
+      </div>
+      <div class="card-content">
+        <div class="table-container">
+          <table class="modern-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>User</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Reservations</th>
+                <th>Last Login</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of recentUsers; let i = index" 
+                  class="table-row" 
+                  [style.animation-delay]="(i * 0.1) + 's'">
+                <td>
+                  <span class="user-id">#{{ user.id }}</span>
+                </td>
+                <td>
+                  <div class="user-info">
+                    <div class="user-avatar">
+                      {{ getInitials(user.firstName, user.lastName) }}
+                    </div>
+                    <div class="user-details">
+                      <div class="user-name">{{ user.firstName }} {{ user.lastName }}</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <span class="user-email">{{ user.email }}</span>
+                </td>
+                <td>
+                  <span class="role-badge" [class.admin]="user.role === 1" [class.user]="user.role !== 1">
+                    {{ user.role === 1 ? 'Admin' : 'User' }}
+                  </span>
+                </td>
+                <td>
+                  <div class="reservation-count">
+                    <span class="count">{{ user.reservationCount }}</span>
+                    <span class="label">bookings</span>
+                  </div>
+                </td>
+                <td>
+                  <span class="login-date">{{ user.lastLoginDate | date:'short' }}</span>
+                </td>
+                <td>
+                  <span class="status-indicator" [class.active]="isActiveToday(user.lastLoginDate)" [class.inactive]="!isActiveToday(user.lastLoginDate)">
+                    {{ isActiveToday(user.lastLoginDate) ? 'Active' : 'Inactive' }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="charts-section">
+      
+      <!-- Sign Up Trends Chart -->
+      <div class="dashboard-card chart-card">
+        <div class="card-header">
+          <h3 class="card-title">
+            <i class="icon-trending"></i>
+            Sign Up Trends
+          </h3>
+          <div class="chart-controls">
+            <button class="chart-btn active">Daily</button>
+            <button class="chart-btn">Weekly</button>
+          </div>
+        </div>
+        <div class="card-content">
+          <div class="chart-container">
+            <ngx-charts-bar-vertical
+              [results]="userSignupData"
+              [xAxis]="true" 
+              [yAxis]="true"
+              [legend]="false" 
+              [showDataLabel]="true"
+              [gradient]="true" 
+              [animations]="true"
+              [yAxisTickFormatting]="yAxisTickFormatting">
+            </ngx-charts-bar-vertical>
+          </div>
+        </div>
+      </div>
+
+      <!-- Role Distribution Chart -->
+      <div class="dashboard-card chart-card">
+        <div class="card-header">
+          <h3 class="card-title">
+            <i class="icon-pie"></i>
+            Role Distribution
+          </h3>
+          <div class="chart-info">
+            <span class="info-text">User roles breakdown</span>
+          </div>
+        </div>
+        <div class="card-content">
+          <div class="chart-container">
+            <ngx-charts-pie-chart
+              [results]="roleDistribution"
+              [legend]="true" 
+              [labels]="true"
+              [animations]="true">
+            </ngx-charts-pie-chart>
+          </div>
+        </div>
+      </div>
+
+      <!-- Active Users Chart -->
+      <div class="dashboard-card chart-card">
+        <div class="card-header">
+          <h3 class="card-title">
+            <i class="icon-activity"></i>
+            Active Users Today
+          </h3>
+          <div class="activity-indicator">
+            <span class="pulse-dot"></span>
+            <span class="activity-text">Live</span>
+          </div>
+        </div>
+        <div class="card-content">
+          <div class="chart-container">
+            <ngx-charts-pie-chart
+              [results]="activeUserData"
+              [legend]="true" 
+              [labels]="true"
+              [animations]="true">
+            </ngx-charts-pie-chart>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" [class.hidden]="!isLoading">
+    <div class="loading-spinner">
+      <div class="spinner"></div>
+      <p>Loading analytics data...</p>
+    </div>
+  </div>
+
+</div>

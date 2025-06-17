@@ -1,0 +1,448 @@
+<div class="home-container">
+  <!-- Hero Section with Enhanced Background -->
+  <section class="hero-section">
+    <div class="hero-background">
+      <div class="gradient-overlay"></div>
+      <div class="floating-elements">
+        <div class="floating-plane">✈️</div>
+        <div class="floating-cloud cloud-1">☁️</div>
+        <div class="floating-cloud cloud-2">☁️</div>
+        <div class="floating-cloud cloud-3">☁️</div>
+      </div>
+      <div class="particles-container">
+        <div
+          class="particle"
+          *ngFor="let particle of particles; trackBy: trackByIndex"
+          [style.left.%]="particle.x"
+          [style.animation-delay.s]="particle.delay"
+        ></div>
+      </div>
+    </div>
+
+    <div class="hero-content">
+      <div class="hero-text" data-aos="fade-up">
+        <h1 class="hero-title">
+          Discover Your Next
+          <span class="gradient-text">Adventure</span>
+        </h1>
+        <p class="hero-subtitle">
+          Book flights to amazing destinations worldwide with our premium
+          service and unbeatable prices
+        </p>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <span class="stat-number">500+</span>
+            <span class="stat-label">Destinations</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">24/7</span>
+            <span class="stat-label">Support</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">1M+</span>
+            <span class="stat-label">Happy Travelers</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-image" data-aos="fade-left">
+        <div class="image-container">
+          <img
+            src="https://images.unsplash.com/photo-1556388158-158ea5ccacbd?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+            alt="Modern Aircraft"
+            class="hero-img"
+          />
+          <div class="image-glow"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Enhanced Flight Search Section -->
+  <section class="search-section">
+    <div class="search-container" data-aos="fade-up">
+      <div class="search-header">
+        <br>
+        <h2 class="search-title">Find Your Perfect Flight</h2>
+        <p class="search-subtitle">
+          Search and compare flights from hundreds of airlines worldwide
+        </p>
+      </div>
+
+      <!-- Trip Type Selector -->
+      <div class="trip-selector">
+        <div class="selector-tabs">
+          <button
+            type="button"
+            class="tab-btn"
+            [class.active]="!isRoundTrip"
+            (click)="setTripType(false)"
+          >
+            <i class="fas fa-long-arrow-alt-right"></i>
+            <span>One Way</span>
+          </button>
+          <button
+            type="button"
+            class="tab-btn"
+            [class.active]="isRoundTrip"
+            (click)="setTripType(true)"
+          >
+            <i class="fas fa-exchange-alt"></i>
+            <span>Round Trip</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Search Form -->
+      <form
+        [formGroup]="searchForm"
+        (ngSubmit)="onSubmit()"
+        class="search-form"
+      >
+        <div class="form-grid" [class.round-trip]="isRoundTrip">
+          <!-- From Field -->
+          <div class="form-group from-group">
+            <label class="form-label">
+              <i class="fas fa-plane-departure"></i>
+              <span>From</span>
+            </label>
+            <div
+              class="input-container"
+              [class.focused]="focusedField === 'departure'"
+            >
+              <input
+                type="text"
+                formControlName="departureCity"
+                placeholder="Departure city or airport"
+                class="form-input"
+                (focus)="onFieldFocus('departure')"
+                (blur)="onFieldBlur('departure')"
+                autocomplete="off"
+              />
+              <div class="input-icon">
+                <i class="fas fa-map-marker-alt"></i>
+              </div>
+              <div
+                class="autocomplete-dropdown"
+                *ngIf="filteredOrigins.length && focusedField === 'departure'"
+              >
+                <div
+                  class="dropdown-item"
+                  *ngFor="let origin of filteredOrigins"
+                  (click)="selectOrigin(origin)"
+                >
+                  <div class="item-icon">
+                    <i class="fas fa-plane-departure"></i>
+                  </div>
+                  <div class="item-content">
+                    <span class="item-name">{{ origin }}</span>
+                    <span class="item-code">Airport Code</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Swap Button -->
+          <div class="swap-container">
+            <!-- <button
+              type="button"
+              class="swap-btn"
+              (click)="swapCities()"
+              title="Swap destinations"
+            > -->
+            <img
+              src="swap.svg"
+              (click)="swapCities()"
+              title="Swap destinations"
+              class="swap-icon"
+            />
+            <div class="swap-arrows">
+              <i class="fas fa-arrow-right arrow-top"></i>
+              <i class="fas fa-arrow-left arrow-bottom"></i>
+            </div>
+            <!-- </button> -->
+          </div>
+
+          <!-- To Field -->
+          <div class="form-group to-group">
+            <label class="form-label">
+              <i class="fas fa-plane-arrival"></i>
+              <span>To</span>
+            </label>
+            <div
+              class="input-container"
+              [class.focused]="focusedField === 'arrival'"
+            >
+              <input
+                type="text"
+                formControlName="arrivalCity"
+                placeholder="Destination city or airport"
+                class="form-input"
+                (focus)="onFieldFocus('arrival')"
+                (blur)="onFieldBlur('arrival')"
+                autocomplete="off"
+              />
+              <div class="input-icon">
+                <i class="fas fa-map-marker-alt"></i>
+              </div>
+              <div
+                class="autocomplete-dropdown"
+                *ngIf="
+                  filteredDestinations.length && focusedField === 'arrival'
+                "
+              >
+                <div
+                  class="dropdown-item"
+                  *ngFor="let destination of filteredDestinations"
+                  (click)="selectDestination(destination)"
+                >
+                  <div class="item-icon">
+                    <i class="fas fa-plane-arrival"></i>
+                  </div>
+                  <div class="item-content">
+                    <span class="item-name">{{ destination }}</span>
+                    <span class="item-code">Airport Code</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Departure Date -->
+          <div class="form-group date-group">
+            <label class="form-label">
+              <i class="fas fa-calendar-alt"></i>
+              <span>Departure</span>
+            </label>
+            <div class="input-container">
+              <input
+                type="date"
+                formControlName="departureTime"
+                class="form-input date-input"
+                [min]="minDate"
+              />
+              <div class="input-icon">
+                <i class="fas fa-calendar-alt"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Return Date (conditional) -->
+          <div class="form-group date-group return-date" *ngIf="isRoundTrip">
+            <label class="form-label">
+              <i class="fas fa-calendar-alt"></i>
+              <span>Return</span>
+            </label>
+            <div class="input-container">
+              <input
+                type="date"
+                formControlName="returnTime"
+                class="form-input date-input"
+                [min]="minDate"
+              />
+              <div class="input-icon">
+                <i class="fas fa-calendar-alt"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Search Button -->
+        <div class="search-btn-container">
+          <button
+            type="submit"
+            class="search-btn"
+            [class.loading]="isSearching"
+            [disabled]="isSearching"
+          >
+            <div class="btn-background"></div>
+            <span class="btn-content">
+              <i class="fas fa-search" *ngIf="!isSearching"></i>
+              <i class="fas fa-spinner fa-spin" *ngIf="isSearching"></i>
+              <span>{{
+                isSearching ? "Searching Flights..." : "Search Flights"
+              }}</span>
+            </span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- Flight Results Section -->
+  <section
+    class="results-section"
+    *ngIf="flights.length > 0"
+    data-aos="fade-up"
+  >
+    <div class="results-container">
+      <div class="results-header">
+        <h2 class="results-title">Available Flights</h2>
+        <div class="results-meta">
+          <span class="results-count">{{ flights.length }} flights found</span>
+          <div class="sort-options">
+            <select class="sort-select">
+              <option value="price">Sort by Price</option>
+              <option value="duration">Sort by Duration</option>
+              <option value="departure">Sort by Departure</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="flights-list">
+        <div
+          class="flight-card"
+          *ngFor="let flight of flights; trackBy: trackByIndex"
+        >
+          <div class="flight-info">
+            <div class="airline-info">
+              <div class="airline-logo">
+                <i class="fas fa-plane"></i>
+              </div>
+              <div class="airline-details">
+                <h4 class="airline-name">
+                  {{ flight.airline.airlineCode || "AL" }}-{{
+                    flight.flightNumber
+                  }}
+                </h4>
+                <span class="flight-type">{{ selectedClass | titlecase }}</span>
+              </div>
+            </div>
+
+            <div class="route-info">
+              <div class="departure">
+                <span class="time">{{ flight.departureTime }}</span>
+                <span class="airport">{{ flight.departureAirport }}</span>
+              </div>
+              <div class="route-visual">
+                <div class="route-line">
+                  <div class="plane-icon">✈️</div>
+                </div>
+                <span class="duration">{{ flight.duration }}h</span>
+              </div>
+              <div class="arrival">
+                <span class="time">{{ flight.arrivalTime }}</span>
+                <span class="airport">{{ flight.arrivalAirport }}</span>
+              </div>
+            </div>
+
+            <div class="price-info">
+              <div class="price">
+                ₹{{ flight.ticketPrice | number : "1.0-0" }}
+              </div>
+              <span class="price-label">per person</span>
+            </div>
+          </div>
+
+          <div class="flight-actions">
+            <button class="book-btn" (click)="bookFlight(flight)">
+              <i class="fas fa-ticket-alt"></i>
+              Book Now
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<div class="recommended-flights" *ngIf="recommendedFlights.length > 0">
+  <h2 class="recommended-title">Popular Destination </h2>
+  <div class="recommended-grid">
+    <div class="flight-card" *ngFor="let flight of recommendedFlights">
+      <div class="flight-info">
+        <h3 class="flight-name">{{ flight.airline }}</h3>
+        <p class="flight-route">{{ flight.origin }} → {{ flight.destination }}</p>
+        <p class="flight-price">Starting at ECONOMY ${{ flight.economyPrice }}</p>
+      </div>
+      <button class="book-btn">Book Now</button>
+    </div>
+  </div>
+</div>
+
+
+  <!-- Features Section -->
+  <section class="features-section">
+    <div class="features-container" data-aos="fade-up">
+      <h2 class="section-title">Why Choose Us</h2>
+      <div class="features-grid">
+        <div
+          class="feature-card"
+          *ngFor="let feature of features; trackBy: trackByIndex"
+          data-aos="fade-up"
+          [attr.data-aos-delay]="100"
+        >
+          <div class="feature-icon">
+            <i [class]="feature.icon"></i>
+          </div>
+          <h3 class="feature-title">{{ feature.title }}</h3>
+          <p class="feature-description">{{ feature.description }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter Section -->
+  <!-- <section class="newsletter-section">
+    <div class="newsletter-container" data-aos="fade-up">
+      <div class="newsletter-content">
+        <h2 class="newsletter-title">Stay Updated</h2>
+        <p class="newsletter-subtitle">
+          Get the latest deals and travel tips delivered to your inbox
+        </p>
+        <form class="newsletter-form" (ngSubmit)="subscribeNewsletter()">
+          <div class="newsletter-input-group">
+            <input
+              type="email"
+              placeholder="Enter your email address"
+              [(ngModel)]="newsletterEmail"
+              name="email"
+              class="newsletter-input"
+            />
+            <button type="submit" class="newsletter-btn">
+              <i class="fas fa-paper-plane"></i>
+              Subscribe
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section> -->
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <h3 class="brand-name">SkyBooker</h3>
+          <p class="brand-tagline">Your gateway to the world</p>
+        </div>
+        <div class="footer-links">
+          <div class="link-group">
+            <h4>Quick Links</h4>
+            <a href="#">About Us</a>
+            <a href="#">Contact</a>
+            <a href="#">Terms</a>
+            <a href="#">Privacy</a>
+          </div>
+          <div class="link-group">
+            <h4>Support</h4>
+            <a href="#">Help Center</a>
+            <a href="#">FAQ</a>
+            <a href="#">Customer Service</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 SkyBooker. All rights reserved.</p>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-facebook"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>

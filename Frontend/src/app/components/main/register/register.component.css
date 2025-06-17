@@ -1,0 +1,1184 @@
+/* Import Google Fonts - Added more fonts for variety */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap");
+
+/* Root Variables - Enhanced Color Palette */
+:root {
+  --primary-gradient: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #c026d3 100%);
+  --secondary-gradient: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 50%, #0891b2 100%);
+  --sunset-gradient: linear-gradient(135deg, #f97316 0%, #db2777 50%, #7c3aed 100%);
+  --ocean-gradient: linear-gradient(135deg, #0284c7 0%, #0ea5e9 50%, #38bdf8 100%);
+  
+  /* RIGHT SIDE BACKGROUND COLOR - Change this to modify the right side color */
+  --right-side-gradient: linear-gradient(90deg, rgba(104, 95, 199, 1) 0%, rgba(48, 48, 150, 1) 52%, rgba(0, 212, 255, 1) 100%);
+  
+  --aviation-blue: #2563eb;
+  --sky-blue: #0ea5e9;
+  --purple: #7c3aed;
+  --pink: #ec4899;
+  --orange: #f97316;
+  --yellow: #fbbf24;
+  --teal: #14b8a6;
+  --cloud-white: #f8fafc;
+  --success-color: #10b981;
+  --error-color: #ef4444;
+  --warning-color: #f59e0b;
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+  --border-color: #e5e7eb;
+  --background-light: #f9fafb;
+  --white: #ffffff;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  --shadow-glow: 0 0 15px rgba(124, 58, 237, 0.5);
+}
+
+/* Base Styles */
+* {
+  box-sizing: border-box;
+}
+
+.registration-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #7c3aed 50%, #ec4899 75%, #f97316 100%);
+  background-size: 400% 400%;
+  animation: colorfulSky 15s ease infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  font-family: "Poppins", sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes colorfulSky {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.registration-wrapper {
+  width: 100%;
+  max-width: 1200px;
+  animation: slideUp 0.8s ease-out;
+  position: relative;
+  z-index: 10;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.registration-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  box-shadow: var(--shadow-xl), 0 0 20px rgba(124, 58, 237, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+}
+
+.card-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 700px;
+}
+
+/* Form Section */
+.form-section {
+  padding: 3rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.9) 100%);
+}
+
+.form-container {
+  width: 100%;
+  max-width: 400px;
+  animation: slideInLeft 0.8s ease-out 0.2s both;
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Header Section - Enhanced Aviation Theme */
+.header-section {
+  text-align: center;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.icon-container {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 70px;
+  height: 70px;
+  background: var(--primary-gradient);
+  border-radius: 50%;
+  margin-bottom: 1rem;
+  animation: planeTakeoff 2s ease-out 0.5s both;
+  position: relative;
+  box-shadow: var(--shadow-glow);
+}
+
+.icon-rings {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px solid rgba(124, 58, 237, 0.3);
+  animation: ringPulse 2s ease-in-out infinite;
+}
+
+.icon-rings::after {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 2px solid rgba(124, 58, 237, 0.15);
+  animation: ringPulse 2s ease-in-out 0.5s infinite;
+}
+
+@keyframes ringPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+}
+
+@keyframes planeTakeoff {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) translateY(20px);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1) translateY(-5px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.icon-container i {
+  font-size: 2rem;
+  color: var(--white);
+  animation: planeRotate 3s ease-in-out infinite;
+}
+
+@keyframes planeRotate {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-5deg);
+  }
+  75% {
+    transform: rotate(5deg);
+  }
+}
+
+.main-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.025em;
+}
+
+/* FIXED: SkyWings text visibility - now uses dark blue instead of transparent gradient */
+.gradient-text {
+  background: linear-gradient(135deg, #1e40af 0%, #3730a3 50%, #7c2d12 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
+  position: relative;
+  font-weight: 800;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.gradient-text::after {
+  content: "";
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(135deg, #1e40af 0%, #3730a3 50%, #7c2d12 100%);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s ease;
+}
+
+.gradient-text:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.subtitle {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+/* Form Styles - Enhanced */
+.registration-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.name-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-field {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.form-field.focused {
+  transform: scale(1.02);
+}
+
+.field-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  transition: color 0.2s ease;
+}
+
+.input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.field-icon {
+  position: absolute;
+  left: 1rem;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  z-index: 2;
+  transition: color 0.2s ease;
+}
+
+.form-input {
+  width: 100%;
+  height: 50px;
+  padding: 0 3rem 0 2.5rem;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  font-size: 1rem;
+  background: var(--white);
+  transition: all 0.3s ease;
+  outline: none;
+  box-shadow: var(--shadow-sm);
+}
+
+.form-input:focus {
+  border-color: var(--purple);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+}
+
+.form-input::placeholder {
+  color: #9ca3af;
+}
+
+.validation-icon {
+  position: absolute;
+  right: 1rem;
+  z-index: 2;
+}
+
+.valid-icon {
+  color: var(--success-color);
+  animation: checkmark 0.3s ease-in;
+}
+
+.error-icon {
+  color: var(--error-color);
+  animation: shake 0.3s ease-in;
+}
+
+@keyframes checkmark {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+.password-toggle {
+  position: absolute;
+  right: 2.5rem;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0.25rem;
+  z-index: 3;
+  transition: color 0.2s ease;
+}
+
+.password-toggle:hover {
+  color: var(--text-primary);
+}
+
+/* Field States - Enhanced */
+.form-field.focused .field-icon {
+  color: var(--purple);
+}
+
+.form-field.focused .form-input {
+  border-color: var(--purple);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+}
+
+.form-field.error .form-input {
+  border-color: var(--error-color);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.form-field.error .field-icon {
+  color: var(--error-color);
+}
+
+.form-field.valid .form-input {
+  border-color: var(--success-color);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.form-field.valid .field-icon {
+  color: var(--success-color);
+}
+
+/* Error Messages */
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--error-color);
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* FIXED: Submit Button - Now highly visible with dark background and white text */
+.submit-container {
+  margin-top: 1rem;
+}
+
+.submit-btn {
+  width: 100%;
+  height: 52px;
+  background: linear-gradient(135deg, #1e40af 0%, #3730a3 50%, #7c2d12 100%);
+  border: none;
+  border-radius: 12px;
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(30, 64, 175, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.submit-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: 0.5s;
+}
+
+.submit-btn:hover::before {
+  left: 100%;
+}
+
+.submit-btn:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(30, 64, 175, 0.5), 0 4px 8px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(135deg, #1d4ed8 0%, #4338ca 50%, #92400e 100%);
+}
+
+.submit-btn:active:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.loading-content {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid #ffffff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+/* Login Link - Enhanced */
+.login-link {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.login-link p {
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.link {
+  color: var(--purple);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease;
+  position: relative;
+}
+
+.link::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--primary-gradient);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s ease;
+}
+
+.link:hover {
+  color: var(--pink);
+}
+
+.link:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* UPDATED: Flight-themed Image Section - New color scheme */
+.image-section {
+  position: relative;
+  background: var(--right-side-gradient);
+  background-size: 400% 400%;
+  animation: rightSideAnimation 20s ease infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  overflow: hidden;
+}
+
+@keyframes rightSideAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.image-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+}
+
+/* Decorative Elements */
+.decorative-elements {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.circle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.15;
+}
+
+.circle-1 {
+  width: 200px;
+  height: 200px;
+  background: var(--yellow);
+  top: -50px;
+  right: -50px;
+}
+
+.circle-2 {
+  width: 150px;
+  height: 150px;
+  background: var(--teal);
+  bottom: 20%;
+  left: -30px;
+}
+
+.circle-3 {
+  width: 100px;
+  height: 100px;
+  background: var(--pink);
+  bottom: 10%;
+  right: 20%;
+}
+
+.line {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.line-1 {
+  width: 100%;
+  height: 1px;
+  top: 30%;
+  transform: rotate(-5deg);
+}
+
+.line-2 {
+  width: 100%;
+  height: 1px;
+  bottom: 40%;
+  transform: rotate(5deg);
+}
+
+.flight-background {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 2;
+  background: #685fc7;
+background: linear-gradient(90deg, rgba(104, 95, 199, 1) 0%, rgba(48, 48, 150, 1) 52%, rgba(0, 212, 255, 1) 100%);
+}
+
+/* Enhanced Animated Clouds */
+.cloud {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 50px;
+  opacity: 0.6;
+}
+
+.cloud::before,
+.cloud::after {
+  content: "";
+  position: absolute;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 50px;
+}
+
+.cloud-1 {
+  width: 80px;
+  height: 40px;
+  top: 20%;
+  left: 10%;
+  animation: cloudFloat 20s ease-in-out infinite;
+}
+
+.cloud-1::before {
+  width: 50px;
+  height: 50px;
+  top: -25px;
+  left: 10px;
+}
+
+.cloud-1::after {
+  width: 60px;
+  height: 40px;
+  top: -15px;
+  right: 10px;
+}
+
+.cloud-2 {
+  width: 60px;
+  height: 30px;
+  top: 60%;
+  right: 20%;
+  animation: cloudFloat 25s ease-in-out infinite reverse;
+}
+
+.cloud-2::before {
+  width: 40px;
+  height: 40px;
+  top: -20px;
+  left: 5px;
+}
+
+.cloud-2::after {
+  width: 50px;
+  height: 30px;
+  top: -10px;
+  right: 5px;
+}
+
+.cloud-3 {
+  width: 70px;
+  height: 35px;
+  top: 40%;
+  left: 70%;
+  animation: cloudFloat 30s ease-in-out infinite;
+}
+
+.cloud-3::before {
+  width: 45px;
+  height: 45px;
+  top: -22px;
+  left: 8px;
+}
+
+.cloud-3::after {
+  width: 55px;
+  height: 35px;
+  top: -12px;
+  right: 8px;
+}
+
+@keyframes cloudFloat {
+  0%,
+  100% {
+    transform: translateX(0) translateY(0);
+  }
+  25% {
+    transform: translateX(20px) translateY(-10px);
+  }
+  50% {
+    transform: translateX(-10px) translateY(5px);
+  }
+  75% {
+    transform: translateX(15px) translateY(-5px);
+  }
+}
+
+/* Enhanced Flying Plane Animation */
+.flying-plane {
+  position: absolute;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 1.5rem;
+}
+
+.plane-1 {
+  top: 15%;
+  left: -50px;
+  animation: flyAcross 15s linear infinite;
+}
+
+.plane-2 {
+  top: 70%;
+  right: -50px;
+  animation: flyAcrossReverse 20s linear infinite;
+  animation-delay: 5s;
+}
+
+@keyframes flyAcross {
+  0% {
+    left: -50px;
+    transform: rotate(0deg);
+  }
+  100% {
+    left: calc(100% + 50px);
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes flyAcrossReverse {
+  0% {
+    right: -50px;
+    transform: rotate(180deg);
+  }
+  100% {
+    right: calc(100% + 50px);
+    transform: rotate(180deg);
+  }
+}
+
+.image-content {
+  position: relative;
+  z-index: 3;
+  text-align: center;
+  color: var(--white);
+  animation: slideInRight 0.8s ease-out 0.4s both;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Enhanced Flight Illustration */
+.floating-image {
+  margin-bottom: 2rem;
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Destinations Banner */
+.destinations-banner {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 0.75rem;
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.destination {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.destination i {
+  color: var(--yellow);
+  font-size: 1.25rem;
+  animation: bounce 2s ease infinite;
+}
+
+.destination:nth-child(2) i {
+  animation-delay: 0.5s;
+}
+
+.destination:nth-child(3) i {
+  animation-delay: 1s;
+}
+
+.destination:nth-child(4) i {
+  animation-delay: 1.5s;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.destination span {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.image-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  letter-spacing: -0.025em;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.highlight-text {
+  color: var(--yellow);
+  position: relative;
+  display: inline-block;
+}
+
+.highlight-text::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--yellow);
+  border-radius: 2px;
+  opacity: 0.5;
+}
+
+.image-description {
+  font-size: 1.125rem;
+  opacity: 0.9;
+  max-width: 400px;
+  margin: 0 auto 2rem auto;
+  line-height: 1.6;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Enhanced Flight Features */
+.flight-features {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.feature-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.feature-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.feature-item:hover .feature-icon {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.feature-icon i {
+  font-size: 1.5rem;
+  color: var(--yellow);
+}
+
+.feature-item:nth-child(1) .feature-icon i {
+  color: var(--teal);
+}
+
+.feature-item:nth-child(2) .feature-icon i {
+  color: var(--pink);
+}
+
+.feature-item:nth-child(3) .feature-icon i {
+  color: var(--yellow);
+}
+
+/* Animated Flight Path */
+.flight-path-container {
+  margin-top: 3rem;
+  position: relative;
+  height: 40px;
+}
+
+.flight-path {
+  position: relative;
+  width: 80%;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.3);
+  margin: 0 auto;
+}
+
+.flight-dot {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: var(--white);
+  border-radius: 50%;
+  top: -3px;
+}
+
+.start-dot {
+  left: 0;
+}
+
+.middle-dot-1 {
+  left: 33%;
+}
+
+.middle-dot-2 {
+  left: 66%;
+}
+
+.end-dot {
+  right: 0;
+}
+
+.flight-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 0;
+  background: var(--yellow);
+  animation: lineProgress 4s linear infinite;
+}
+
+@keyframes lineProgress {
+  0% {
+    width: 0;
+    background: var(--teal);
+  }
+  33% {
+    background: var(--sky-blue);
+  }
+  66% {
+    background: var(--purple);
+  }
+  100% {
+    width: 100%;
+    background: var(--pink);
+  }
+}
+
+.flight-plane {
+  position: absolute;
+  top: -10px;
+  left: 0;
+  font-size: 1.25rem;
+  color: var(--white);
+  animation: planeFly 4s linear infinite;
+}
+
+@keyframes planeFly {
+  0% {
+    left: 0;
+    transform: translateY(0);
+  }
+  25% {
+    transform: translateY(-5px);
+  }
+  50% {
+    transform: translateY(0);
+  }
+  75% {
+    transform: translateY(-5px);
+  }
+  100% {
+    left: calc(100% - 20px);
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design - Enhanced */
+@media (max-width: 1024px) {
+  .card-content {
+    grid-template-columns: 1fr;
+  }
+
+  .image-section {
+    order: -1;
+    min-height: 500px;
+  }
+
+  .image-title {
+    font-size: 2rem;
+  }
+
+  .image-description {
+    font-size: 1rem;
+  }
+
+  .flight-features {
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .registration-container {
+    padding: 0.5rem;
+  }
+
+  .form-section {
+    padding: 2rem 1.5rem;
+  }
+
+  .name-row {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .main-title {
+    font-size: 2rem;
+  }
+
+  .flight-features {
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+
+  .destinations-banner {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-section {
+    padding: 1.5rem 1rem;
+  }
+
+  .registration-card {
+    border-radius: 16px;
+  }
+
+  .form-input {
+    height: 48px;
+    font-size: 0.875rem;
+  }
+
+  .submit-btn {
+    height: 48px;
+  }
+
+  .flight-path {
+    width: 90%;
+  }
+
+  .feature-icon {
+    width: 45px;
+    height: 45px;
+  }
+
+  .feature-icon i {
+    font-size: 1.25rem;
+  }
+}
+
+/* Focus Visible for Accessibility */
+.submit-btn:focus-visible,
+.form-input:focus-visible,
+.password-toggle:focus-visible,
+.link:focus-visible {
+  outline: 2px solid var(--purple);
+  outline-offset: 2px;
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

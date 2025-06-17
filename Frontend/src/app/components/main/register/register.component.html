@@ -1,0 +1,299 @@
+<div class="registration-container">
+  <div class="registration-wrapper">
+    <div class="registration-card">
+      <div class="card-content">
+        <div class="form-section">
+          <div class="form-container">
+            <!-- Header Section -->
+            <div class="header-section">
+              <div class="icon-container">
+                <i class="fas fa-plane"></i>
+                <div class="icon-rings"></div>
+              </div>
+              <h1 class="main-title">Join <span class="gradient-text">SkyWings</span></h1>
+              <p class="subtitle">Start your journey with us - Book flights worldwide</p>
+            </div>
+
+            <!-- Registration Form -->
+            <form class="registration-form" (ngSubmit)="RegisterControl()" [formGroup]="formData">
+              
+              <!-- Name Fields Row -->
+              <div class="name-row">
+                <div class="form-field" [class.focused]="focusedField === 'firstName'" [class.error]="getFieldError('firstName')" [class.valid]="isFieldValid('firstName')">
+                  <label class="field-label">First Name</label>
+                  <div class="input-container">
+                    <i class="fas fa-user field-icon"></i>
+                    <input 
+                      type="text" 
+                      class="form-input" 
+                      formControlName="firstName"
+                      placeholder="Enter your first name"
+                      (focus)="onFieldFocus('firstName')"
+                      (blur)="onFieldBlur('firstName')"
+                      (input)="onFieldInput('firstName', $event)"
+                    />
+                    <div class="validation-icon">
+                      <i class="fas fa-check-circle valid-icon" *ngIf="isFieldValid('firstName')"></i>
+                      <i class="fas fa-exclamation-circle error-icon" *ngIf="getFieldError('firstName')"></i>
+                    </div>
+                  </div>
+                  <div class="error-message" *ngIf="getFieldError('firstName')">
+                    <i class="fas fa-exclamation-circle"></i>
+                    {{ getFieldError('firstName') }}
+                  </div>
+                </div>
+
+                <div class="form-field" [class.focused]="focusedField === 'lastName'" [class.error]="getFieldError('lastName')" [class.valid]="isFieldValid('lastName')">
+                  <label class="field-label">Last Name</label>
+                  <div class="input-container">
+                    <i class="fas fa-user field-icon"></i>
+                    <input 
+                      type="text" 
+                      class="form-input" 
+                      formControlName="lastName"
+                      placeholder="Enter your last name"
+                      (focus)="onFieldFocus('lastName')"
+                      (blur)="onFieldBlur('lastName')"
+                      (input)="onFieldInput('lastName', $event)"
+                    />
+                    <div class="validation-icon">
+                      <i class="fas fa-check-circle valid-icon" *ngIf="isFieldValid('lastName')"></i>
+                      <i class="fas fa-exclamation-circle error-icon" *ngIf="getFieldError('lastName')"></i>
+                    </div>
+                  </div>
+                  <div class="error-message" *ngIf="getFieldError('lastName')">
+                    <i class="fas fa-exclamation-circle"></i>
+                    {{ getFieldError('lastName') }}
+                  </div>
+                </div>
+              </div>
+
+              <!-- Username Field -->
+              <div class="form-field" [class.focused]="focusedField === 'username'" [class.error]="getFieldError('username')" [class.valid]="isFieldValid('username')">
+                <label class="field-label">Username</label>
+                <div class="input-container">
+                  <i class="fas fa-user field-icon"></i>
+                  <input 
+                    type="text" 
+                    class="form-input" 
+                    formControlName="username"
+                    placeholder="Enter your username"
+                    (focus)="onFieldFocus('username')"
+                    (blur)="onFieldBlur('username')"
+                    (input)="onFieldInput('username', $event)"
+                  />
+                  <div class="validation-icon">
+                    <i class="fas fa-check-circle valid-icon" *ngIf="isFieldValid('username')"></i>
+                    <i class="fas fa-exclamation-circle error-icon" *ngIf="getFieldError('username')"></i>
+                  </div>
+                </div>
+                <div class="error-message" *ngIf="getFieldError('username')">
+                  <i class="fas fa-exclamation-circle"></i>
+                  {{ getFieldError('username') }}
+                </div>
+              </div>
+
+              <!-- Email Field -->
+              <div class="form-field" [class.focused]="focusedField === 'email'" [class.error]="getFieldError('email')" [class.valid]="isFieldValid('email')">
+                <label class="field-label">Email Address</label>
+                <div class="input-container">
+                  <i class="fas fa-envelope field-icon"></i>
+                  <input 
+                    type="email" 
+                    class="form-input" 
+                    formControlName="email"
+                    placeholder="Enter your email address"
+                    (focus)="onFieldFocus('email')"
+                    (blur)="onFieldBlur('email')"
+                    (input)="onFieldInput('email', $event)"
+                  />
+                  <div class="validation-icon">
+                    <i class="fas fa-check-circle valid-icon" *ngIf="isFieldValid('email')"></i>
+                    <i class="fas fa-exclamation-circle error-icon" *ngIf="getFieldError('email')"></i>
+                  </div>
+                </div>
+                <div class="error-message" *ngIf="getFieldError('email')">
+                  <i class="fas fa-exclamation-circle"></i>
+                  {{ getFieldError('email') }}
+                </div>
+              </div>
+
+              <!-- Password Field -->
+              <div class="form-field" [class.focused]="focusedField === 'password'" [class.error]="getFieldError('password')" [class.valid]="isFieldValid('password')">
+                <label class="field-label">Password</label>
+                <div class="input-container">
+                  <i class="fas fa-lock field-icon"></i>
+                  <input 
+                    [type]="showPassword ? 'text' : 'password'" 
+                    class="form-input" 
+                    formControlName="password"
+                    placeholder="Enter your password"
+                    (focus)="onFieldFocus('password')"
+                    (blur)="onFieldBlur('password')"
+                    (input)="onFieldInput('password', $event)"
+                  />
+                  <button type="button" class="password-toggle" (click)="togglePassword()">
+                    <i class="fas" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword"></i>
+                  </button>
+                  <div class="validation-icon">
+                    <i class="fas fa-check-circle valid-icon" *ngIf="isFieldValid('password')"></i>
+                    <i class="fas fa-exclamation-circle error-icon" *ngIf="getFieldError('password')"></i>
+                  </div>
+                </div>
+                <div class="error-message" *ngIf="getFieldError('password')">
+                  <i class="fas fa-exclamation-circle"></i>
+                  {{ getFieldError('password') }}
+                </div>
+              </div>
+
+              <!-- Phone Field -->
+              <div class="form-field" [class.focused]="focusedField === 'phoneNumber'" [class.error]="getFieldError('phoneNumber')" [class.valid]="isFieldValid('phoneNumber')">
+                <label class="field-label">Phone Number</label>
+                <div class="input-container">
+                  <i class="fas fa-phone field-icon"></i>
+                  <input 
+                    type="tel" 
+                    class="form-input" 
+                    formControlName="phoneNumber"
+                    placeholder="Enter your phone number"
+                    (focus)="onFieldFocus('phoneNumber')"
+                    (blur)="onFieldBlur('phoneNumber')"
+                    (input)="onFieldInput('phoneNumber', $event)"
+                  />
+                  <div class="validation-icon">
+                    <i class="fas fa-check-circle valid-icon" *ngIf="isFieldValid('phoneNumber')"></i>
+                    <i class="fas fa-exclamation-circle error-icon" *ngIf="getFieldError('phoneNumber')"></i>
+                  </div>
+                </div>
+                <div class="error-message" *ngIf="getFieldError('phoneNumber')">
+                  <i class="fas fa-exclamation-circle"></i>
+                  {{ getFieldError('phoneNumber') }}
+                </div>
+              </div>
+
+              <!-- Submit Button -->
+              <div class="submit-container">
+                <button 
+                  type="submit" 
+                  class="submit-btn" 
+                  [disabled]="formData.invalid || isLoading"
+                  [class.loading]="isLoading"
+                >
+                  <span class="btn-content" *ngIf="!isLoading">
+                    <span>Create Account</span>
+                    <i class="fas fa-plane-departure"></i>
+                  </span>
+                  <span class="btn-content loading-content" *ngIf="isLoading">
+                    <div class="spinner"></div>
+                    <span>Creating Account...</span>
+                  </span>
+                </button>
+              </div>
+
+              <!-- Login Link -->
+              <div class="login-link">
+                <p>Already have an account? <a href="/login" class="link">Sign in</a></p>
+              </div>
+
+            </form>
+          </div>
+        </div>
+
+        <!-- Flight-themed Image Section -->
+        <div class="image-section">
+          <div class="image-overlay"></div>
+          
+          <!-- Decorative Elements -->
+          <div class="decorative-elements">
+            <div class="circle circle-1"></div>
+            <div class="circle circle-2"></div>
+            <div class="circle circle-3"></div>
+            <div class="line line-1"></div>
+            <div class="line line-2"></div>
+          </div>
+          
+          <div class="flight-background">
+            <!-- Animated clouds -->
+            <div class="cloud cloud-1"></div>
+            <div class="cloud cloud-2"></div>
+            <div class="cloud cloud-3"></div>
+            
+            <!-- Flying planes animation -->
+            <div class="flying-plane plane-1">
+              <i class="fas fa-plane"></i>
+            </div>
+            <div class="flying-plane plane-2">
+              <i class="fas fa-paper-plane"></i>
+            </div>
+          </div>
+          
+          <div class="image-content">
+            <div class="floating-image">
+              <!-- Flight destinations -->
+              <div class="destinations-banner">
+                <div class="destination">
+                  <i class="fas fa-map-marker-alt"></i>
+                  <span>New York</span>
+                </div>
+                <div class="destination">
+                  <i class="fas fa-map-marker-alt"></i>
+                  <span>London</span>
+                </div>
+                <div class="destination">
+                  <i class="fas fa-map-marker-alt"></i>
+                  <span>Tokyo</span>
+                </div>
+                <div class="destination">
+                  <i class="fas fa-map-marker-alt"></i>
+                  <span>Paris</span>
+                </div>
+              </div>
+            </div>
+            
+            <h2 class="image-title">Welcome to <span class="highlight-text">SkyWings</span></h2>
+            <p class="image-description">
+              Your gateway to the world. Book flights to over 1000+ destinations worldwide with the best prices and premium service.
+            </p>
+            
+            <!-- Flight features -->
+            <div class="flight-features">
+              <div class="feature-item">
+                <div class="feature-icon">
+                  <i class="fas fa-shield-alt"></i>
+                </div>
+                <span>Secure Booking</span>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon">
+                  <i class="fas fa-headset"></i>
+                </div>
+                <span>24/7 Support</span>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon">
+                  <i class="fas fa-tags"></i>
+                </div>
+                <span>Best Prices</span>
+              </div>
+            </div>
+            
+            <!-- Animated flight path -->
+            <div class="flight-path-container">
+              <div class="flight-path">
+                <div class="flight-dot start-dot"></div>
+                <div class="flight-dot middle-dot-1"></div>
+                <div class="flight-dot middle-dot-2"></div>
+                <div class="flight-dot end-dot"></div>
+                <div class="flight-line"></div>
+                <div class="flight-plane">
+                  <i class="fas fa-plane"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

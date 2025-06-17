@@ -1,0 +1,289 @@
+<div class="contact-page">
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-background">
+      <img src="https://images.unsplash.com/photo-1723873293244-ffb3d3eb9b46?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8QWlyUmVzZXJ2ZSUyMFRlYW0lMjBmbGlnaHR8ZW58MHx8MHx8fDA%3D" alt="Contact AirReserve" class="hero-image">
+      <div class="hero-overlay"></div>
+    </div>
+    <div class="hero-content">
+      <div class="container">
+        <div class="hero-text">
+          <h1 class="hero-title">Get in Touch</h1>
+          <p class="hero-description">
+            We're here to help make your travel dreams come true. Reach out to our 
+            dedicated team for personalized assistance and support.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Form Section -->
+  <section class="contact-form-section">
+    <div class="container">
+      <div class="contact-grid">
+        <!-- Contact Form -->
+        <div class="form-container">
+          <div class="form-header">
+            <h2 class="form-title">Send us a Message</h2>
+            <p class="form-subtitle">
+              Fill out the form below and we'll get back to you within 24 hours.
+            </p>
+          </div>
+          
+          <form class="contact-form" (ngSubmit)="onSubmit()" #contactForm="ngForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="firstName" class="form-label">First Name</label>
+                <input 
+                  type="text" 
+                  id="firstName" 
+                  name="firstName"
+                  class="form-input"
+                  [(ngModel)]="formData.firstName"
+                  required
+                  #firstName="ngModel">
+                <div class="form-error" *ngIf="firstName.invalid && firstName.touched">
+                  First name is required
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="lastName" class="form-label">Last Name</label>
+                <input 
+                  type="text" 
+                  id="lastName" 
+                  name="lastName"
+                  class="form-input"
+                  [(ngModel)]="formData.lastName"
+                  required
+                  #lastName="ngModel">
+                <div class="form-error" *ngIf="lastName.invalid && lastName.touched">
+                  Last name is required
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="email" class="form-label">Email Address</label>
+              <input 
+                type="email" 
+                id="email" 
+                name="email"
+                class="form-input"
+                [(ngModel)]="formData.email"
+                required
+                email
+                #email="ngModel">
+              <div class="form-error" *ngIf="email.invalid && email.touched">
+                <span *ngIf="email.errors?.['required']">Email is required</span>
+                <span *ngIf="email.errors?.['email']">Please enter a valid email</span>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="phone" class="form-label">Phone Number</label>
+              <input 
+                type="tel" 
+                id="phone" 
+                name="phone"
+                class="form-input"
+                [(ngModel)]="formData.phone"
+                placeholder="+1 (555) 123-4567">
+            </div>
+            
+            <div class="form-group">
+              <label for="subject" class="form-label">Subject</label>
+              <select 
+                id="subject" 
+                name="subject"
+                class="form-select"
+                [(ngModel)]="formData.subject"
+                required
+                #subject="ngModel">
+                <option value="">Select a subject</option>
+                <option value="booking">Booking Assistance</option>
+                <option value="support">Customer Support</option>
+                <option value="feedback">Feedback</option>
+                <option value="partnership">Partnership Inquiry</option>
+                <option value="other">Other</option>
+              </select>
+              <div class="form-error" *ngIf="subject.invalid && subject.touched">
+                Please select a subject
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="message" class="form-label">Message</label>
+              <textarea 
+                id="message" 
+                name="message"
+                class="form-textarea"
+                rows="6"
+                [(ngModel)]="formData.message"
+                required
+                #message="ngModel"
+                placeholder="Tell us how we can help you..."></textarea>
+              <div class="form-error" *ngIf="message.invalid && message.touched">
+                Message is required
+              </div>
+            </div>
+            
+            <button 
+              type="submit" 
+              class="submit-btn"
+              [disabled]="contactForm.invalid || isSubmitting"
+              [class.loading]="isSubmitting">
+              <span *ngIf="!isSubmitting" class="btn-content">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <polygon points="22,2 15,22 11,13 2,9 22,2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Send Message
+              </span>
+              <span *ngIf="isSubmitting" class="btn-loading">
+                <div class="spinner"></div>
+                Sending...
+              </span>
+            </button>
+          </form>
+        </div>
+        
+        <!-- Contact Information -->
+        <div class="contact-info">
+          <div class="info-card">
+            <h3 class="info-title">Contact Information</h3>
+            <p class="info-subtitle">
+              Get in touch with us through any of these channels
+            </p>
+            
+            <div class="contact-methods">
+              <div class="contact-method">
+                <div class="method-icon">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 4H20C21.1 4 22 4.9 22 6V18C22 19.1 21.1 20 20 20H4C2.9 20 2 19.1 2 18V6C2 4.9 2.9 4 4 4Z" stroke="currentColor" stroke-width="2"/>
+                    <polyline points="22,6 12,13 2,6" stroke="currentColor" stroke-width="2"/>
+                  </svg>
+                </div>
+                <div class="method-content">
+                  <h4 class="method-title">Email</h4>
+                  <p class="method-text">support&#64;airreserve.com</p>
+                  <p class="method-note">We respond within 24 hours</p>
+                </div>
+              </div>
+              
+              <div class="contact-method">
+                <div class="method-icon">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M22 16.92V19.92C22 20.52 21.52 21 20.92 21C9.4 21 0 11.6 0 0.08C0 -0.52 0.48 -1 1.08 -1H4.08C4.68 -1 5.16 -0.52 5.16 0.08C5.16 2.08 5.56 4.04 6.32 5.84C6.48 6.24 6.36 6.68 6.04 6.96L4.84 8.16C6.28 11.36 8.64 13.72 11.84 15.16L13.04 13.96C13.32 13.64 13.76 13.52 14.16 13.68C15.96 14.44 17.92 14.84 19.92 14.84C20.52 14.84 21 15.32 21 15.92V18.92Z" stroke="currentColor" stroke-width="2"/>
+                  </svg>
+                </div>
+                <div class="method-content">
+                  <h4 class="method-title">Phone</h4>
+                  <p class="method-text">+1 (555) 123-4567</p>
+                  <p class="method-note">Available 24/7</p>
+                </div>
+              </div>
+              
+              <div class="contact-method">
+                <div class="method-icon">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 10C21 17 12 23 12 23S3 17 3 10C3 7.61305 3.94821 5.32387 5.63604 3.63604C7.32387 1.94821 9.61305 1 12 1C14.3869 1 16.6761 1.94821 18.3639 3.63604C20.0518 5.32387 21 7.61305 21 10Z" stroke="currentColor" stroke-width="2"/>
+                    <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2"/>
+                  </svg>
+                </div>
+                <div class="method-content">
+                  <h4 class="method-title">Office</h4>
+                  <p class="method-text">123 Travel Street<br>New York, NY 10001</p>
+                  <p class="method-note">Mon-Fri 9AM-6PM EST</p>
+                </div>
+              </div>
+              
+              <div class="contact-method">
+                <div class="method-icon">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 11.5C21.0034 12.8199 20.6951 14.1219 20.1 15.3C19.3944 16.7118 18.3098 17.8992 16.9674 18.7293C15.6251 19.5594 14.0782 19.9994 12.5 20C11.1801 20.0035 9.87812 19.6951 8.7 19.1L3 21L4.9 15.3C4.30493 14.1219 3.99656 12.8199 4 11.5C4.00061 9.92179 4.44061 8.37488 5.27072 7.03258C6.10083 5.69028 7.28825 4.60557 8.7 3.90003C9.87812 3.30496 11.1801 2.99659 12.5 3.00003H13C15.0843 3.11502 17.053 3.99479 18.5291 5.47089C20.0052 6.94699 20.885 8.91568 21 11V11.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="method-content">
+                  <h4 class="method-title">Live Chat</h4>
+                  <p class="method-text">Chat with our support team</p>
+                  <button class="chat-btn" (click)="startLiveChat()">Start Chat</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- FAQ Section -->
+          <div class="faq-section">
+            <h3 class="faq-title">Frequently Asked Questions</h3>
+            <div class="faq-list">
+              <div class="faq-item" *ngFor="let faq of faqs; let i = index">
+                <button 
+                  class="faq-question"
+                  (click)="toggleFaq(i)"
+                  [class.active]="faq.isOpen">
+                  <span>{{ faq.question }}</span>
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+                <div class="faq-answer" [class.open]="faq.isOpen">
+                  <p>{{ faq.answer }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Map Section -->
+  <!-- <section class="map-section">
+    <div class="container">
+      <div class="map-header">
+        <h2 class="map-title">Visit Our Office</h2>
+        <p class="map-subtitle">
+          Drop by our headquarters for in-person assistance
+        </p>
+      </div>
+      
+      <div class="map-container">
+        <div class="map-placeholder">
+          <div class="map-content">
+            <div class="map-icon">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M21 10C21 17 12 23 12 23S3 17 3 10C3 7.61305 3.94821 5.32387 5.63604 3.63604C7.32387 1.94821 9.61305 1 12 1C14.3869 1 16.6761 1.94821 18.3639 3.63604C20.0518 5.32387 21 7.61305 21 10Z" stroke="currentColor" stroke-width="2"/>
+                <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2"/>
+              </svg>
+            </div>
+            <h3>AirReserve Headquarters</h3>
+            <p>123 Travel Street, New York, NY 10001</p>
+            <button class="directions-btn" (click)="getDirections()">
+              Get Directions
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section> -->
+
+  <!-- Success Message -->
+  <div class="success-overlay" [class.show]="showSuccessMessage" (click)="closeSuccessMessage()">
+    <div class="success-modal" (click)="$event.stopPropagation()">
+      <div class="success-icon">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h3 class="success-title">Message Sent Successfully!</h3>
+      <p class="success-text">
+        Thank you for contacting us. We'll get back to you within 24 hours.
+      </p>
+      <button class="success-btn" (click)="closeSuccessMessage()">
+        Close
+      </button>
+    </div>
+  </div>
+</div>

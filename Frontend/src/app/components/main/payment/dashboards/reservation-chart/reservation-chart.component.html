@@ -1,0 +1,30 @@
+<!-- <div style="width: 80%; margin: auto;">
+  <canvas baseChart
+    [datasets]="barChartData.datasets"
+    [labels]="barChartData.labels"
+    [options]="barChartOptions"
+    [type]="barChartType">
+  </canvas>
+</div> -->
+
+
+<!-- <div *ngFor="let flightChart of flightCharts" style="width: 80%; margin: auto; margin-bottom: 20px;">
+  <h3>{{ flightChart.flightNumber }}</h3>
+  <canvas baseChart
+    [datasets]="flightChart.chartData.datasets"
+    [labels]="flightChart.chartData.labels"
+    [options]="barChartOptions"
+    [type]="barChartType">
+  </canvas>
+</div> -->
+
+
+<div *ngFor="let flightChart of flightCharts" class="chart-container">
+  <h3>{{ flightChart.flightNumber }}</h3>
+  <canvas baseChart
+    [datasets]="flightChart.chartData.datasets"
+    [labels]="flightChart.chartData.labels"
+    [options]="barChartOptions"
+    [type]="barChartType">
+  </canvas>
+</div>

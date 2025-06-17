@@ -1,0 +1,79 @@
+
+
+<main class="container mt-4">
+  <form [formGroup]="addFlightForm" (ngSubmit)="onSubmit()" class="p-4 border rounded bg-light">
+    
+    <div class="mb-3">
+      <label for="flightNumber" class="form-label">Flight Number</label>
+      <input type="text" class="form-control" id="flightNumber" formControlName="flightNumber" placeholder="Enter Flight Number">
+    </div>
+
+
+    <div class="mb-3">
+      <label for="airlineName" class="form-label">Airline Name</label>
+      <input type="text" class="form-control" id="airline" formControlName="airline" placeholder="Enter Airline Name">
+    </div>
+
+    <div class="mb-3">
+      <label for="departureCity" class="form-label">Departure </label>
+      <input type="text" class="form-control" id="departureCity" formControlName="origin" placeholder="Enter Departure City">
+    </div>
+
+    <div class="mb-3">
+      <label for="arrivalCity" class="form-label">Arrival</label>
+      <input type="text" class="form-control" id="arrivalCity" formControlName="destination" placeholder="Enter Arrival City">
+    </div>
+
+    <div class="mb-3">
+      <label for="departureTime" class="form-label">Departure Date</label>
+      <input type="datetime-local" class="form-control" id="departureTime" formControlName="departureDateTime">
+    </div>
+
+    <div class="mb-3">
+      <label for="arrivalTime" class="form-label">Arrival Date</label>
+      <input type="datetime-local" class="form-control" id="arrivalTime" formControlName="arrivalDateTime">
+    </div>
+
+    <div class="mb-3">
+      <label for="totalBusinessSeats" class="form-label">Total Business Seats</label>
+      <input type="number" class="form-control" id="totalBusinessSeats" formControlName="availableBusinessSeats">
+    </div>
+
+    <div class="mb-3">
+      <label for="totalEconomySeats" class="form-label">Total Economy Seats</label>
+      <input type="number" class="form-control" id="totalEconomySeats" formControlName="availableEconomySeats">
+    </div>
+
+    <div class="mb-3">
+      <label for="businessClassPrice" class="form-label">Business Class Price</label>
+      <input type="number" class="form-control" id="businessClassPrice" formControlName="businessPrice">
+    </div>
+
+    <div class="mb-3">
+      <label for="economyClassPrice" class="form-label">Economy Class Price</label>
+      <input type="number" class="form-control" id="economyClassPrice" formControlName="economyPrice">
+    </div>
+
+      <div class="mb-3">
+      <label for="economyClassPrice" class="form-label">Aircraft</label>
+      <input type="text" class="form-control" id="aircraft" formControlName="aircraft">
+    </div>
+
+    <div class="mb-3">
+      <label for="status" class="form-label">Status</label>
+      <select class="form-control" id="status" formControlName="status">
+    <option *ngFor="let key of statusKeys()" [value]="key">
+      {{ statusMapping[key] }}
+    </option>
+  </select>
+
+    </div>
+
+    
+    <button type="submit" class="btn btn-primary w-100">Add Flight</button>
+
+  </form>
+</main>
+
+
+

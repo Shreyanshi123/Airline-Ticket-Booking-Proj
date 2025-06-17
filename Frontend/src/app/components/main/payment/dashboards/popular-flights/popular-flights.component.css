@@ -1,0 +1,44 @@
+.table-container {
+  max-width: 500px;
+  margin: 30px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  text-align: center;
+  font-size: 24px;
+  color: #2c3e50;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 2px solid #ddd;
+}
+
+th {
+  background: #3498db;
+  color: #fff;
+}
+
+tr:hover {
+  background: #f4f4f4;
+}
+
+ngx-charts-bar-vertical {
+  display: block;
+  width: 30%;
+  height: 200px; /* ✅ Controlled height */
+  margin-top: 20px;
+}
+
+

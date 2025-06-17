@@ -1,0 +1,91 @@
+<!-- <h3>📈 User Analytics Dashboard</h3>
+ 
+<h5>Recent Users</h5>
+<table class="table">
+<thead>
+<tr><th>ID</th><th>Name</th><th>Email</th><th>Role</th><th>Reservations</th><th>Last Login</th></tr>
+</thead>
+<tbody>
+<tr *ngFor="let user of recentUsers">
+<td>{{user.id}}</td>
+<td>{{user.firstName}} {{user.lastName}}</td>
+<td>{{user.email}}</td>
+<td>{{user.role === 1 ? 'Admin' : 'User'}}</td>
+<td>{{user.reservationCount}}</td>
+<td>{{user.lastLoginDate | date:'short'}}</td>
+</tr>
+</tbody>
+</table>
+ 
+<h5>Sign Up Trends</h5>
+<ngx-charts-bar-vertical
+  [results]="userSignupData"
+  [xAxis]="true" [yAxis]="true"
+  [legend]="false" [showDataLabel]="true"
+  [gradient]="true" [animations]="true">
+</ngx-charts-bar-vertical>
+ 
+<h5>Role Distribution</h5>
+<ngx-charts-pie-chart
+  [results]="roleDistribution"
+  [legend]="true" [labels]="true">
+</ngx-charts-pie-chart>
+ 
+<h5>Active Users Today</h5>
+<ngx-charts-pie-chart
+  [results]="activeUserData"
+  [legend]="true" [labels]="true">
+</ngx-charts-pie-chart> -->
+
+
+<h3>📈 User Analytics Dashboard</h3>
+
+<h5>Recent Users</h5>
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Role</th>
+      <th>Reservations</th>
+      <th>Last Login</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of recentUsers">
+      <td>{{ user.id }}</td>
+      <td>{{ user.firstName }} {{ user.lastName }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ user.role === 1 ? 'Admin' : 'User' }}</td>
+      <td>{{ user.reservationCount }}</td>
+      <td>{{ user.lastLoginDate | date:'short' }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Sign Up Trends</h5>
+<div class="chart-container">
+  <ngx-charts-bar-vertical
+    [results]="userSignupData"
+    [xAxis]="true" [yAxis]="true"
+    [legend]="false" [showDataLabel]="true"
+    [gradient]="true" [animations]="true">
+  </ngx-charts-bar-vertical>
+</div>
+
+<h5>Role Distribution</h5>
+<div class="chart-container">
+  <ngx-charts-pie-chart
+    [results]="roleDistribution"
+    [legend]="true" [labels]="true">
+  </ngx-charts-pie-chart>
+</div>
+
+<h5>Active Users Today</h5>
+<div class="chart-container">
+  <ngx-charts-pie-chart
+    [results]="activeUserData"
+    [legend]="true" [labels]="true">
+  </ngx-charts-pie-chart>
+</div>

@@ -1,0 +1,35 @@
+<div class="container mt-4">
+<h2>User Management Dashboard</h2>
+ 
+  <div *ngIf="loading" class="alert alert-info">Loading users...</div>
+<div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+ 
+  <table class="table table-bordered table-striped" *ngIf="users.length > 0">
+<thead>
+<tr>
+<th>#</th>
+<th>Name</th>
+<th>Email</th>
+<th>Role</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr *ngFor="let user of users; let i = index">
+<td>{{ i + 1 }}</td>
+<td>{{ user.firstName}} {{user.lastName}}</td>
+<td>{{ user.email }}</td>
+<td>{{ user.role ===0 ?  'User':'Admin'}}</td>
+<td>
+<button class="btn btn-danger btn-sm" (click)="deleteUser(user.id)">
+            Delete
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+ 
+  <div *ngIf="users.length === 0 && !loading" class="alert alert-warning">
+    No users found.
+</div>
+</div>

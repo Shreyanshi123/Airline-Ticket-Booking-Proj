@@ -1,0 +1,85 @@
+<h2 class="mb-4">Admin Analytics Dashboard</h2>
+ 
+<div class="row">
+<div class="col-md-6 mb-4">
+<h4>Daily Sales</h4>
+<ngx-charts-bar-vertical
+
+      [results]="dailySalesData"
+
+      [xAxis]="true"
+
+      [yAxis]="true"
+
+      [showXAxisLabel]="true"
+
+      [showYAxisLabel]="true"
+
+      xAxisLabel="Date"
+
+      yAxisLabel="Total Amount">
+</ngx-charts-bar-vertical>
+</div>
+ 
+  <div class="col-md-6 mb-4">
+<h4>Booking Trends</h4>
+<ngx-charts-line-chart
+
+      [results]="bookingTrendsData"
+
+      [xAxis]="true"
+
+      [yAxis]="true"
+
+      [showXAxisLabel]="true"
+
+      [showYAxisLabel]="true"
+
+      xAxisLabel="Date"
+
+      yAxisLabel="Bookings">
+</ngx-charts-line-chart>
+</div>
+ 
+  <div class="col-md-6 mb-4">
+<h4>Revenue Trends</h4>
+<ngx-charts-line-chart
+
+      [results]="revenueTrendsData"
+
+      [xAxis]="true"
+
+      [yAxis]="true"
+
+      [showXAxisLabel]="true"
+
+      [showYAxisLabel]="true"
+
+      xAxisLabel="Date"
+
+      yAxisLabel="Revenue">
+</ngx-charts-line-chart>
+</div>
+ 
+  <div class="col-md-6 mb-4">
+<h4>Cancellations</h4>
+<ngx-charts-bar-vertical
+
+      [results]="cancellationsData"
+
+      [xAxis]="true"
+
+      [yAxis]="true"
+
+      [showXAxisLabel]="true"
+
+      [showYAxisLabel]="true"
+
+      xAxisLabel="Date"
+
+      yAxisLabel="Cancellations">
+</ngx-charts-bar-vertical>
+</div>
+</div>
+
+ 

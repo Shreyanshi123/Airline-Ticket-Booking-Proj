@@ -1,0 +1,46 @@
+<!-- <nav class="sidebar">
+  <ul>
+    <li *ngFor="let item of menuItems">
+      <a [routerLink]="item.route">
+        <span>{{ item.icon }}</span> {{ item.name }}
+      </a>
+    </li>
+  </ul>
+</nav> -->
+
+
+<nav class="sidebar">
+<div class="sidebar-header">
+<div class="logo">
+<span class="logo-icon">✈️</span>
+<h2 class="logo-text">FlightAdmin</h2>
+</div>
+<button class="sidebar-toggle" aria-label="Toggle sidebar">
+<span class="hamburger"></span>
+</button>
+</div>
+<div class="sidebar-content">
+<ul class="menu-list">
+<li *ngFor="let item of menuItems" class="menu-item">
+<a [routerLink]="item.route" routerLinkActive="active" class="menu-link">
+<span class="menu-icon">{{ item.icon }}</span>
+<span class="menu-text">{{ item.name }}</span>
+<span class="menu-arrow">→</span>
+</a>
+</li>
+</ul>
+</div>
+<div class="sidebar-footer">
+<div class="user-profile">
+<div class="avatar">👤</div>
+<div class="user-info">
+<span class="user-name">{{adminName}}</span>
+<span class="user-role">Administrator</span>
+</div>
+</div>
+
+ <!-- Logout Button -->
+    <button class="logout-btn" (click)="logout()">🚪 Logout</button>
+</div>
+</nav>
+ 

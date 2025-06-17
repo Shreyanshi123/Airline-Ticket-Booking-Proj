@@ -1,0 +1,86 @@
+ <!-- <header class="section__container header__container">
+    <h1 class="section__header">Find And Book<br />A Great Experience</h1>
+    <img src="../../../assets/images/header.jpg" alt="header" />
+  </header>
+<div class="dashboard-container">
+  <h2>📊 Admin Dashboard</h2>
+
+  <div class="dashboard-summary">
+    <div class="dashboard-card">
+      <h3>🛫 Reservations Today</h3>
+      <p>{{ totalReservations }}</p>
+    </div>
+
+    <div class="dashboard-card">
+      <h3>💰 Revenue Today</h3>
+      <p>{{ totalRevenue | currency }}</p>
+    </div>
+
+    <div class="dashboard-card">
+      <h3>👥 Active Users</h3>
+      <p>{{ activeUsers }}</p>
+    </div>
+  </div>
+
+  <h3>🔥 Popular Flight Routes</h3>
+  <ul class="popular-routes">
+    <li *ngFor="let route of popularRoutes">
+      {{ route.origin }} → {{ route.destination }} ({{ route.count }} bookings)
+    </li>
+  </ul>
+
+  <h3>🔗 Quick Links</h3>
+  <div class="quick-links">
+    <a routerLink="/dashboard/dashboard/schedule">✈️ Flight Schedule</a>
+    <a routerLink="/dashboard/users">👥 User Management</a>
+    <a routerLink="/dashboard/admin-analytics">📊 View Analytics</a>
+  </div>
+</div>
+  -->
+
+
+<header class="dashboard-header">
+  <div class="header-content">
+    <h1>Admin Control Panel</h1>
+    <p>Monitor reservations, flights, and analytics effortlessly.</p>
+    <button class="cta-button">📊 View Reports</button>
+  </div>
+</header>
+
+<div class="dashboard-container">
+  <h2>📈 Overview</h2>
+
+  <div class="dashboard-summary">
+    <div class="dashboard-card">
+      <h3>🛫 Reservations Today</h3>
+      <p class="stats">{{ totalReservations }}</p>
+    </div>
+
+    <div class="dashboard-card">
+      <h3>💰 Revenue Today</h3>
+      <p class="stats">{{ totalRevenue | currency }}</p>
+    </div>
+
+    <div class="dashboard-card">
+      <h3>👥 Active Users</h3>
+      <p class="stats">{{ activeUsers }}</p>
+    </div>
+  </div>
+
+  <h3>🔥 Popular Flight Routes</h3>
+  <div class="popular-routes-container">
+    <ul class="popular-routes">
+      <li *ngFor="let route of popularRoutes">
+        <span class="route">✈️ {{ route.origin }} → {{ route.destination }}</span>
+        <span class="bookings">📌 {{ route.count }} bookings</span>
+      </li>
+    </ul>
+  </div>
+
+  <h3>🔗 Quick Actions</h3>
+  <div class="quick-links">
+    <a routerLink="/dashboard/dashboard/schedule" class="link-button">✈️ Flight Schedule</a>
+    <a routerLink="/dashboard/users" class="link-button">👥 User Management</a>
+    <a routerLink="/dashboard/admin-analytics" class="link-button">📊 View Analytics</a>
+  </div>
+</div>

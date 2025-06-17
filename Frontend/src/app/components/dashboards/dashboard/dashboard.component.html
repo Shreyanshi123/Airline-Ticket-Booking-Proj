@@ -1,0 +1,241 @@
+ <!-- <header class="section__container header__container">
+    <h1 class="section__header">Find And Book<br />A Great Experience</h1>
+    <img src="../../../assets/images/header.jpg" alt="header" />
+  </header>
+<div class="dashboard-container">
+  <h2>📊 Admin Dashboard</h2>
+
+  <div class="dashboard-summary">
+    <div class="dashboard-card">
+      <h3>🛫 Reservations Today</h3>
+      <p>{{ totalReservations }}</p>
+    </div>
+
+    <div class="dashboard-card">
+      <h3>💰 Revenue Today</h3>
+      <p>{{ totalRevenue | currency }}</p>
+    </div>
+
+    <div class="dashboard-card">
+      <h3>👥 Active Users</h3>
+      <p>{{ activeUsers }}</p>
+    </div>
+  </div>
+
+  <h3>🔥 Popular Flight Routes</h3>
+  <ul class="popular-routes">
+    <li *ngFor="let route of popularRoutes">
+      {{ route.origin }} → {{ route.destination }} ({{ route.count }} bookings)
+    </li>
+  </ul>
+
+  <h3>🔗 Quick Links</h3>
+  <div class="quick-links">
+    <a routerLink="/dashboard/dashboard/schedule">✈️ Flight Schedule</a>
+    <a routerLink="/dashboard/users">👥 User Management</a>
+    <a routerLink="/dashboard/admin-analytics">📊 View Analytics</a>
+  </div>
+</div>
+  -->
+
+<!-- 
+<header class="dashboard-header">
+  <div class="header-content">
+    <h1>Admin Control Panel</h1>
+    <p>Monitor reservations, flights, and analytics effortlessly.</p>
+    <button class="cta-button">📊 View Reports</button>
+  </div>
+</header>
+
+<div class="dashboard-container">
+  <h2>📈 Overview</h2>
+
+  <div class="dashboard-summary">
+    <div class="dashboard-card">
+      <h3>🛫 Reservations Today</h3>
+      <p class="stats">{{ totalReservations }}</p>
+    </div>
+
+    <div class="dashboard-card">
+      <h3>💰 Revenue Today</h3>
+      <p class="stats">{{ totalRevenue | currency }}</p>
+    </div>
+
+    <div class="dashboard-card">
+      <h3>👥 Active Users</h3>
+      <p class="stats">{{ activeUsers }}</p>
+    </div>
+  </div>
+
+  <h3>🔥 Popular Flight Routes</h3>
+  <div class="popular-routes-container">
+    <ul class="popular-routes">
+      <li *ngFor="let route of popularRoutes">
+        <span class="route">✈️ {{ route.origin }} → {{ route.destination }}</span>
+        <span class="bookings">📌 {{ route.count }} bookings</span>
+      </li>
+    </ul>
+  </div>
+
+  <h3>🔗 Quick Actions</h3>
+  <div class="quick-links">
+    <a routerLink="/dashboard/dashboard/schedule" class="link-button">✈️ Flight Schedule</a>
+    <a routerLink="/dashboard/users" class="link-button">👥 User Management</a>
+    <a routerLink="/dashboard/admin-analytics" class="link-button">📊 View Analytics</a>
+  </div>
+</div> -->
+
+
+<div class="dashboard-wrapper">
+<!-- Header Section -->
+<header class="dashboard-header">
+<div class="header-content">
+<div class="header-icon">✈️</div>
+<h1>Admin Control Panel</h1>
+<p>Monitor reservations, flights, and analytics effortlessly</p>
+<div class="header-actions">
+<button class="cta-button primary" (click)="refreshData()">
+<span class="button-icon">🔄</span>
+
+          Refresh Data
+</button>
+<button class="cta-button secondary" routerLink="/dashboard/admin-analytics">
+<span class="button-icon">📊</span>
+
+          View Reports
+</button>
+</div>
+</div>
+</header>
+ 
+  <!-- Main Dashboard Content -->
+<div class="dashboard-container">
+<!-- Overview Section -->
+<section class="overview-section">
+<h2 class="section-title">
+<span class="title-icon">📈</span>
+
+        Today's Overview
+</h2>
+ 
+      <div class="dashboard-summary" [class.loading]="isLoading">
+<div class="dashboard-card reservations">
+<div class="card-header">
+<span class="card-icon">🛫</span>
+<h3>Reservations Today</h3>
+</div>
+<div class="card-content">
+<p class="stats" *ngIf="!isLoading">{{ totalReservations }}</p>
+<div class="loading-skeleton" *ngIf="isLoading"></div>
+</div>
+<div class="card-trend positive">+12% from yesterday</div>
+</div>
+ 
+        <div class="dashboard-card revenue">
+<div class="card-header">
+<span class="card-icon">💰</span>
+<h3>Revenue Today</h3>
+</div>
+<div class="card-content">
+<p class="stats" *ngIf="!isLoading">{{ totalRevenue | currency }}</p>
+<div class="loading-skeleton" *ngIf="isLoading"></div>
+</div>
+<div class="card-trend positive">+8% from yesterday</div>
+</div>
+ 
+        <div class="dashboard-card users">
+<div class="card-header">
+<span class="card-icon">👥</span>
+<h3>Active Users</h3>
+</div>
+<div class="card-content">
+<p class="stats" *ngIf="!isLoading">{{ activeUsers }}</p>
+<div class="loading-skeleton" *ngIf="isLoading"></div>
+</div>
+<div class="card-trend positive">+5% from yesterday</div>
+</div>
+</div>
+</section>
+ 
+    <!-- Popular Routes Section -->
+<section class="routes-section">
+<h3 class="section-title">
+<span class="title-icon">🔥</span>
+
+        Popular Flight Routes
+</h3>
+ 
+      <div class="popular-routes-container">
+<div class="routes-grid" *ngIf="!isLoading">
+<div class="route-card" *ngFor="let route of popularRoutes; let i = index">
+<div class="route-rank">#{{ i + 1 }}</div>
+<div class="route-info">
+<div class="route-path">
+<span class="origin">{{ route.origin }}</span>
+<span class="arrow">✈️</span>
+<span class="destination">{{ route.destination }}</span>
+</div>
+<div class="route-stats">
+<span class="bookings">{{ route.count }} bookings</span>
+<span class="percentage">{{ ((route.count / popularRoutes[0].count) * 100).toFixed(0) }}%</span>
+</div>
+</div>
+</div>
+</div>
+ 
+        <div class="loading-routes" *ngIf="isLoading">
+<div class="route-skeleton" *ngFor="let item of [1,2,3]"></div>
+</div>
+</div>
+</section>
+ 
+    <!-- Quick Actions Section -->
+<section class="actions-section">
+<h3 class="section-title">
+<span class="title-icon">⚡</span>
+
+        Quick Actions
+</h3>
+ 
+      <div class="quick-actions-grid">
+<a routerLink="/dashboard/dashboard/schedule" class="action-card">
+<div class="action-icon">✈️</div>
+<div class="action-content">
+<h4>Flight Schedule</h4>
+<p>Manage flight schedules and availability</p>
+</div>
+<div class="action-arrow">→</div>
+</a>
+ 
+        <a routerLink="/dashboard/users" class="action-card">
+<div class="action-icon">👥</div>
+<div class="action-content">
+<h4>User Management</h4>
+<p>View and manage user accounts</p>
+</div>
+<div class="action-arrow">→</div>
+</a>
+ 
+        <a routerLink="/dashboard/admin-analytics" class="action-card">
+<div class="action-icon">📊</div>
+<div class="action-content">
+<h4>Analytics Dashboard</h4>
+<p>Detailed insights and reports</p>
+</div>
+<div class="action-arrow">→</div>
+</a>
+ 
+        <a routerLink="/dashboard/settings" class="action-card">
+<div class="action-icon">⚙️</div>
+<div class="action-content">
+<h4>System Settings</h4>
+<p>Configure system preferences</p>
+</div>
+<div class="action-arrow">→</div>
+</a>
+</div>
+</section>
+</div>
+</div>
+
+ 

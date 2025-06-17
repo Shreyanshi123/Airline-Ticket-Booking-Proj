@@ -1,0 +1,423 @@
+<div class="confirmation-container">
+  <!-- Loading State -->
+  <div class="loading-screen" *ngIf="isLoading">
+    <div class="loading-animation">
+      <div class="plane-loader">
+        <i class="fas fa-plane"></i>
+      </div>
+      <div class="loading-text">Loading your booking details...</div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" [class]="'toast-' + toastType" *ngIf="showToast">
+    <div class="toast-content">
+      <i [class]="toastIcon"></i>
+      <span>{{ toastMessage }}</span>
+    </div>
+    <button class="toast-close" (click)="hideToast()">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content" *ngIf="!isLoading">
+    <!-- Enhanced Header Section -->
+    <div class="confirmation-header">
+      <div class="header-background">
+        <div class="animated-gradient"></div>
+        <div class="floating-elements">
+          <div class="element element-1"></div>
+          <div class="element element-2"></div>
+          <div class="element element-3"></div>
+        </div>
+      </div>
+      
+      <div class="header-content">
+        <div class="success-animation">
+          <div class="checkmark-container">
+            <div class="checkmark">
+              <i class="fas fa-check"></i>
+            </div>
+            <div class="success-rings">
+              <div class="ring ring-1"></div>
+              <div class="ring ring-2"></div>
+              <div class="ring ring-3"></div>
+            </div>
+          </div>
+        </div>
+        
+        <h1 class="page-title">
+          <span class="title-main">One step closer to</span>
+          <span class="title-subtitle">Your flight reservation </span>
+        </h1>
+      </div>
+    </div>
+
+    <div class="confirmation-content">
+      <!-- Booking Information Card -->
+      <div class="info-card booking-card slide-up" style="animation-delay: 0.1s">
+        <div class="card-header">
+          <div class="card-icon">
+            <i class="fas fa-ticket-alt"></i>
+          </div>
+          <h3 class="card-title">Booking Information</h3>
+          <div class="payment-status pending">
+            <i class="fas fa-clock"></i>
+            Pending
+          </div>
+        </div>
+        
+        <div class="card-content">
+          <div class="booking-reference">
+            <div class="reference-label">Booking Reference</div>
+            <div class="reference-code">{{ bookingId }}</div>
+            <button class="copy-btn" (click)="copyBookingId()" title="Copy Booking ID">
+              <i class="fas fa-copy"></i>
+            </button>
+          </div>
+          
+          <div class="booking-details">
+            <div class="detail-item">
+              <i class="fas fa-calendar-check"></i>
+              <div class="detail-content">
+                <span class="detail-label">Booking Date</span>
+                <span class="detail-value">{{ getCurrentDate() | date:'dd MMM yyyy' }}</span>
+              </div>
+            </div>
+            <div class="detail-item">
+              <i class="fas fa-clock"></i>
+              <div class="detail-content">
+                <span class="detail-label">Booking Time</span>
+                <span class="detail-value">{{ getCurrentDate() | date:'hh:mm a' }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Flight Details Card -->
+      <div class="info-card flight-card slide-up" style="animation-delay: 0.2s">
+        <div class="card-header">
+          <div class="card-icon">
+            <i class="fas fa-plane"></i>
+          </div>
+          <h3 class="card-title">Flight Details</h3>
+          <div class="payment-status pending">
+            <i class="fas fa-clock"></i>
+            Pending
+          </div>
+        </div>
+        
+        <div class="card-content">
+          <div class="flight-info">
+            <div class="airline-section">
+              <div class="airline-logo">
+                <i class="fas fa-plane"></i>
+              </div>
+              <div class="airline-details">
+                <h4 class="flight-number">{{ flightDetails?.flightNumber }}</h4>
+                <p class="airline-name">{{ flightDetails?.airline }}</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="flight-route">
+            <div class="route-point departure">
+              <div class="route-time">
+                <span class="time">{{ flightDetails?.departureDateTime | date:'HH:mm' }}</span>
+                <span class="date">{{ flightDetails?.departureDateTime | date:'dd MMM' }}</span>
+              </div>
+              <div class="route-location">
+                <h5 class="city">{{ getOriginCity() }}</h5>
+                <p class="airport">Departure</p>
+              </div>
+            </div>
+            
+            <div class="route-middle">
+              <div class="flight-path">
+                <div class="path-line">
+                  <div class="path-progress"></div>
+                </div>
+                <div class="plane-icon">
+                  <i class="fas fa-plane"></i>
+                </div>
+              </div>
+              <div class="flight-duration">{{ calculateFlightDuration() }}</div>
+            </div>
+            
+            <div class="route-point arrival">
+              <div class="route-time">
+                <span class="time">{{ flightDetails?.arrivalDateTime | date:'HH:mm' }}</span>
+                <span class="date">{{ flightDetails?.arrivalDateTime | date:'dd MMM' }}</span>
+              </div>
+              <div class="route-location">
+                <h5 class="city">{{ getDestinationCity() }}</h5>
+                <p class="airport">Arrival</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Passenger Information Card -->
+      <div class="info-card passengers-card slide-up" style="animation-delay: 0.3s">
+        <div class="card-header">
+          <div class="card-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <h3 class="card-title">Passenger Information</h3>
+          <div class="passenger-count">
+            {{ travellerList.length }} 
+            {{ travellerList.length === 1 ? 'Passenger' : 'Passengers' }}
+          </div>
+        </div>
+        
+        <div class="card-content">
+          <div class="passengers-list">
+            <div class="passenger-item" 
+                 *ngFor="let traveller of travellerList; let i = index; trackBy: trackByPassengerId"
+                 [style.animation-delay.ms]="i * 150">
+              <div class="passenger-avatar">
+                <i class="fas" 
+                   [class.fa-male]="getGenderLabel(traveller.gender) === 'Male'" 
+                   [class.fa-female]="getGenderLabel(traveller.gender) === 'Female'"></i>
+              </div>
+              <div class="passenger-info">
+                <h5 class="passenger-name">{{ traveller.firstName }} {{ traveller.lastName }}</h5>
+                <div class="passenger-details">
+                  <span class="detail-badge">
+                    <i class="fas fa-chair"></i>
+                    {{ getSeatClassLabel(traveller.seatClass) }}
+                  </span>
+                  <span class="detail-badge">
+                    <i class="fas fa-calendar-alt"></i>
+                    {{ traveller.age }} years
+                  </span>
+                  <span class="detail-badge">
+                    <i class="fas fa-venus-mars"></i>
+                    {{ getGenderLabel(traveller.gender) }}
+                  </span>
+                </div>
+              </div>
+              <div class="passenger-actions">
+                <button class="edit-btn" (click)="editPassenger(traveller, i)" title="Edit Passenger">
+                  <i class="fas fa-edit"></i>
+                  <span>Edit</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Payment Section Card -->
+      <div class="info-card payment-card slide-up" style="animation-delay: 0.4s">
+        <div class="card-header">
+          <div class="card-icon">
+            <i class="fas fa-credit-card"></i>
+          </div>
+          <h3 class="card-title">Payment Summary</h3>
+          <div class="payment-status pending">
+            <i class="fas fa-clock"></i>
+            Pending
+          </div>
+        </div>
+        
+        <div class="card-content">
+          <div class="payment-breakdown">
+            <div class="breakdown-item">
+              <span class="breakdown-label">
+                <i class="fas fa-users"></i>
+                Base Fare ({{ travellerList.length }} passenger{{ travellerList.length !== 1 ? 's' : '' }})
+              </span>
+              <span class="breakdown-amount">${{ calculateTotalFare() }}</span>
+            </div>
+            <div class="breakdown-item">
+              <span class="breakdown-label">
+                <i class="fas fa-shield-alt"></i>
+                Taxes & Fees
+              </span>
+              <span class="breakdown-amount">$0</span>
+            </div>
+            <div class="breakdown-divider"></div>
+            <div class="breakdown-total">
+              <span class="total-label">
+                <i class="fas fa-receipt"></i>
+                Total Amount
+              </span>
+              <span class="total-amount">${{ totalAmount }}</span>
+            </div>
+          </div>
+          
+          <div class="payment-actions">
+            <button class="payment-btn" (click)="proceedToPayment()" [disabled]="isProcessingPayment">
+              <span class="btn-content" *ngIf="!isProcessingPayment">
+                <i class="fas fa-credit-card"></i>
+                Proceed to Payment
+              </span>
+              <span class="btn-loading" *ngIf="isProcessingPayment">
+                <div class="btn-spinner"></div>
+                Processing...
+              </span>
+            </button>
+            
+            <div class="security-notice">
+              <i class="fas fa-lock"></i>
+              <span>Secure SSL encrypted payment</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Additional Actions -->
+      <div class="action-cards slide-up" style="animation-delay: 0.5s">
+        <div class="action-card" (click)="downloadTicket()">
+          <div class="action-icon">
+            <i class="fas fa-download"></i>
+          </div>
+          <h4 class="action-title">Download Ticket</h4>
+          <p class="action-description">Get your e-ticket for easy check-in</p>
+        </div>
+        
+        <div class="action-card" (click)="shareBooking()">
+          <div class="action-icon">
+            <i class="fas fa-share-alt"></i>
+          </div>
+          <h4 class="action-title">Share Booking</h4>
+          <p class="action-description">Share your booking details with others</p>
+        </div>
+        
+        <div class="action-card" (click)="addToCalendar()">
+          <div class="action-icon">
+            <i class="fas fa-calendar-plus"></i>
+          </div>
+          <h4 class="action-title">Add to Calendar</h4>
+          <p class="action-description">Never miss your flight departure</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Passenger Modal -->
+  <div class="modal-overlay" *ngIf="isEditing" (click)="cancelEdit()">
+    <div class="edit-modal" (click)="stopPropagation($event)">
+      <div class="modal-header">
+        <h3 class="modal-title">
+          <i class="fas fa-user-edit"></i>
+          Edit Passenger Details
+        </h3>
+        <button class="close-btn" (click)="cancelEdit()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div class="modal-content">
+        <form [formGroup]="travellerForm" class="edit-form">
+          <div class="form-grid">
+            <div class="form-field">
+              <label class="field-label">
+                <i class="fas fa-user"></i>
+                First Name *
+              </label>
+              <input 
+                type="text" 
+                class="form-input" 
+                [class.error]="isFieldInvalid('firstName')"
+                formControlName="firstName"
+                placeholder="Enter first name">
+              <div class="error-message" *ngIf="isFieldInvalid('firstName')">
+                {{ getFieldError('firstName') }}
+              </div>
+            </div>
+            
+            <div class="form-field">
+              <label class="field-label">
+                <i class="fas fa-user"></i>
+                Last Name *
+              </label>
+              <input 
+                type="text" 
+                class="form-input" 
+                [class.error]="isFieldInvalid('lastName')"
+                formControlName="lastName"
+                placeholder="Enter last name">
+              <div class="error-message" *ngIf="isFieldInvalid('lastName')">
+                {{ getFieldError('lastName') }}
+              </div>
+            </div>
+            
+            <div class="form-field">
+              <label class="field-label">
+                <i class="fas fa-calendar-alt"></i>
+                Age *
+              </label>
+              <input 
+                type="number" 
+                class="form-input" 
+                [class.error]="isFieldInvalid('age')"
+                formControlName="age"
+                placeholder="Enter age"
+                min="1"
+                max="120">
+              <div class="error-message" *ngIf="isFieldInvalid('age')">
+                {{ getFieldError('age') }}
+              </div>
+            </div>
+            
+            <div class="form-field">
+              <label class="field-label">
+                <i class="fas fa-venus-mars"></i>
+                Gender *
+              </label>
+              <select 
+                class="form-input" 
+                [class.error]="isFieldInvalid('gender')"
+                formControlName="gender">
+                <option value="">Select gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+              <div class="error-message" *ngIf="isFieldInvalid('gender')">
+                {{ getFieldError('gender') }}
+              </div>
+            </div>
+            
+            <div class="form-field">
+              <label class="field-label">
+                <i class="fas fa-chair"></i>
+                Seat Class *
+              </label>
+              <select 
+                class="form-input" 
+                [class.error]="isFieldInvalid('seatClass')"
+                formControlName="seatClass">
+                <option value="Economy">Economy</option>
+                <option value="Business">Business</option>
+              </select>
+              <div class="error-message" *ngIf="isFieldInvalid('seatClass')">
+                {{ getFieldError('seatClass') }}
+              </div>
+            </div>
+          </div>
+          
+          <div class="modal-actions">
+            <button type="button" class="cancel-btn" (click)="cancelEdit()" [disabled]="isUpdating">
+              Cancel
+            </button>
+            <button type="button" class="update-btn" (click)="updatePassenger()" [disabled]="isUpdating">
+              <span *ngIf="!isUpdating">
+                <i class="fas fa-check"></i>
+                Update Passenger
+              </span>
+              <span *ngIf="isUpdating">
+                <div class="btn-spinner"></div>
+                Updating...
+              </span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

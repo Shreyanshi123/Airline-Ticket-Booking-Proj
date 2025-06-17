@@ -1,0 +1,279 @@
+<div class="profile-container">
+  <!-- Sidebar Toggle Button (Mobile) -->
+  <button class="sidebar-toggle" (click)="toggleSidebar()" [class.open]="isSidebarOpen">
+    <i class="bi bi-list"></i>
+  </button>
+
+  <!-- Sidebar -->
+  <div class="sidebar" [class.open]="isSidebarOpen">
+    <div class="sidebar-header">
+      <h3>Account Settings</h3>
+    </div>
+    
+    <nav class="sidebar-nav">
+      <ul>
+        <li>
+          <a 
+             (click)="setActiveSection('profile')" 
+             [class.active]="activeSection === 'profile'"
+             class="nav-link">
+            <i class="bi bi-person"></i>
+            Profile Information
+          </a>
+        </li>
+        <li>
+          <a 
+             (click)="setActiveSection('password')" 
+             [class.active]="activeSection === 'password'"
+             class="nav-link">
+            <i class="bi bi-key"></i>
+            Change Password
+          </a>
+        </li>
+        <li>
+          <a
+             (click)="setActiveSection('security')" 
+             [class.active]="activeSection === 'security'"
+             class="nav-link">
+            <i class="bi bi-shield-check"></i>
+            Security Settings
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- Sidebar Overlay (Mobile) -->
+  <div class="sidebar-overlay" 
+       [class.show]="isSidebarOpen" 
+       (click)="toggleSidebar()"></div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Loading Spinner -->
+    <div class="loading-spinner" *ngIf="isLoading">
+      <div class="spinner"></div>
+      <p>Loading...</p>
+    </div>
+
+    <!-- Success/Error Messages -->
+    <div class="alert alert-success" *ngIf="successMessage">
+      <i class="bi bi-check-circle"></i>
+      {{ successMessage }}
+    </div>
+
+    <div class="alert alert-error" *ngIf="errorMessage">
+      <i class="bi bi-x-circle"></i>
+      {{ errorMessage }}
+    </div>
+
+    <!-- Profile Information Section -->
+    <div class="content-section" *ngIf="activeSection === 'profile' && !isLoading">
+      <div class="section-header">
+        <h2>Profile Information</h2>
+        <button class="btn btn-primary" 
+                *ngIf="!isEditing" 
+                (click)="toggleEdit()">
+          <i class="bi bi-pencil"></i>
+          Edit Profile
+        </button>
+      </div>
+
+      <div class="profile-card">
+        <form [formGroup]="profileForm" (ngSubmit)="updateProfile()">
+          <!-- First Name -->
+          <div class="form-group">
+            <label for="firstName">First Name *</label>
+            <input type="text" 
+                   id="firstName"
+                   formControlName="firstName"
+                   value="firstName"
+                   [readonly]="!isEditing"
+                   [class.error]="hasFieldError('firstName')"
+                   [class.disabled]="!isEditing"
+                   class="form-control">
+            <span class="error-message" *ngIf="hasFieldError('firstName')">
+              {{ getFieldError('firstName') }}
+            </span>
+          </div>
+
+          <!-- Last Name -->
+          <div class="form-group">
+            <label for="lastName">Last Name *</label>
+            <input type="text" 
+                   id="lastName"
+                   formControlName="lastName"
+                   [readonly]="!isEditing"
+                   [class.error]="hasFieldError('lastName')"
+                   [class.disabled]="!isEditing"
+                   class="form-control">
+            <span class="error-message" *ngIf="hasFieldError('lastName')">
+              {{ getFieldError('lastName') }}
+            </span>
+          </div>
+
+          <!-- Username -->
+          
+
+          <!-- Email -->
+          <div class="form-group">
+            <label for="email">Email Address *</label>
+            <input type="email" 
+                   id="email"
+                   formControlName="email"
+                   [readonly]="!isEditing"
+                   [class.error]="hasFieldError('email')"
+                   [class.disabled]="!isEditing"
+                   class="form-control">
+            <span class="error-message" *ngIf="hasFieldError('email')">
+              {{ getFieldError('email') }}
+            </span>
+          </div>
+
+          <!-- Mobile Number -->
+          <div class="form-group">
+            <label for="phoneNumber">Mobile Number *</label>
+            <input type="tel" 
+                   id="phoneNumber"
+                   formControlName="phoneNumber"
+                   [readonly]="!isEditing"
+                   [class.error]="hasFieldError('phoneNumber')"
+                   [class.disabled]="!isEditing"
+                   class="form-control">
+            <span class="error-message" *ngIf="hasFieldError('phoneNumber')">
+              {{ getFieldError('phoneNumber') }}
+            </span>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="form-actions" *ngIf="isEditing">
+            <button type="submit" 
+                    class="btn btn-primary"
+                    [disabled]="profileForm.invalid || isLoading">
+              <i class="bi bi-check-lg"></i>
+              Save Changes
+            </button>
+            <button type="button" 
+                    class="btn btn-secondary"
+                    (click)="toggleEdit()">
+              <i class="bi bi-x-lg"></i>
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Password Change Section -->
+    <div class="content-section" *ngIf="activeSection === 'password' && !isLoading">
+      <div class="section-header">
+        <h2>Change Password</h2>
+      </div>
+
+      <div class="profile-card">
+        <form [formGroup]="passwordForm" (ngSubmit)="changePassword()">
+          <!-- Current Password -->
+          <div class="form-group">
+            <label for="currentPassword">Current Password *</label>
+            <input type="password" 
+                   id="currentPassword"
+                   formControlName="currentPassword"
+                   [class.error]="hasFieldError('currentPassword', passwordForm)"
+                   class="form-control">
+            <span class="error-message" *ngIf="hasFieldError('currentPassword', passwordForm)">
+              {{ getFieldError('currentPassword', passwordForm) }}
+            </span>
+          </div>
+
+          <!-- New Password -->
+          <div class="form-group">
+            <label for="newPassword">New Password *</label>
+            <input type="password" 
+                   id="newPassword"
+                   formControlName="newPassword"
+                   [class.error]="hasFieldError('newPassword', passwordForm)"
+                   class="form-control">
+            <span class="error-message" *ngIf="hasFieldError('newPassword', passwordForm)">
+              {{ getFieldError('newPassword', passwordForm) }}
+            </span>
+            <small class="form-help">Password must be at least 8 characters long</small>
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="form-group">
+            <label for="confirmPassword">Confirm New Password *</label>
+            <input type="password" 
+                   id="confirmPassword"
+                   formControlName="confirmPassword"
+                   [class.error]="hasFieldError('confirmPassword', passwordForm)"
+                   class="form-control">
+            <span class="error-message" *ngIf="hasFieldError('confirmPassword', passwordForm)">
+              {{ getFieldError('confirmPassword', passwordForm) }}
+            </span>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="form-actions">
+            <button type="submit" 
+                    class="btn btn-primary"
+                    [disabled]="passwordForm.invalid || isLoading">
+              <i class="bi bi-key"></i>
+              Change Password
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Security Settings Section -->
+    <div class="content-section" *ngIf="activeSection === 'security' && !isLoading">
+      <div class="section-header">
+        <h2>Security Settings</h2>
+      </div>
+
+      <div class="profile-card">
+        <div class="security-options">
+          <div class="security-item danger-zone">
+            <div class="security-info">
+              <h4>Delete Account</h4>
+              <p>Permanently delete your account and all associated data. This action cannot be undone.</p>
+            </div>
+            <button class="btn btn-danger" 
+                    (click)="confirmDeleteAccount()"
+                    [disabled]="isLoading">
+              <i class="bi bi-trash"></i>
+              Delete Account
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <!-- <div class="modal-overlay" *ngIf="showDeleteConfirmation">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Confirm Account Deletion</h3>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete your account? This action is permanent and cannot be undone.</p>
+        <p><strong>All your data including bookings, preferences, and personal information will be permanently removed.</strong></p>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-danger" 
+                (click)="deleteAccount()"
+                [disabled]="isLoading">
+          <i class="bi bi-trash"></i>
+          Yes, Delete Account
+        </button>
+        <button class="btn btn-secondary" 
+                (click)="cancelDelete()"
+                [disabled]="isLoading">
+          <i class="bi bi-x-lg"></i>
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div> -->
+</div>

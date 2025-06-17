@@ -1,0 +1,10 @@
+<div class="container">
+  <h2>✈️ Recommended Flights</h2>
+  
+  <div class="flight-list">
+    <div class="flight-card" *ngFor="let flight of recommendedFlights">
+      <h3>{{ flight.flightNumber }} - {{ flight.airline }}</h3>
+      <p>🌍 Destination: <strong>{{ flight.destination }}</strong></p>
+    </div>
+  </div>
+</div>

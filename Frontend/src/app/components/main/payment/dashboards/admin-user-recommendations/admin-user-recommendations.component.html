@@ -1,0 +1,38 @@
+<h3>User Flight Recommendations</h3>
+ 
+<div *ngIf="loading">Loading recommendations...</div>
+ 
+<div *ngIf="!loading && recommendations.length === 0">
+  No recommendations found for this user.
+</div>
+ 
+<table class="table table-bordered" *ngIf="!loading && recommendations.length > 0">
+<thead>
+<tr>
+<th>Flight No</th>
+<th>Airline</th>
+<th>Route</th>
+<th>Departure</th>
+<th>Arrival</th>
+<th>Economy Price</th>
+<th>Business Price</th>
+<th>Seats (Economy)</th>
+<th>Seats (Business)</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr *ngFor="let flight of recommendations">
+<td>{{ flight.flightNumber }}</td>
+<td>{{ flight.airline }}</td>
+<td>{{ flight.origin }} → {{ flight.destination }}</td>
+<td>{{ flight.departureDateTime | date:'short' }}</td>
+<td>{{ flight.arrivalDateTime | date:'short' }}</td>
+<td>{{ flight.economyPrice | currency }}</td>
+<td>{{ flight.businessPrice | currency }}</td>
+<td>{{ flight.availableEconomySeats }}/{{ flight.totalEconomySeats }}</td>
+<td>{{ flight.availableBusinessSeats }}/{{ flight.totalBusinessSeats }}</td>
+<td>{{ getStatusText(flight.status) }}</td>
+</tr>
+</tbody>
+</table>

@@ -1,0 +1,261 @@
+<header class="header" [class.scrolled]="isScrolled">
+  <!-- Background Effects -->
+  <div class="header-bg">
+    <div class="bg-gradient"></div>
+    <div class="floating-orbs">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- Logo -->
+    <a class="logo" routerLink="/" [class.animated]="logoAnimated">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path
+            d="M12 2L2 7V10C2 16 6 20.5 12 22C18 20.5 22 16 22 10V7L12 2Z"
+            fill="currentColor"
+          />
+          <path
+            d="M9 12L11 14L15 10"
+            stroke="white"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </div>
+      <div class="logo-text">
+        <span class="brand">SkyWings</span>
+        <span class="tagline">Airlines</span>
+      </div>
+    </a>
+
+    <!-- Desktop Navigation -->
+    <nav class="nav-desktop">
+      <a
+        *ngFor="let item of navItems"
+        [routerLink]="item.route"
+        routerLinkActive="active"
+        class="nav-link"
+        [class.exact]="item.exact"
+      >
+        <svg *ngIf="item.icon" viewBox="0 0 24 24" fill="none" class="nav-icon">
+          <path
+            [attr.d]="getIcon(item.icon)"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+        <span>{{ item.label }}</span>
+      </a>
+    </nav>
+
+    <!-- Mobile Toggle -->
+    <button
+      class="mobile-toggle"
+      (click)="toggleMobileNav()"
+      [class.active]="isMobileNavOpen"
+    >
+      <span></span><span></span><span></span>
+    </button>
+
+    <!-- Auth Section -->
+    <div class="auth-section">
+      <!-- My Bookings -->
+      <button
+        *ngIf="hasToken"
+        routerLink="/booking-history"
+        class="btn-secondary"
+        title="My Bookings"
+      >
+        <svg viewBox="0 0 24 24" fill="none">
+          <path
+            d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"
+            stroke="currentColor"
+            stroke-width="2"
+          />
+          <path
+            d="M14 2v6h6M16 13H8M16 17H8M10 9H8"
+            stroke="currentColor"
+            stroke-width="2"
+          />
+        </svg>
+        <span>My Bookings</span>
+      </button>
+
+      <!-- Notifications -->
+      <button
+        *ngIf="isLoggedIn"
+        class="notification-btn"
+        (click)="toggleNotifications()"
+        title="Notifications"
+      >
+        <svg viewBox="0 0 24 24" fill="none">
+          <path
+            d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"
+            stroke="currentColor"
+            stroke-width="2"
+          />
+        </svg>
+        <span class="badge" *ngIf="hasNotifications">{{
+          notificationCount
+        }}</span>
+      </button>
+
+      <!-- Login -->
+      <button
+        *ngIf="!isLoggedIn"
+        routerLink="dashboard/login"
+        class="auth-btn login-btn"
+      >
+        <div class="btn-content">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none">
+            <path
+              d="M15 3H19..."
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <polyline
+              points="10,17 15,12 10,7"
+              stroke="currentColor"
+              stroke-width="2"
+            />
+            <line
+              x1="15"
+              y1="12"
+              x2="3"
+              y2="12"
+              stroke="currentColor"
+              stroke-width="2"
+            />
+          </svg>
+          <span class="btn-text">Login</span>
+        </div>
+        <div class="btn-shine"></div>
+        <div class="btn-ripple"></div>
+      </button>
+
+      <!-- User Menu -->
+      <div *ngIf="isLoggedIn" class="user-menu">
+        <button
+          class="user-avatar user-btn"
+          (click)="toggleUserMenu()"
+          [class.menu-open]="isUserMenuOpen"
+        >
+          <div class="avatar">{{ userAvatar }}</div>
+          <span class="username">Welcome, {{ userName }}</span>
+          <svg
+            class="chevron"
+            [class.rotate]="isUserMenuOpen"
+            viewBox="0 0 24 24"
+            fill="none"
+          >
+            <path
+              d="M6 9L12 15L18 9"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+
+        <!-- Dropdown -->
+        <div class="user-dropdown" [class.open]="isUserMenuOpen">
+          <div class="dropdown-content">
+            <div class="dropdown-header">
+              <div class="avatar-large">{{ userAvatar }}</div>
+              <div class="user-info">
+                <span class="user-name">{{ userName }}</span>
+                <span class="user-email">{{ userEmail }}</span>
+              </div>
+            </div>
+
+            <div class="dropdown-divider"></div>
+
+            <button class="dropdown-item" (click)="goToProfile()">
+              <svg viewBox="0 0 24 24" fill="none" width="20" height="20">
+                <path
+                  d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zM12 14c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+                  stroke="currentColor"
+                  stroke-width="2"
+                />
+              </svg>
+              <span>Profile</span>
+            </button>
+
+            <button class="dropdown-item">
+              <svg viewBox="0 0 24 24" fill="none" width="20" height="20">
+                <path
+                  d="M12 2a10 10 0 100 20 10 10 0 000-20zM4 12h16"
+                  stroke="currentColor"
+                  stroke-width="2"
+                />
+              </svg>
+              <span>Settings</span>
+            </button>
+
+            <div class="dropdown-divider"></div>
+
+            <button class="dropdown-item logout-item" (click)="OnLogout()">
+              <svg viewBox="0 0 24 24" fill="none" width="20" height="20">
+                <path
+                  d="M16 17l5-5-5-5M21 12H9M13 5v2a7 7 0 100 10v2"
+                  stroke="currentColor"
+                  stroke-width="2"
+                />
+              </svg>
+              <span>Logout</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Overlay -->
+  <div
+    class="mobile-overlay"
+    [class.active]="isMobileNavOpen"
+    (click)="toggleMobileNav()"
+  ></div>
+
+  <!-- Mobile Navigation -->
+  <div class="mobile-nav" [class.open]="isMobileNavOpen">
+    <div class="mobile-nav-content">
+      <div class="mobile-nav-header">
+        <div class="avatar">{{ userAvatar }}</div>
+        <div>
+          <div class="user-name">{{ userName }}</div>
+          <div class="user-email">{{ userEmail }}</div>
+        </div>
+      </div>
+      <div class="mobile-nav-items">
+        <button
+          *ngFor="let item of navItems"
+          [routerLink]="item.route"
+          class="mobile-nav-link"
+          [ngClass]="{ primary: item.primary, logout: item.logout }"
+        >
+          <svg *ngIf="item.icon" viewBox="0 0 24 24" fill="none">
+            <path
+              [attr.d]="getIcon(item.icon)"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <span>{{ item.label }}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>

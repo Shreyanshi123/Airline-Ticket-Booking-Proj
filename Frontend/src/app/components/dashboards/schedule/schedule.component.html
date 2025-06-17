@@ -1,0 +1,403 @@
+
+
+<!-- <div class="container mt-4">
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <h3 class="text-center text-primary">Manage Flight Schedules</h3>
+  
+        <form>
+          <div class="row g-3">
+            <div class="col-md-3">
+              <label class="form-label">Airline Code</label>
+              <input type="text" name="airline" id=""formControlName="airline"
+              [placeholder]="'Select Airline'">
+              
+            </div>
+  
+            <div class="col-md-3">
+              <label class="form-label">Flight Number</label>
+              <input type="number" class="form-control" formControlName="flightNumber" placeholder="Enter Flight Number">
+            </div>
+  
+            <div class="col-md-3">
+              <label class="form-label">From</label>
+              <input type="text" class="form-control" formControlName="departureAirport" placeholder="Departure Airport">
+            </div>
+  
+            <div class="col-md-3">
+              <label class="form-label">To</label>
+              <input type="text" class="form-control" formControlName="arrivalAirport" placeholder="Arrival Airport">
+            </div>
+  
+            <div class="col-md-3">
+              <label class="form-label">Frequency</label>
+              <input type="text" name="frequency" id=""formControlName="frequency"
+              [placeholder]="'Select Frequency'">
+            </div>
+  
+            <div class="col-md-3">
+              <label class="form-label">Departure Time</label>
+              <input type="time" class="form-control" formControlName="departureTime">
+            </div>
+  
+            <div class="col-md-3">
+              <label class="form-label">Arrival Time</label>
+              <input type="time" class="form-control" formControlName="arrivalTime">
+            </div>
+  
+            <div class="col-md-3">
+              <label class="form-label">Aircraft Number</label>
+              <input type="text" class="form-control" formControlName="aircraftRegistration" placeholder="Aircraft Number">
+            </div>
+  
+            <div class="col-md-3">
+              <label class="form-label">Seat Count</label>
+              <input type="number" class="form-control" formControlName="seatCount">
+            </div>
+  
+            <div class="col-md-3">
+              <label class="form-label">Ticket Price</label>
+              <input type="number" class="form-control" formControlName="ticketPrice">
+            </div>
+  
+            <div class="col-md-3 d-flex align-items-end">
+              <button class="btn btn-success w-100">
+                <i class="bi bi-save"></i> Save Schedule
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div> -->
+
+<!-- <br><br>
+<div class="container shadow-sm border-0 mt-4">
+    <div class="card-body">
+      <h4 class="text-center text-secondary">Flight Schedule List</h4>
+      <div class="table-responsive">
+        <table class="table table-striped table-hover">
+          <thead class="table-dark">
+            <tr>
+              <th>Flight Number</th>
+              <th>Airline Name</th>
+              <th>Origin</th>
+              <th>Destination</th>
+              <th>Departure Date</th>
+              <th>Arrival Date</th>
+              <th>Economy Price</th>
+              <th>Available Economy Seats</th>
+              <th>Business Price</th>
+              <th>Available Business Seats</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let schedule of scheduleList">
+              <td>{{schedule.flightNumber}}</td>
+              <td>{{schedule.airline}}</td>
+              <td>{{schedule.origin}}</td>
+              <td>{{schedule.destination}}</td>
+              <td>{{schedule.departureDateTime}}</td>
+              <td>{{schedule.arrivalDateTime}}</td>
+              <td>{{schedule.economyPrice}}</td>
+              <td>{{schedule.availableEconomySeats}}</td>
+              <td>{{schedule.businessPrice}}</td>
+              <td>{{schedule.availableBusinessSeats}}</td>
+              <td>{{ getFlightStatus(schedule.status) }}</td>
+              <td>
+                <button class="btn btn-warning btn-sm me-2" (click) ="onEdit(schedule.id)">
+                  <i class="bi bi-pencil-fill"></i> Edit
+                </button>
+                <button class="btn btn-warning btn-sm me-2" (click) ="onReschedule(schedule.id)">
+                  <i class="bi bi-pencil-fill"></i> Reschedule
+                </button>
+                <button class="btn btn-danger btn-sm" (click)="onDelete(schedule.id)">
+                  <i class="bi bi-trash-fill"></i> Delete
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div> -->
+
+  <!-- <ng-template #editProfileModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">Update Flight Schedule</h5>
+      <button type="button" class="close" (click)="modal.dismiss()">
+        <span>&times;</span>
+      </button>
+    </div>
+  
+    <div class="modal-body">
+      <form [formGroup]="scheduleForm">
+        <div class="row g-3">
+          <input type="hidden" formControlName="id">
+  
+          <div class="col-md-6">
+            <label class="form-label">Airline Code</label>
+            <ng-multiselect-dropdown formControlName="airline">
+            </ng-multiselect-dropdown>
+          </div>
+  
+          <div class="col-md-6">
+            <label class="form-label">Flight Number</label>
+            <input type="number" class="form-control" formControlName="flightNumber">
+          </div>
+  
+          <div class="col-md-6">
+            <label class="form-label">From</label>
+            <input type="text" class="form-control" formControlName="departureAirport">
+          </div>
+  
+          <div class="col-md-6">
+            <label class="form-label">To</label>
+            <input type="text" class="form-control" formControlName="arrivalAirport">
+          </div>
+  
+          <div class="col-md-6">
+            <label class="form-label">Departure Time</label>
+            <input type="time" class="form-control" formControlName="departureTime">
+          </div>
+  
+          <div class="col-md-6">
+            <label class="form-label">Arrival Time</label>
+            <input type="time" class="form-control" formControlName="arrivalTime">
+          </div>
+  
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary">Close</button>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </ng-template> -->
+
+
+<div class="schedule-container">
+<!-- Header Section -->
+<div class="header-section">
+<div class="header-content">
+<div class="header-icon">
+<i class="fas fa-plane"></i>
+</div>
+<div class="header-text">
+<h1 class="header-title">Flight Schedule Management</h1>
+<p class="header-subtitle">Monitor and manage all flight schedules in real-time</p>
+</div>
+</div>
+<div class="stats-cards">
+<div class="stat-card">
+<div class="stat-icon scheduled">
+<i class="fas fa-calendar-check"></i>
+</div>
+<div class="stat-content">
+<div class="stat-number">{{ scheduleList.length }}</div>
+<div class="stat-label">Total Flights</div>
+</div>
+</div>
+</div>
+</div>
+ 
+  <!-- Loading State -->
+<div *ngIf="isLoading" class="loading-container">
+<div class="loading-spinner">
+<div class="spinner"></div>
+<p>Loading flight schedules...</p>
+</div>
+</div>
+ 
+  <!-- Main Content -->
+<div *ngIf="!isLoading" class="main-content">
+<div class="table-container">
+<div class="table-header">
+<h3 class="table-title">
+<i class="fas fa-list-ul"></i>
+
+          Flight Schedules
+</h3>
+<div class="table-actions">
+<button class="btn-refresh" (click)="loadFlights()">
+<i class="fas fa-sync-alt"></i>
+
+            Refresh
+</button>
+</div>
+</div>
+ 
+      <div class="table-wrapper" *ngIf="scheduleList.length > 0; else noData">
+<table class="modern-table">
+<thead>
+<tr>
+<th class="flight-number">
+<i class="fas fa-hashtag"></i>
+
+                Flight
+</th>
+<th class="airline">
+<i class="fas fa-building"></i>
+
+                Airline
+</th>
+<th class="route">
+<i class="fas fa-route"></i>
+
+                Route
+</th>
+<th class="schedule">
+<i class="fas fa-clock"></i>
+
+                Schedule
+</th>
+<th class="pricing">
+<i class="fas fa-dollar-sign"></i>
+
+                Pricing
+</th>
+<th class="seats">
+<i class="fas fa-chair"></i>
+
+                Seats
+</th>
+<th class="status">
+<i class="fas fa-info-circle"></i>
+
+                Status
+</th>
+<th class="actions">
+<i class="fas fa-cog"></i>
+
+                Actions
+</th>
+</tr>
+</thead>
+<tbody>
+<tr *ngFor="let schedule of scheduleList" class="table-row">
+<td class="flight-number">
+<div class="flight-code">
+<span class="flight-icon">✈️</span>
+<strong>{{ schedule.flightNumber }}</strong>
+</div>
+</td>
+<td class="airline">
+<div class="airline-info">
+<div class="airline-logo">{{ schedule.airline.charAt(0).toUpperCase() }}</div>
+<span>{{ schedule.airline }}</span>
+</div>
+</td>
+<td class="route">
+<div class="route-info">
+<div class="route-item">
+<span class="location-pin">📍</span>
+<span>{{ schedule.origin }}</span>
+</div>
+<div class="route-arrow">
+<i class="fas fa-arrow-right"></i>
+</div>
+<div class="route-item">
+<span class="location-pin">🎯</span>
+<span>{{ schedule.destination }}</span>
+</div>
+</div>
+</td>
+<td class="schedule">
+<div class="schedule-info">
+<div class="departure">
+<small class="time-label">Departure</small>
+<div class="time-value">{{ formatDate(schedule.departureDateTime) }}</div>
+</div>
+<div class="arrival">
+<small class="time-label">Arrival</small>
+<div class="time-value">{{ formatDate(schedule.arrivalDateTime) }}</div>
+</div>
+</div>
+</td>
+<td class="pricing">
+<div class="price-info">
+<div class="price-item economy">
+<span class="price-label">Economy</span>
+<span class="price-value">{{ formatCurrency(schedule.economyPrice) }}</span>
+</div>
+<div class="price-item business">
+<span class="price-label">Business</span>
+<span class="price-value">{{ formatCurrency(schedule.businessPrice) }}</span>
+</div>
+</div>
+</td>
+<td class="seats">
+<div class="seats-info">
+<div class="seat-item economy">
+<span class="seat-icon">🪑</span>
+<span class="seat-count">{{ schedule.availableEconomySeats }}</span>
+<small>Economy</small>
+</div>
+<div class="seat-item business">
+<span class="seat-icon">💺</span>
+<span class="seat-count">{{ schedule.availableBusinessSeats }}</span>
+<small>Business</small>
+</div>
+</div>
+</td>
+<td class="status">
+<span [class]="'status-badge ' + getFlightStatus(schedule.status).class">
+
+                  {{ getFlightStatus(schedule.status).text }}
+</span>
+</td>
+<td class="actions">
+<div class="action-buttons">
+<button class="btn-action btn-edit" 
+
+                          (click)="onEdit(schedule.id)"
+
+                          title="Edit Flight">
+<i class="fas fa-edit"></i>
+</button>
+<button class="btn-action btn-reschedule" 
+
+                          (click)="onReschedule(schedule.id)"
+
+                          title="Reschedule Flight">
+<i class="fas fa-calendar-alt"></i>
+</button>
+<button class="btn-action btn-delete" 
+
+                          (click)="onDelete(schedule.id)"
+
+                          title="Delete Flight">
+<i class="fas fa-trash"></i>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+ 
+      <!-- No Data State -->
+<ng-template #noData>
+<div class="no-data">
+<div class="no-data-icon">
+<i class="fas fa-plane-slash"></i>
+</div>
+<h3>No Flight Schedules Found</h3>
+<p>There are currently no flight schedules to display.</p>
+<button class="btn-primary" (click)="loadFlights()">
+<i class="fas fa-refresh"></i>
+
+            Refresh Data
+</button>
+</div>
+</ng-template>
+</div>
+</div>
+</div>
+ 
+
+
+
+

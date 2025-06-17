@@ -1,0 +1,256 @@
+.text-secondary-d1 {
+    color: #728299!important;
+}
+.page-header {
+    margin: 0 0 1rem;
+    padding-bottom: 1rem;
+    padding-top: .5rem;
+    border-bottom: 1px dotted #e2e2e2;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -ms-flex-align: center;
+    align-items: center;
+}
+ 
+.nav-link{
+    color: #ffe9a8;
+}
+ 
+.page-title {
+    padding: 0;
+    margin: 0;
+    font-size: 1.75rem;
+    font-weight: 300;
+}
+.brc-default-l1 {
+    border-color: #dce9f0!important;
+}
+ 
+.ml-n1, .mx-n1 {
+    margin-left: -.25rem!important;
+}
+.mr-n1, .mx-n1 {
+    margin-right: -.25rem!important;
+}
+.mb-4, .my-4 {
+    margin-bottom: 1.5rem!important;
+}
+ 
+hr {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border: 0;
+    border-top: 1px solid rgba(0,0,0,.1);
+}
+ 
+.text-grey-m2 {
+    color: #888a8d!important;
+}
+ 
+.text-success-m2 {
+    color: #86bd68!important;
+}
+ 
+.font-bolder, .text-600 {
+    font-weight: 600!important;
+}
+ 
+.text-110 {
+    font-size: 110%!important;
+}
+.text-blue {
+    color: #478fcc!important;
+}
+.pb-25, .py-25 {
+    padding-bottom: .75rem!important;
+}
+ 
+.pt-25, .py-25 {
+    padding-top: .75rem!important;
+}
+.bgc-default-tp1 {
+    background-color: #6c76af!important;
+}
+.bgc-default-l4, .bgc-h-default-l4:hover {
+    background-color: #f3f8fa!important;
+}
+.page-header .page-tools {
+    -ms-flex-item-align: end;
+    align-self: flex-end;
+}
+ 
+.btn-light {
+    color: #757984;
+    background-color: #f5f6f9;
+    border-color: #dddfe4;
+}
+.w-2 {
+    width: 1rem;
+}
+ 
+.text-120 {
+    font-size: 120%!important;
+}
+.text-primary-m1 {
+    color: #4087d4!important;
+}
+ 
+.text-danger-m1 {
+    color: #dd4949!important;
+}
+.text-blue-m2 {
+    color: #68a3d5!important;
+}
+.text-150 {
+    font-size: 150%!important;
+}
+.text-60 {
+    font-size: 60%!important;
+}
+.text-grey-m1 {
+    color: #7b7d81!important;
+}
+.align-bottom {
+    vertical-align: bottom!important;
+}
+.navbar-nav {
+    padding-left:15px;
+}
+.pad-l-15 {
+    padding-left: 15px;
+}
+.pad-t-10 {
+    padding-top: 10px;
+}
+ 
+.airline-table-content .div-row:nth-child(even){background-color: #f2f2f2;}
+ 
+.airline-table-content .div-row:hover {background-color: #ddd;}
+
+
+
+/* DASHBOARD HEADER */
+.dashboard-header {
+  background: linear-gradient(135deg, #3498db, #2c3e50);
+  color: white;
+  padding: 30px;
+  text-align: center;
+  border-radius: 8px;
+}
+
+.header-content h1 {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.header-content p {
+  font-size: 16px;
+  margin-top: 5px;
+}
+
+.cta-button {
+  background: #f39c12;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.cta-button:hover {
+  background: #e67e22;
+}
+
+/* DASHBOARD CONTAINER */
+.dashboard-container {
+  padding: 20px;
+  max-width: 900px;
+  margin: 40px auto;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-summary {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+}
+
+.dashboard-card {
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: 0.3s;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.stats {
+  font-size: 20px;
+  font-weight: bold;
+  color: #16a085;
+}
+
+/* POPULAR FLIGHTS */
+.popular-routes-container {
+  margin-top: 20px;
+}
+
+.popular-routes {
+  list-style: none;
+  padding: 0;
+}
+
+.popular-routes li {
+  display: flex;
+  justify-content: space-between;
+  background: #ecf0f1;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 5px 0;
+  transition: 0.3s;
+}
+
+.popular-routes li:hover {
+  background: #d5d8dc;
+}
+
+.route {
+  font-weight: bold;
+}
+
+.bookings {
+  font-size: 14px;
+  color: #16a085;
+}
+
+/* QUICK LINKS */
+.quick-links {
+  display: flex;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.link-button {
+  display: inline-block;
+  padding: 12px 18px;
+  background: #3498db;
+  color: white;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.link-button:hover {
+  background: #2980b9;
+}

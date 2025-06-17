@@ -1,0 +1,11 @@
+
+
+ngx-charts-bar-vertical, ngx-charts-pie-chart {
+  display: block;
+  width: 70%; /* ✅ Reduce chart width for a balanced layout */
+  max-width: 500px; /* ✅ Limits excessive growth */
+  height: 300px; /* ✅ Standard height for better readability */
+  
+}
+
+

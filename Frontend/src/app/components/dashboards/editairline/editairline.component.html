@@ -1,0 +1,479 @@
+<!-- 
+<main class="container mt-4">
+    <form [formGroup]="editFlightForm" (ngSubmit)="onSubmit()" class="p-4 border rounded bg-light">
+      <h3>Edit Flight</h3>
+
+      <div class="mb-3">
+        <label for="flightId" class="form-label">Flight Id</label>
+        <input type="number" class="form-control" id="flightId" formControlName="id">
+      </div>
+
+      <div class="mb-3">
+        <label for="flightNumber" class="form-label">Flight Number</label>
+        <input type="text" class="form-control" id="flightNumber" formControlName="flightNumber">
+      </div>
+      
+      <div class="mb-3">
+        <label for="airlineId" class="form-label">Airline Id</label>
+        <input type="text" class="form-control" id="airlineId" formControlName="airline">
+      </div>
+
+      <div class="mb-3">
+        <label for="departureAirport" class="form-label">Origin</label>
+        <input type="text" class="form-control" id="departureAirport" formControlName="origin">
+      </div>
+  
+      <div class="mb-3">
+        <label for="arrivalAirport" class="form-label">Destination</label>
+        <input type="text" class="form-control" id="arrivalAirport" formControlName="destination">
+      </div>
+      <div class="mb-3">
+        <label for="departureTime" class="form-label">Departure Date</label>
+        <input type="text" class="form-control" id="departureTime" formControlName="departureDateTime">
+      </div>
+    
+  
+      <div class="mb-3">
+        <label for="arrivalTime" class="form-label">Arrival Date</label>
+        <input type="text" class="form-control" id="arrivalTime" formControlName="arrivalDateTime">
+      </div>
+      
+      <div class="mb-3">
+        <label for="Duration" class="form-label">Economy Price</label>
+        <input type="text" class="form-control" id="Duration" formControlName="economyPrice">
+      </div>
+
+       <div class="mb-3">
+        <label for="Duration" class="form-label">Business Price</label>
+        <input type="text" class="form-control" id="Duration" formControlName="businessPrice">
+      </div>
+
+      <div class="mb-3">
+        <label for="Duration" class="form-label"> Available Economy Seats</label>
+        <input type="text" class="form-control" id="Duration" formControlName="availableEconomySeats">
+      </div>
+
+       <div class="mb-3">
+        <label for="Duration" class="form-label">Business Seats</label>
+        <input type="text" class="form-control" id="Duration" formControlName="availableBusinessSeats">
+      </div>
+
+      <div class="col-md-3">
+  <label class="form-label">Flight Status</label>
+  <select class="form-control" formControlName="status">
+    <option *ngFor="let key of getStatusKeys()" [value]="key">
+      {{ statusMapping[key] }}
+    </option>
+  </select>
+</div>
+
+
+
+      <button type="submit" class="btn btn-success w-100">Update Flight</button>
+    </form>
+  </main> -->
+<!-- 
+  <main class="container mt-4">
+  <form [formGroup]="editFlightForm" (ngSubmit)="onSubmit()" class="p-4 border rounded bg-light">
+    <h3>Edit Flight</h3>
+
+    <div class="mb-3">
+      <label for="flightNumber" class="form-label">Flight Number</label>
+      <input type="text" class="form-control" id="flightNumber" formControlName="flightNumber">
+    </div>
+
+    <div class="mb-3">
+      <label for="departureAirport" class="form-label">Departure Airport</label>
+      <input type="text" class="form-control" id="departureAirport" formControlName="departureAirport"
+             [value]="editFlightForm.value.departureAirport ? editFlightForm.value.departureAirport : ''">
+    </div>
+
+    <div class="mb-3">
+      <label for="arrivalAirport" class="form-label">Arrival Airport</label>
+      <input type="text" class="form-control" id="arrivalAirport" formControlName="arrivalAirport"
+             [value]="editFlightForm.value.arrivalAirport ? editFlightForm.value.arrivalAirport : ''">
+    </div>
+
+    <div class="mb-3">
+      <label for="departureTime" class="form-label">Departure Time</label>
+      <input type="text" class="form-control" id="departureTime" formControlName="departureTime">
+    </div>
+
+    <div class="mb-3">
+      <label for="arrivalTime" class="form-label">Arrival Time</label>
+      <input type="text" class="form-control" id="arrivalTime" formControlName="arrivalTime">
+    </div>
+
+    <button type="submit" class="btn btn-success w-100">Update Flight</button>
+  </form>
+</main> -->
+
+
+<div class="edit-flight-container">
+<div class="header-section">
+<div class="breadcrumb">
+<span class="breadcrumb-item">Dashboard</span>
+<span class="breadcrumb-separator">></span>
+<span class="breadcrumb-item">Flights</span>
+<span class="breadcrumb-separator">></span>
+<span class="breadcrumb-current">Edit Flight</span>
+</div>
+<div class="page-header">
+<div class="header-content">
+<div class="header-icon">
+<i class="flight-icon">✈️</i>
+</div>
+<div class="header-text">
+<h1>Edit Flight</h1>
+<p>Update flight information and schedules</p>
+</div>
+</div>
+</div>
+</div>
+ 
+  <div class="form-container" [class.loading]="isLoading">
+<div *ngIf="isLoading" class="loading-overlay">
+<div class="spinner"></div>
+<p>Loading flight data...</p>
+</div>
+ 
+    <form [formGroup]="editFlightForm" (ngSubmit)="onSubmit()" class="flight-form">
+<div class="form-grid">
+<!-- Flight Basic Info Section -->
+<div class="form-section">
+<div class="section-header">
+<h3>✈️ Flight Information</h3>
+<div class="section-divider"></div>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label for="flightId" class="form-label">Flight ID</label>
+<input 
+
+                type="number" 
+
+                class="form-control" 
+
+                id="flightId" 
+
+                formControlName="id"
+
+                readonly>
+</div>
+<div class="form-group">
+<label for="flightNumber" class="form-label">Flight Number *</label>
+<input 
+
+                type="text" 
+
+                class="form-control" 
+
+                id="flightNumber" 
+
+                formControlName="flightNumber"
+
+                [class.error]="isFieldInvalid('flightNumber')"
+
+                placeholder="e.g., AI101">
+<div class="error-message" *ngIf="isFieldInvalid('flightNumber')">
+
+                {{getFieldErrorMessage('flightNumber')}}
+</div>
+</div>
+</div>
+ 
+          <div class="form-row">
+<div class="form-group full-width">
+<label for="airlineId" class="form-label">Airline *</label>
+<input 
+
+                type="text" 
+
+                class="form-control" 
+
+                id="airlineId" 
+
+                formControlName="airline"
+
+                [class.error]="isFieldInvalid('airline')"
+
+                placeholder="Enter airline name">
+<div class="error-message" *ngIf="isFieldInvalid('airline')">
+
+                {{getFieldErrorMessage('airline')}}
+</div>
+</div>
+</div>
+</div>
+ 
+        <!-- Route Information Section -->
+<div class="form-section">
+<div class="section-header">
+<h3>🌍 Route Information</h3>
+<div class="section-divider"></div>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label for="departureAirport" class="form-label">Origin *</label>
+<input 
+
+                type="text" 
+
+                class="form-control" 
+
+                id="departureAirport" 
+
+                formControlName="origin"
+
+                [class.error]="isFieldInvalid('origin')"
+
+                placeholder="e.g., New Delhi">
+<div class="error-message" *ngIf="isFieldInvalid('origin')">
+
+                {{getFieldErrorMessage('origin')}}
+</div>
+</div>
+<div class="form-group">
+<label for="arrivalAirport" class="form-label">Destination *</label>
+<input 
+
+                type="text" 
+
+                class="form-control" 
+
+                id="arrivalAirport" 
+
+                formControlName="destination"
+
+                [class.error]="isFieldInvalid('destination')"
+
+                placeholder="e.g., Mumbai">
+<div class="error-message" *ngIf="isFieldInvalid('destination')">
+
+                {{getFieldErrorMessage('destination')}}
+</div>
+</div>
+</div>
+</div>
+ 
+        <!-- Schedule Section -->
+<div class="form-section">
+<div class="section-header">
+<h3>🕐 Schedule</h3>
+<div class="section-divider"></div>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label for="departureTime" class="form-label">Departure Date & Time *</label>
+<input 
+
+                type="datetime-local" 
+
+                class="form-control" 
+
+                id="departureTime" 
+
+                formControlName="departureDateTime"
+
+                [class.error]="isFieldInvalid('departureDateTime')">
+<div class="error-message" *ngIf="isFieldInvalid('departureDateTime')">
+
+                {{getFieldErrorMessage('departureDateTime')}}
+</div>
+</div>
+<div class="form-group">
+<label for="arrivalTime" class="form-label">Arrival Date & Time *</label>
+<input 
+
+                type="datetime-local" 
+
+                class="form-control" 
+
+                id="arrivalTime" 
+
+                formControlName="arrivalDateTime"
+
+                [class.error]="isFieldInvalid('arrivalDateTime')">
+<div class="error-message" *ngIf="isFieldInvalid('arrivalDateTime')">
+
+                {{getFieldErrorMessage('arrivalDateTime')}}
+</div>
+</div>
+</div>
+</div>
+
+         <!-- Pricing Section -->
+<div class="form-section">
+<div class="section-header">
+<h3>💰 Pricing</h3>
+<div class="section-divider"></div>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label for="economyPrice" class="form-label">Economy Price *</label>
+<div class="input-group">
+<span class="input-prefix">₹</span>
+<input 
+
+                  type="number" 
+
+                  class="form-control" 
+
+                  id="economyPrice" 
+
+                  formControlName="economyPrice"
+
+                  [class.error]="isFieldInvalid('economyPrice')"
+
+                  placeholder="0.00"
+
+                  min="0"
+
+                  step="0.01">
+</div>
+<div class="error-message" *ngIf="isFieldInvalid('economyPrice')">
+
+                {{getFieldErrorMessage('economyPrice')}}
+</div>
+</div>
+<div class="form-group">
+<label for="businessPrice" class="form-label">Business Price *</label>
+<div class="input-group">
+<span class="input-prefix">₹</span>
+<input 
+
+                  type="number" 
+
+                  class="form-control" 
+
+                  id="businessPrice" 
+
+                  formControlName="businessPrice"
+
+                  [class.error]="isFieldInvalid('businessPrice')"
+
+                  placeholder="0.00"
+
+                  min="0"
+
+                  step="0.01">
+</div>
+<div class="error-message" *ngIf="isFieldInvalid('businessPrice')">
+
+                {{getFieldErrorMessage('businessPrice')}}
+</div>
+</div>
+</div>
+</div>
+ 
+        <!-- Seats & Status Section -->
+<div class="form-section">
+<div class="section-header">
+<h3>💺 Seats & Status</h3>
+<div class="section-divider"></div>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label for="economySeats" class="form-label">Available Economy Seats *</label>
+<input 
+
+                type="number" 
+
+                class="form-control" 
+
+                id="economySeats" 
+
+                formControlName="availableEconomySeats"
+
+                [class.error]="isFieldInvalid('availableEconomySeats')"
+
+                placeholder="0"
+
+                min="0">
+<div class="error-message" *ngIf="isFieldInvalid('availableEconomySeats')">
+
+                {{getFieldErrorMessage('availableEconomySeats')}}
+</div>
+</div>
+<div class="form-group">
+<label for="businessSeats" class="form-label">Available Business Seats *</label>
+<input 
+
+                type="number" 
+
+                class="form-control" 
+
+                id="businessSeats" 
+
+                formControlName="availableBusinessSeats"
+
+                [class.error]="isFieldInvalid('availableBusinessSeats')"
+
+                placeholder="0"
+
+                min="0">
+<div class="error-message" *ngIf="isFieldInvalid('availableBusinessSeats')">
+
+                {{getFieldErrorMessage('availableBusinessSeats')}}
+</div>
+</div>
+</div>
+ 
+          <div class="form-row">
+<div class="form-group full-width">
+<label class="form-label">Flight Status *</label>
+<select 
+
+                class="form-control select-control" 
+
+                formControlName="status"
+
+                [class.error]="isFieldInvalid('status')">
+<option value="" disabled>Select flight status</option>
+<option *ngFor="let key of getStatusKeys()" [value]="key">
+
+                  {{ statusMapping[key] }}
+</option>
+</select>
+<div class="error-message" *ngIf="isFieldInvalid('status')">
+
+                {{getFieldErrorMessage('status')}}
+</div>
+</div>
+</div>
+</div>
+</div>
+ 
+      <!-- Action Buttons -->
+<div class="form-actions">
+<button 
+
+          type="button" 
+
+          class="btn btn-secondary" 
+
+          (click)="onCancel()"
+
+          [disabled]="isLoading">
+<span class="btn-icon">↩️</span>
+
+          Cancel
+</button>
+<button 
+
+          type="submit" 
+
+          class="btn btn-primary" 
+
+          [disabled]="isLoading || editFlightForm.invalid">
+<span class="btn-icon" *ngIf="!isLoading">✅</span>
+<span class="btn-spinner" *ngIf="isLoading"></span>
+
+          {{ isLoading ? 'Updating...' : 'Update Flight' }}
+</button>
+</div>
+</form>
+</div>
+</div>
+
+ 

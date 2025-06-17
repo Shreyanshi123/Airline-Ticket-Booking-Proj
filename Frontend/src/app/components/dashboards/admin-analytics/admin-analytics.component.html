@@ -1,0 +1,407 @@
+<!-- <h2 class="mb-4">Admin Analytics Dashboard</h2>
+ 
+<div class="row">
+<div class="col-md-6 mb-4">
+<h4>Daily Sales</h4>
+<ngx-charts-bar-vertical
+
+      [results]="dailySalesData"
+
+      [xAxis]="true"
+
+      [yAxis]="true"
+
+      [showXAxisLabel]="true"
+
+      [showYAxisLabel]="true"
+
+      xAxisLabel="Date"
+
+      yAxisLabel="Total Amount">
+</ngx-charts-bar-vertical>
+</div>
+ 
+  <div class="col-md-6 mb-4">
+<h4>Booking Trends</h4>
+<ngx-charts-line-chart
+
+      [results]="bookingTrendsData"
+
+      [xAxis]="true"
+
+      [yAxis]="true"
+
+      [showXAxisLabel]="true"
+
+      [showYAxisLabel]="true"
+
+      xAxisLabel="Date"
+
+      yAxisLabel="Bookings">
+</ngx-charts-line-chart>
+</div>
+ 
+  <div class="col-md-6 mb-4">
+<h4>Revenue Trends</h4>
+<ngx-charts-line-chart
+
+      [results]="revenueTrendsData"
+
+      [xAxis]="true"
+
+      [yAxis]="true"
+
+      [showXAxisLabel]="true"
+
+      [showYAxisLabel]="true"
+
+      xAxisLabel="Date"
+
+      yAxisLabel="Revenue">
+</ngx-charts-line-chart>
+</div>
+ 
+  <div class="col-md-6 mb-4">
+<h4>Cancellations</h4>
+<ngx-charts-bar-vertical
+
+      [results]="cancellationsData"
+
+      [xAxis]="true"
+
+      [yAxis]="true"
+
+      [showXAxisLabel]="true"
+
+      [showYAxisLabel]="true"
+
+      xAxisLabel="Date"
+
+      yAxisLabel="Cancellations">
+</ngx-charts-bar-vertical>
+</div>
+</div>
+
+  -->
+
+
+  <!-- admin-analytics.component.html -->
+<div class="dashboard-container">
+<!-- Header Section -->
+<div class="header">
+<h1 class="dashboard-title">Admin Analytics Dashboard</h1>
+<p class="dashboard-subtitle">Real-time insights and performance metrics</p>
+</div>
+ 
+  <!-- Loading Overlay -->
+<div class="loading-overlay" *ngIf="isLoading">
+<div class="spinner"></div>
+<p>Loading analytics data...</p>
+</div>
+ 
+  <!-- Dashboard Content -->
+<div class="dashboard-content" [class.hidden]="isLoading">
+<!-- Summary Statistics -->
+<div class="stats-grid">
+<div class="stat-card total-revenue" 
+
+           [attr.data-aos]="'fade-up'" 
+
+           [attr.data-aos-delay]="'100'">
+<div class="stat-header">
+<div class="stat-icon">💰</div>
+<div class="stat-trend positive">+12.5%</div>
+</div>
+<div class="stat-content">
+<h3 class="stat-title">Total Revenue</h3>
+<div class="stat-value">{{ formatCurrency(totalRevenue) }}</div>
+<p class="stat-description">From last month</p>
+</div>
+</div>
+ 
+      <div class="stat-card total-bookings" 
+
+           [attr.data-aos]="'fade-up'" 
+
+           [attr.data-aos-delay]="'200'">
+<div class="stat-header">
+<div class="stat-icon">📅</div>
+<div class="stat-trend positive">+8.3%</div>
+</div>
+<div class="stat-content">
+<h3 class="stat-title">Total Bookings</h3>
+<div class="stat-value">{{ totalBookings | number }}</div>
+<p class="stat-description">Bookings this period</p>
+</div>
+</div>
+ 
+      <div class="stat-card cancellation-rate" 
+
+           [attr.data-aos]="'fade-up'" 
+
+           [attr.data-aos-delay]="'300'">
+<div class="stat-header">
+<div class="stat-icon">❌</div>
+<div class="stat-trend negative">+2.1%</div>
+</div>
+<div class="stat-content">
+<h3 class="stat-title">Cancellation Rate</h3>
+<div class="stat-value">{{ formatPercentage(cancellationRate) }}</div>
+<p class="stat-description">Needs attention</p>
+</div>
+</div>
+ 
+      <div class="stat-card avg-sales" 
+
+           [attr.data-aos]="'fade-up'" 
+
+           [attr.data-aos-delay]="'400'">
+<div class="stat-header">
+<div class="stat-icon">📊</div>
+<div class="stat-trend positive">+15.7%</div>
+</div>
+<div class="stat-content">
+<h3 class="stat-title">Avg. Daily Sales</h3>
+<div class="stat-value">{{ formatCurrency(avgDailySales) }}</div>
+<p class="stat-description">Per day average</p>
+</div>
+</div>
+</div>
+ 
+    <!-- Charts Grid -->
+<div class="charts-grid">
+<!-- Daily Sales Chart -->
+<div class="chart-card" 
+
+           [attr.data-aos]="'fade-up'" 
+
+           [attr.data-aos-delay]="'500'">
+<div class="chart-header">
+<h3 class="chart-title">📈 Daily Sales Trend</h3>
+<div class="chart-actions">
+<button class="chart-action-btn" (click)="refreshData()">🔄</button>
+</div>
+</div>
+<div class="chart-container">
+<ngx-charts-line-chart
+
+            [view]="view"
+
+            [results]="dailySalesData"
+
+            [gradient]="gradient"
+
+            [xAxis]="showXAxis"
+
+            [yAxis]="showYAxis"
+
+            [legend]="showLegend"
+
+            [showXAxisLabel]="showXAxisLabel"
+
+            [showYAxisLabel]="showYAxisLabel"
+
+            [xAxisLabel]="xAxisLabel"
+
+            [yAxisLabel]="'Sales ($)'"
+
+            [timeline]="timeline"
+
+            [scheme]="colorScheme"
+
+            [animations]="animations"
+
+            (select)="onSelect($event)"
+
+            (activate)="onActivate($event)"
+
+            (deactivate)="onDeactivate($event)">
+</ngx-charts-line-chart>
+</div>
+</div>
+ 
+      <!-- Booking Trends Chart -->
+<div class="chart-card" 
+
+           [attr.data-aos]="'fade-up'" 
+
+           [attr.data-aos-delay]="'600'">
+<div class="chart-header">
+<h3 class="chart-title">📊 Booking Trends</h3>
+<div class="chart-actions">
+<button class="chart-action-btn" (click)="refreshData()">🔄</button>
+</div>
+</div>
+<div class="chart-container">
+<ngx-charts-bar-vertical
+
+            [view]="view"
+
+            [results]="bookingTrendsData"
+
+            [gradient]="gradient"
+
+            [xAxis]="showXAxis"
+
+            [yAxis]="showYAxis"
+
+            [legend]="false"
+
+            [showXAxisLabel]="showXAxisLabel"
+
+            [showYAxisLabel]="showYAxisLabel"
+
+            [xAxisLabel]="xAxisLabel"
+
+            [yAxisLabel]="'Bookings'"
+
+            [scheme]="colorScheme"
+
+            [animations]="animations"
+
+            (select)="onSelect($event)"
+
+            (activate)="onActivate($event)"
+
+            (deactivate)="onDeactivate($event)">
+</ngx-charts-bar-vertical>
+</div>
+</div>
+ 
+      <!-- Revenue Trends Chart -->
+<div class="chart-card" 
+
+           [attr.data-aos]="'fade-up'" 
+
+           [attr.data-aos-delay]="'700'">
+<div class="chart-header">
+<h3 class="chart-title">💹 Revenue Growth</h3>
+<div class="chart-actions">
+<button class="chart-action-btn" (click)="refreshData()">🔄</button>
+</div>
+</div>
+<div class="chart-container">
+<ngx-charts-area-chart
+
+            [view]="view"
+
+            [results]="revenueTrendsData"
+
+            [gradient]="gradient"
+
+            [xAxis]="showXAxis"
+
+            [yAxis]="showYAxis"
+
+            [legend]="showLegend"
+
+            [showXAxisLabel]="showXAxisLabel"
+
+            [showYAxisLabel]="showYAxisLabel"
+
+            [xAxisLabel]="xAxisLabel"
+
+            [yAxisLabel]="'Revenue ($)'"
+
+            [timeline]="timeline"
+
+            [scheme]="colorScheme"
+
+            [animations]="animations"
+
+            (select)="onSelect($event)"
+
+            (activate)="onActivate($event)"
+
+            (deactivate)="onDeactivate($event)">
+</ngx-charts-area-chart>
+</div>
+</div>
+ 
+      <!-- Cancellations Chart -->
+<div class="chart-card" 
+
+           [attr.data-aos]="'fade-up'" 
+
+           [attr.data-aos-delay]="'800'">
+<div class="chart-header">
+<h3 class="chart-title">🎯 Booking Status</h3>
+<div class="chart-actions">
+<button class="chart-action-btn" (click)="refreshData()">🔄</button>
+</div>
+</div>
+<div class="chart-container">
+<ngx-charts-pie-chart
+
+            [view]="[400, 300]"
+
+            [results]="cancellationsData"
+
+            [gradient]="gradient"
+
+            [legend]="showLegend"
+
+            [legendPosition]="legendPosition"
+
+            [labels]="true"
+
+            [doughnut]="doughnut"
+
+            [scheme]="colorScheme"
+
+            [animations]="animations"
+
+            (select)="onSelect($event)"
+
+            (activate)="onActivate($event)"
+
+            (deactivate)="onDeactivate($event)">
+</ngx-charts-pie-chart>
+</div>
+</div>
+</div>
+ 
+    <!-- Insights Panel -->
+<div class="insights-panel" 
+
+         [attr.data-aos]="'fade-up'" 
+
+         [attr.data-aos-delay]="'900'">
+<div class="insights-header">
+<h3 class="insights-title">📈 Key Insights</h3>
+<button class="insights-refresh-btn" (click)="refreshData()">🔄</button>
+</div>
+<div class="insights-grid">
+<div class="insight-item success">
+<div class="insight-icon">🎉</div>
+<div class="insight-content">
+<h4>Revenue Peak</h4>
+<p>Highest sales recorded on weekends with 40% increase</p>
+</div>
+</div>
+<div class="insight-item info">
+<div class="insight-icon">⏰</div>
+<div class="insight-content">
+<h4>Booking Pattern</h4>
+<p>Most bookings occur between 10 AM - 2 PM</p>
+</div>
+</div>
+<div class="insight-item warning">
+<div class="insight-icon">⚠️</div>
+<div class="insight-content">
+<h4>Optimization Opportunity</h4>
+<p>Reduce cancellation rate by improving confirmation process</p>
+</div>
+</div>
+<div class="insight-item success">
+<div class="insight-icon">📊</div>
+<div class="insight-content">
+<h4>Growth Trend</h4>
+<p>Consistent 15% month-over-month revenue growth</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+ 

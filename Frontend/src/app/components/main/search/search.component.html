@@ -1,0 +1,96 @@
+<!-- flight-search.component.html -->
+<div class="flight-search-container">
+  <!-- Class Selection Navigation -->
+  <div class="booking__nav">
+    <span 
+      class="seat-class" 
+      [ngClass]="{ 'selected-green': selectedClass === 'Economy', 'default-blue': selectedClass !== 'Economy' }"
+      (click)="toggleClass('Economy')">
+      <i class="class-icon">✈</i>
+      Economy Class
+    </span>
+    <span 
+      class="seat-class" 
+      [ngClass]="{ 'selected-green': selectedClass === 'Business', 'default-blue': selectedClass !== 'Business' }"
+      (click)="toggleClass('Business')">
+      <i class="class-icon">⭐</i>
+      Business Class
+    </span>
+  </div>
+  
+  <!-- Flight Results Container -->
+  <div class="results-container">
+    <div class="results-header">
+      <div class="header-content">
+        <div class="title-section">
+          <h2 class="results-title">Flight Search Results</h2>
+          <p class="results-subtitle">Choose your perfect flight</p>
+        </div>
+        <div class="selected-class-badge">
+          <span class="badge-text">{{ selectedClass }} Class</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Flight Cards -->
+    <div class="flights-grid">
+      <div class="flight-card" *ngFor="let flight of flights; trackBy: trackByFlightId">
+        <div class="flight-card-header">
+          <div class="airline-info">
+            <div class="airline-logo">{{ flight.airline.charAt(0) }}</div>
+            <div class="airline-details">
+              <h4 class="airline-name">{{ flight.airline }}</h4>
+              <span class="flight-number">{{ flight.flightNumber }}</span>
+            </div>
+          </div>
+          <div class="flight-status" [ngClass]="getStatusClass(flight.status)">
+            <span class="status-text">{{ flight.status }}</span>
+          </div>
+        </div>
+        
+        <div class="flight-route">
+          <div class="route-point departure">
+            <div class="city-code">{{ getAirportCode(flight.origin) }}</div>
+            <div class="city-name">{{ flight.origin }}</div>
+            <div class="time">{{ formatTime(flight.departureDateTime) }}</div>
+            <div class="date">{{ formatDate(flight.departureDateTime) }}</div>
+          </div>
+          
+          <div class="route-line">
+            <div class="plane-icon">✈</div>
+            <div class="route-duration">{{ calculateDuration(flight.departureDateTime, flight.arrivalDateTime) }}</div>
+          </div>
+          
+          <div class="route-point arrival">
+            <div class="city-code">{{ getAirportCode(flight.destination) }}</div>
+            <div class="city-name">{{ flight.destination }}</div>
+            <div class="time">{{ formatTime(flight.arrivalDateTime) }}</div>
+            <div class="date">{{ formatDate(flight.arrivalDateTime) }}</div>
+          </div>
+        </div>
+        
+        <div class="flight-card-footer">
+          <div class="price-section">
+            <div class="price-amount">
+              <span class="currency">₹</span>
+              <span class="amount">{{ getCurrentPrice(flight) | number:'1.0-0' }}</span>
+            </div>
+            <div class="price-label">per person</div>
+          </div>
+          
+          <button class="book-btn" [routerLink]="['/booking', flight.id]" routerLinkActive="router-link-active"  (click)="BookFlight(flight.id)">
+            <span class="btn-text">Book Flight</span>
+            <i class="btn-arrow">→</i>
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- No flights message -->
+    <div class="no-flights" *ngIf="flights.length === 0">
+  <div class="no-flights-icon">✈</div>
+  <h3>No flights found</h3>
+  <p>Try searching on some other day.</p>
+</div>
+  </div>
+</div>
