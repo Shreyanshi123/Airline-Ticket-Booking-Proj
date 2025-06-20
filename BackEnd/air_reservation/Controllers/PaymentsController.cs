@@ -4,6 +4,7 @@ using air_reservation.Repository.Payment_Repo;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace air_reservation.Controllers
 {
@@ -12,10 +13,12 @@ namespace air_reservation.Controllers
     public class PaymentsController : ControllerBase
     {
         private readonly IPaymentService _paymentService;
+        private readonly IHubContext<NotificationHub> _hubContext;
 
-        public PaymentsController(IPaymentService paymentService)
+        public PaymentsController(IPaymentService paymentService, IHubContext<NotificationHub> hubContext)
         {
             _paymentService = paymentService;
+            _hubContext = hubContext;
         }
 
         [HttpPost("process")]
@@ -25,10 +28,16 @@ namespace air_reservation.Controllers
             {
                 var result = await _paymentService.ProcessPaymentAsync(processPaymentDto);
                 if (result.Status == PaymentStatus.Failed)
+                {
                     return BadRequest("Payment failed. Please try again.");
 
+                }
+                else
+                {
+                    await _hubContext.Clients.All.SendAsync("ReceiveNotification", $"Flight {result.Status} has been booked and paid ");
+                    return Ok(result);
+                }
 
-                return Ok(result);
             }
             catch (InvalidOperationException ex)
             {

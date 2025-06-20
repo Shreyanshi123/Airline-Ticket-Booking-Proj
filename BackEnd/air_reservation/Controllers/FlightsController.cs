@@ -102,6 +102,9 @@ namespace air_reservation.Controllers
             return Ok(flights);
         }
 
+
+
+
         [HttpGet("search")]
         public async Task<ActionResult<List<FlightDTO>>> SearchFlights([FromQuery] FlightSearchDTO searchDto)
         {
@@ -142,7 +145,7 @@ namespace air_reservation.Controllers
             if (updatedFlight == null)
                 return NotFound();
             // ✅ Notify users of general updates
-            await _hubContext.Clients.All.SendAsync("ReceiveNotification", $"Flight {updatedFlight.FlightNumber} details have been updated!");
+            await _hubContext.Clients.All.SendAsync("ReceiveNotification", $"Flight {updatedFlight.Airline} details have been updated! with origin {updatedFlight.Origin} and destination {updatedFlight.Destination}");
 
 
             return Ok(updatedFlight);

@@ -8,6 +8,7 @@ using air_reservation.Repository.Reservation_Repo;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
@@ -22,16 +23,17 @@ namespace air_reservation.Controllers
     public class ReservationsController : ControllerBase
 
     {
-
+        private readonly IHubContext<NotificationHub> _hubContext;
         private readonly IReservationService _reservationService;
         private readonly ApplicationDbContext _context;
 
-        public ReservationsController(IReservationService reservationService, ApplicationDbContext context)
+        public ReservationsController(IReservationService reservationService, ApplicationDbContext context, IHubContext<NotificationHub> hubContext)
 
         {
 
             _reservationService = reservationService;
             _context = context;
+            _hubContext = hubContext;
 
         }
 
@@ -96,7 +98,10 @@ namespace air_reservation.Controllers
 
                 var reservation = await _reservationService.CreateReservationAsync(userId, createReservationDto);
 
-                return CreatedAtAction(nameof(GetReservation), new { id = reservation.Id }, reservation);
+                await _hubContext.Clients.All.SendAsync("ReceiveNotification", $"Flight {reservation?.Flight?.Airline} has been booked for origin {reservation?.Flight?.Origin} and destination {reservation?.Flight?.Destination}");
+
+
+                return CreatedAtAction(nameof(GetReservation), new { id = reservation?.Id }, reservation);
 
             }
 

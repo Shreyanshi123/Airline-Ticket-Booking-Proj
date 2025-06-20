@@ -4,6 +4,7 @@ import { AuthService } from "../../../services/auth.service"
 import { CommonModule } from "@angular/common"
 import { Subject, takeUntil, filter } from "rxjs"
 import { FormsModule } from "@angular/forms"
+import { SignalrService } from "../../../services/signalr.service"
 
 interface NavItem {
   label: string
@@ -39,6 +40,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   userAvatar = ""
   userEmail = ""
   hasToken = false
+  notifications: any;
+  showNotifications = false;
 
   // Navigation items
   defaultNavItems: NavItem[] = [
@@ -70,12 +73,211 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   // Notifications
   hasNotifications = true
-  notificationCount = 3
+  notificationCount = 0
+  // notifications :any;
+  newNotification:any;
+  // Add these properties to your component
+// showNotifications = false;
+
+// Sample notifications data structure to work with your SignalR notifications
+sampleNotifications = [
+  {
+    message: "Your flight SKW123 to Mumbai has been confirmed",
+    timestamp: new Date(Date.now() - 2 * 60 * 1000), // 2 minutes ago
+    isUnread: true,
+    isNew: true,
+    type: 'booking'
+  },
+  {
+    message: "Check-in is now open for flight SKW456",
+    timestamp: new Date(Date.now() - 30 * 60 * 1000), // 30 minutes ago
+    isUnread: true,
+    isNew: false,
+    type: 'system'
+  },
+  {
+    message: "Special offer: 20% off on domestic flights",
+    timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 hours ago
+    isUnread: false,
+    isNew: false,
+    type: 'promotion'
+  }
+];
+
+// Add these methods to your component class
+
+toggleNotifications(): void {
+  this.showNotifications = !this.showNotifications;
+}
+
+// Track notifications for *ngFor performance
+trackNotification(index: number, notification: any): any {
+  return notification.timestamp || index;
+}
+
+// Get notification title - handles both string messages and object notifications
+getNotificationTitle(notification: any): string {
+  if (typeof notification === 'string') {
+    return notification.length > 50 ? notification.substring(0, 50) + '...' : notification;
+  }
+  return notification.title || notification.message || 'New Notification';
+}
+
+// Get notification message
+getNotificationMessage(notification: any): string {
+  if (typeof notification === 'string') {
+    return notification;
+  }
+  return notification.message || notification.title || 'You have a new notification';
+}
+
+// Get notification type for styling
+getNotificationType(notification: any): string {
+  if (typeof notification === 'string') {
+    // Try to determine type from message content
+    const message = notification.toLowerCase();
+    if (message.includes('flight') || message.includes('booking') || message.includes('confirmed')) {
+      return 'booking';
+    } else if (message.includes('offer') || message.includes('discount') || message.includes('%')) {
+      return 'promotion';
+    }
+    return 'system';
+  }
+  return notification.type || 'system';
+}
+
+// Get notification avatar
+getNotificationAvatar(notification: any): string {
+  const type = this.getNotificationType(notification);
+  switch (type) {
+    case 'booking':
+      return '✈️';
+    case 'promotion':
+      return '🎉';
+    case 'system':
+      return '📢';
+    default:
+      return '📬';
+  }
+}
+
+// Format time ago
+getTimeAgo(notification: any): string {
+  let timestamp: Date;
+  
+  if (typeof notification === 'string') {
+    // For string notifications, use current time
+    timestamp = new Date();
+  } else {
+    timestamp = notification.timestamp || new Date();
+  }
+  
+  const now = new Date();
+  const diffInSeconds = Math.floor((now.getTime() - timestamp.getTime()) / 1000);
+  
+  if (diffInSeconds < 60) {
+    return 'Just now';
+  } else if (diffInSeconds < 3600) {
+    const minutes = Math.floor(diffInSeconds / 60);
+    return `${minutes}m ago`;
+  } else if (diffInSeconds < 86400) {
+    const hours = Math.floor(diffInSeconds / 3600);
+    return `${hours}h ago`;
+  } else {
+    const days = Math.floor(diffInSeconds / 86400);
+    return `${days}d ago`;
+  }
+}
+
+// Handle notification click
+onNotificationClick(notification: any, index?: number): void {
+  // Mark as read if it's unread
+  if (typeof notification === 'object' && notification.isUnread) {
+    notification.isUnread = false;
+    notification.isNew = false;
+    this.updateNotificationCount();
+  }
+  
+  // Handle navigation or action based on notification type
+  const type = this.getNotificationType(notification);
+  switch (type) {
+    case 'booking':
+      // Navigate to booking details
+      this.router.navigate(['/booking-history']);
+      break;
+    case 'system':
+      // Handle system notification
+      console.log('System notification clicked');
+      break;
+    case 'promotion':
+      // Navigate to offers page
+      this.router.navigate(['/offers']);
+      break;
+  }
+  
+  this.showNotifications = false;
+}
+
+// Mark all notifications as read
+markAllAsRead(): void {
+  this.notifications.forEach((notification: any) => {
+    if (typeof notification === 'object') {
+      notification.isUnread = false;
+      notification.isNew = false;
+    }
+  });
+  this.updateNotificationCount();
+}
+
+// Clear all notifications
+clearAllNotifications(): void {
+  this.notifications = [];
+  this.notificationCount = 0;
+  this.hasNotifications = false;
+}
+
+// View all notifications (navigate to dedicated page)
+viewAllNotifications(): void {
+  this.router.navigate(['/notifications']);
+  this.showNotifications = false;
+}
+
+// Update notification count
+private updateNotificationCount(): void {
+  this.notificationCount = this.notifications.filter((notification: any) => {
+    return typeof notification === 'string' || notification.isUnread;
+  }).length;
+  this.hasNotifications = this.notificationCount > 0;
+}
+
+// Enhanced ngOnInit to handle notification processing
+
+// Determine notification type from message content
+private determineNotificationType(message: string): string {
+  const lowerMessage = message.toLowerCase();
+  
+  if (lowerMessage.includes('flight') || 
+  lowerMessage.includes('booking') || 
+  lowerMessage.includes('confirmed') ||
+  lowerMessage.includes('check-in')) {
+    return 'booking';
+  } else if (lowerMessage.includes('offer') || 
+  lowerMessage.includes('discount') || 
+  lowerMessage.includes('%') ||
+  lowerMessage.includes('sale')) {
+    return 'promotion';
+  }
+  
+  return 'system';
+}
+
+
+
 
   // Scroll threshold for header styling
   private scrollThreshold = 50
 
-  constructor() {
+  constructor(private signalRService: SignalrService) {
     this.router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),
@@ -86,8 +288,43 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.closeUserMenu()
       })
   }
+//  toggleNotifications(): void {
+//     this.showNotifications = !this.showNotifications;
+//   }
 
   ngOnInit(): void {
+  //   this.signalRService.startConnection().then(()=>{
+  //     this.signalRService.listenForNotifications((message: string) => {
+  //     this.notifications.unshift(message); // ✅ Add latest notification at the top
+  //   });
+  // })
+
+   this.notifications = [...this.sampleNotifications];
+  this.updateNotificationCount();
+  
+  this.signalRService.startConnection().then(() => {
+    this.signalRService.listenForNotifications((message: string) => {
+      // Create notification object from SignalR message
+      const newNotification = {
+        message: message,
+        timestamp: new Date(),
+        isUnread: true,
+        isNew: true,
+        type: this.determineNotificationType(message)
+      };
+      
+      this.notifications.unshift(newNotification);
+      this.updateNotificationCount();
+      
+      // Remove 'new' flag after 5 seconds
+      setTimeout(() => {
+        if (newNotification.isNew) {
+          newNotification.isNew = false;
+        }
+      }, 5000);
+    });
+  });
+
     this.checkLoginStatus()
     this.checkTokenPresence()
     this.checkScrollPosition()
@@ -129,6 +366,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       }
     })
   }
+
 
   ngOnDestroy(): void {
     this.destroy$.next()
@@ -212,9 +450,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.isUserMenuOpen = false
   }
 
-  toggleNotifications(): void {
-    console.log("Toggle notifications")
-  }
+  // toggleNotifications(): void {
+  //   console.log("Toggle notifications")
+  // }
 
   navigateToProfile(): void {
     console.log('Navigate to profile');
@@ -276,4 +514,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.closeUserMenu()
     this.router.navigate(['/userprofile'])
   }
+
+
+
+  
 }

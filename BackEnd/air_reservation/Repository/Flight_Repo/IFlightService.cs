@@ -6,8 +6,8 @@ namespace air_reservation.Repository.Flight_Repo
     {
 
         Task<bool> UpdateFlightTimesAsync(int flightId, DateTime? newDepartureDate, DateTime? newArrivalDate);
-       
-            Task<List<PopularFlightDTO>> GetPopularFlightsAsync();
+        //Task<List<FlightDTO>> GetPopularFlightsDataAsync();
+        Task<List<PopularFlightDTO>> GetPopularFlightsAsync();
             Task<List<FlightDTO>> SearchFlightsAsync(FlightSearchDTO searchDto);
         Task<FlightDTO> GetFlightByIdAsync(int flightId);
         Task<List<FlightDTO>> GetAllFlightsAsync();

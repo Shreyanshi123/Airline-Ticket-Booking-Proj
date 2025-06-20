@@ -47,6 +47,23 @@ namespace air_reservation.Repository.Flight_Repo
             await _context.SaveChangesAsync();
             return true;
         }
+
+        //public async Task<List<FlightDTO>> GetPopularFlightsDataAsync()
+        //{
+        //    var popularFlights = await _context.Reservations
+        //       .GroupBy(r => new { r.Flight.Origin, r.Flight.Destination })
+        //       .Select(g => new PopularFlightDTO
+        //       {
+        //           Origin = g.Key.Origin,
+        //           Destination = g.Key.Destination,
+        //           TotalReservations = g.Count()
+        //       })
+        //       .OrderByDescending(f => f.TotalReservations)
+        //       .Take(10) // Fetch top 10 most booked routes
+        //       .ToListAsync();
+
+        //    return popularFlights;
+        //}
         public async Task<List<PopularFlightDTO>> GetPopularFlightsAsync()
         {
             var popularFlights = await _context.Reservations
