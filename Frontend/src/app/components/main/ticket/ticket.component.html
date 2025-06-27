@@ -152,11 +152,12 @@
   <!-- Barcode Section -->
   <div class="barcode-section">
     <div class="barcode-container">
-      <div class="barcode">
+       <canvas id="barcodeCanvas"></canvas> <!-- ✅ Barcode will be generated here -->
+      <!-- <div class="barcode">
         <div class="barcode-lines">
           <div *ngFor="let line of barcodeLines" class="barcode-line" [style.width.px]="line.width"></div>
         </div>
-      </div>
+      </div> -->
       <div class="barcode-text">{{ bookingInfo?.bookingReference || 'AR123456789' }}</div>
     </div>
   </div>

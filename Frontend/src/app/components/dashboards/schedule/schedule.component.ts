@@ -120,7 +120,7 @@ import { CommonModule } from '@angular/common';
 
 import { Component, OnInit } from '@angular/core';
 
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { FlightsService } from '../../../services/flights.service';
 
@@ -132,7 +132,7 @@ import { Router } from '@angular/router';
 
   standalone: true,
 
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule,FormsModule],
 
   templateUrl: './schedule.component.html',
 
@@ -143,6 +143,11 @@ import { Router } from '@angular/router';
 export class ScheduleComponent implements OnInit {
 
   notifications: string[] = [];
+
+originQuery: string = '';
+destinationQuery: string = '';
+filteredScheduleList :any[] =[];
+
 
   scheduleForm: FormGroup;
 
@@ -225,6 +230,7 @@ export class ScheduleComponent implements OnInit {
           console.log(data);
 
           this.scheduleList = data;
+              this.filteredScheduleList = data; // ✅
 
           this.isLoading = false;
 
@@ -242,9 +248,34 @@ export class ScheduleComponent implements OnInit {
 
   }
  
+   
+filterFlights(): void {
+  const origin = this.originQuery.toLowerCase().trim();
+  const destination = this.destinationQuery.toLowerCase().trim();
+
+  if (!origin && !destination) {
+    this.filteredScheduleList = this.scheduleList;
+    return;
+  }
+
+this.filteredScheduleList = this.scheduleList.filter((flight: any) => {
+    const flightOrigin = flight.origin.toLowerCase();
+    const flightDestination = flight.destination.toLowerCase();
+
+    return (
+      (!origin || flightOrigin.includes(origin)) &&
+      (!destination || flightDestination.includes(destination))
+    );
+  });
+
+
+  console.log("🔍 Filtered Flights:", this.filteredScheduleList);
+}
+
+
   onEdit(flightId: any): void {
 
-    this.router.navigate(['dashboard/dashboard/editFlight', flightId]);
+    this.router.navigate(['dashboard/editFlight', flightId]);
 
   }
  
@@ -252,7 +283,7 @@ export class ScheduleComponent implements OnInit {
 
     console.log(flightId);
 
-    this.router.navigate(['dashboard/dashboard/rescheduleFlight', flightId]);
+    this.router.navigate(['dashboard/rescheduleFlight', flightId]);
 
   }
  

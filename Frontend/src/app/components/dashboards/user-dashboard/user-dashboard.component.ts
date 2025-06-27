@@ -183,6 +183,12 @@ export class UserDashboardComponent implements OnInit {
   successMessage: string = '';
   errorMessage: string = '';
 
+// Edit user state
+  editingUser: any | null = null;
+  editUserData: any = { firstName: '', lastName: '', email: '', phoneNumber: '', role: 0 };
+
+
+
   constructor(private userService: UsersService) { }
 
   ngOnInit(): void {
@@ -209,6 +215,13 @@ export class UserDashboardComponent implements OnInit {
         }
       });
   }
+
+//  // Open edit form
+//   openEditForm(user: any): void {
+//     this.editingUser = user;
+//     this.editUserData = { ...user }; // Clone user data
+//   }
+
 
   deleteUser(userId: number): void {
     if (!confirm("Are you sure you want to delete this user? This action cannot be undone.")) {

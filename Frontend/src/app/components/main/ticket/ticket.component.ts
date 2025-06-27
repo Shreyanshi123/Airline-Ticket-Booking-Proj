@@ -2,6 +2,8 @@ import { CommonModule } from "@angular/common"
 import { Component, Input, type OnInit } from "@angular/core"
 import jsPDF from "jspdf"
 import html2canvas from "html2canvas"
+import JsBarcode from "jsbarcode";
+
 
 interface BarcodeLine {
   width: number
@@ -10,7 +12,6 @@ interface BarcodeLine {
 @Component({
   selector: "app-ticket",
   standalone: true,
-
   imports: [CommonModule],
   templateUrl: "./ticket.component.html",
   styleUrls: ["./ticket.component.css"],
@@ -22,21 +23,32 @@ export class TicketComponent implements OnInit {
   barcodeLines: BarcodeLine[] = []
 
   ngOnInit(): void {
-    this.generateBarcode()
+    // this.generateBarcode()
+  }
+
+   ngAfterViewInit(): void {
+    this.generateBarcode();
   }
 
   /**
    * Generate barcode lines for visual effect
    */
   generateBarcode(): void {
-    const lineCount = 60
-    this.barcodeLines = []
-
-    for (let i = 0; i < lineCount; i++) {
-      // Generate random width between 1 and 4 pixels
-      const width = Math.floor(Math.random() * 4) + 1
-      this.barcodeLines.push({ width })
+    const barcodeCanvas = document.getElementById("barcodeCanvas") as HTMLCanvasElement;
+    if (!barcodeCanvas) {
+      console.error("❌ Barcode canvas not found!");
+      return;
     }
+
+    JsBarcode(barcodeCanvas, this.bookingInfo?.bookingReference || "AR123456789", {
+      format: "CODE128",
+      width: 2,
+      height: 40,
+      displayValue: true,
+      lineColor: "#000", // ✅ Ensure barcode lines are visible
+      background: "#fff", // ✅ Set background color
+    });
+
   }
 
   /**
@@ -164,6 +176,9 @@ export class TicketComponent implements OnInit {
         const y = 10
 
         pdf.addImage(imgData, "PNG", x, y, imgWidth, imgHeight)
+
+    
+
 
         // Generate filename with booking reference
         const filename = `flight_ticket_${this.bookingInfo?.bookingReference || "AR123456"}.pdf`

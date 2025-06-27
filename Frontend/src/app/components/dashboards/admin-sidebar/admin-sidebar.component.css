@@ -37,7 +37,7 @@
 
 .sidebar {
 
-  width: 280px;
+  width: 17vw;
 
   height: 100vh;
 
@@ -218,6 +218,7 @@
   padding: 1rem 0;
 
   overflow-y: auto;
+  
 
   scrollbar-width: none;
 
@@ -396,6 +397,7 @@
   margin-top: auto;
 
 }
+
  
 .user-profile {
 
@@ -548,3 +550,28 @@
 .logout-btn:hover {
   background: #dc2626;
 }
+
+:host {
+  display: block;
+  width: 260px;
+  height: 100vh;
+  background: white;
+  box-shadow: none; /* Remove shadow if not needed */
+  position: fixed;
+  top: 0;
+  left: 0;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+  z-index: 1000;
+  overflow-y: auto;
+  border-right: none; /* Ensure no border */
+}
+
+
+:host(.open) {
+  transform: translateX(0);
+  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.1); /* Optional */
+}
+
+
+

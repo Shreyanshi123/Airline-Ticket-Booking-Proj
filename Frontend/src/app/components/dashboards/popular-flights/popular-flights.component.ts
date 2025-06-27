@@ -154,6 +154,7 @@ export class PopularFlightsComponent implements OnInit {
       next: (data) => {
         this.popularFlights = data;
         this.processChartData(data);
+          this.calculateStats();
         this.loading = false;
       },
       error: (err) => {
@@ -203,10 +204,10 @@ export class PopularFlightsComponent implements OnInit {
   }
 
   getPopularityLevel(reservations: number): string {
-    if (reservations >= 200) return 'Very High';
-    if (reservations >= 150) return 'High';
-    if (reservations >= 100) return 'Medium';
-    if (reservations >= 50) return 'Low';
+    if (reservations >= 20) return 'Very High';
+    if (reservations >= 15) return 'High';
+    if (reservations >= 10) return 'Medium';
+    if (reservations >= 5) return 'Low';
     return 'Very Low';
   }
 

@@ -146,6 +146,15 @@ namespace air_reservation.Models.Reservation_Model_
         }
     }
 
+
+    public class CreateRoundTripReservationDTO
+    {
+        public int OutboundFlightId { get; set; }
+        public int ReturnFlightId { get; set; }
+        public List<PassengerDTO> Passengers { get; set; }
+    }
+
+
     public class ReservationHistoryFilterDTO
     {
         public JourneyType? JourneyType { get; set; }

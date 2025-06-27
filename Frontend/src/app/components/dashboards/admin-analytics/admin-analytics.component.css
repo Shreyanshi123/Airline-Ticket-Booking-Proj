@@ -20,9 +20,9 @@
 
   --glass-border: rgba(255, 255, 255, 0.2);
 
-  --text-primary: #ffffff;
+  --text-primary: #000000;
 
-  --text-secondary: rgba(255, 255, 255, 0.8);
+  --text-secondary: rgba(0, 0, 0, 0.8);
 
   --shadow-lg: 0 25px 50px rgba(0, 0, 0, 0.3);
 
@@ -73,6 +73,7 @@
   margin-bottom: 3rem;
 
   animation: slideDown 0.8s ease-out;
+  color: black;
 
 }
  
@@ -82,7 +83,7 @@
 
   font-weight: 800;
 
-  background: linear-gradient(45deg, #fff, #e0e7ff);
+  background: linear-gradient(45deg, #030000, #e0e7ff);
 
   -webkit-background-clip: text;
 
@@ -267,6 +268,8 @@
   align-items: flex-start;
 
   margin-bottom: 1.5rem;
+  
+  
 
 }
 
@@ -369,7 +372,7 @@
 
   -webkit-background-clip: text;
 
-  -webkit-text-fill-color: transparent;
+  /* -webkit-text-fill-color: transparent; */
 
   background-clip: text;
 
@@ -575,4 +578,3 @@
 
 }
 
- 

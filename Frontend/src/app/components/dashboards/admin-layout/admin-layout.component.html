@@ -154,60 +154,23 @@
 
 <div class="admin-container">
   <!-- Sidebar Component -->
-  <app-admin-sidebar [class.open]="sidebarOpen"></app-admin-sidebar>
+  <app-admin-sidebar [class.open]="sidebarOpen" class="sidebar"></app-admin-sidebar>
 
-  <!-- Mobile Overlay -->
-  <div class="mobile-overlay" [class.active]="sidebarOpen" (click)="closeSidebar()"></div>
+ 
 
   <!-- Main Content Area -->
   <div class="admin-content">
     <!-- Top Header Bar -->
    
+
+    <button class="sidebar-toggle-btn" (click)="toggleSidebar()">☰</button>
+
     <!-- Main Content Wrapper -->
     <main class="content-wrapper">
-      <div class="content-inner">
-        
-        <!-- Default Dashboard Content -->
-        <!-- <div class="dashboard-overview" *ngIf="showDefaultContent">
-          <!-- Stats Cards -->
-          <!-- <div class="stats-grid">
-            <div class="stat-card" *ngFor="let stat of dashboardStats">
-              <div class="stat-icon" [style.background]="stat.color">{{ stat.icon }}</div>
-              <div class="stat-content">
-                <h3 class="stat-value">{{ stat.value }}</h3>
-                <p class="stat-label">{{ stat.label }}</p>
-                <span class="stat-change" [class]="stat.changeType">{{ stat.change }}</span>
-              </div>
-            </div>
-          </div> -->
-
-          <!-- Recent Activity -->
-         <!-- <div class="activity-section" *ngIf="recentActivities.length > 0">
-  <div class="activity-card">
-    <div class="card-header">
-      <h3>Recent Activity</h3>
-      <a href="#" class="view-all">View All</a>
-    </div>
-    <div class="activity-list">
-      <div class="activity-item" *ngFor="let activity of recentActivities">
-        <div class="activity-icon" [style.background]="activity.iconColor">
-          {{ activity.icon }}
-        </div>
-        <div class="activity-content">
-          <p class="activity-text">{{ activity.text }}</p>
-          <span class="activity-time">{{ activity.time }}</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-        </div>  -->
-
           <div class="content-inner">
-        <router-outlet></router-outlet> <!-- ✅ Displays the correct content -->
-      </div>
-
+        <router-outlet></router-outlet> 
       </div>
     </main>
   </div>
 </div>
+

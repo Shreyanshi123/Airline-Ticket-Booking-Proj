@@ -20,7 +20,8 @@
 </button>
 </div>
 <div class="sidebar-content">
-<ul class="menu-list">
+<div class="menu-scrollable">
+  <ul class="menu-list">
 <li *ngFor="let item of menuItems" class="menu-item">
 <a [routerLink]="item.route" routerLinkActive="active" class="menu-link">
 <span class="menu-icon">{{ item.icon }}</span>
@@ -29,6 +30,7 @@
 </a>
 </li>
 </ul>
+</div>
 </div>
 <div class="sidebar-footer">
 <div class="user-profile">

@@ -192,10 +192,12 @@
                   <span>Or continue with</span>
                 </div>
                 <div class="social-buttons">
-                  <button type="button" class="social-btn google-btn">
+                  <div id="google-signin-button">
+                      <button type="button" class="social-btn google-btn" (click)="signInWithGoogle()">
                     <i class="fab fa-google"></i>
                     <span>Google</span>
                   </button>
+                  </div>
                   <button type="button" class="social-btn facebook-btn">
                     <i class="fab fa-facebook-f"></i>
                     <span>Facebook</span>

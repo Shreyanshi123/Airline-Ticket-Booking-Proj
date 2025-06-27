@@ -1,4 +1,5 @@
 ﻿using air_reservation.Models.Users_Model_;
+using air_reservation.Repository;
 using air_reservation.Repository.Login_Repo;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +12,12 @@ namespace air_reservation.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
+        //private readonly ApiService _apiService;
 
         public AuthController(IAuthService authService)
         {
             _authService = authService;
+            //_apiService = apiService;
         }
 
         // ✅ Function to Verify CAPTCHA
@@ -54,6 +57,26 @@ namespace air_reservation.Controllers
                 return Unauthorized(new { message = ex.Message });
             }
         }
+
+        [HttpPost("google-login")]
+        public async Task<ActionResult<AuthResponseDTO>> GoogleLogin([FromBody] GoogleLoginDTO request)
+        {
+            try
+            {
+                var result = await _authService.LoginWithGoogleAsync(request.IdToken);
+                return Ok(result);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(new { message = ex.Message });
+            }
+        }
+
+    public class GoogleLoginDTO
+    {
+        public string IdToken { get; set; }
+    }
+
 
         [HttpPost("register")]
         public async Task<ActionResult<AuthResponseDTO>> Register([FromBody] RegisterDTO registerDto)

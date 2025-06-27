@@ -176,8 +176,8 @@
 <span class="destination">{{ route.destination }}</span>
 </div>
 <div class="route-stats">
-<span class="bookings">{{ route.count }} bookings</span>
-<span class="percentage">{{ ((route.count / popularRoutes[0].count) * 100).toFixed(0) }}%</span>
+<span class="bookings">{{ route.totalReservations }} bookings</span>
+<span class="percentage">{{ ((route.totalReservations / popularRoutes[0].totalReservations) * 100).toFixed(0) }}%</span>
 </div>
 </div>
 </div>
@@ -198,7 +198,7 @@
 </h3>
  
       <div class="quick-actions-grid">
-<a routerLink="/dashboard/dashboard/schedule" class="action-card">
+<a routerLink="/dashboard/schedule" class="action-card">
 <div class="action-icon">✈️</div>
 <div class="action-content">
 <h4>Flight Schedule</h4>
@@ -225,11 +225,11 @@
 <div class="action-arrow">→</div>
 </a>
  
-        <a routerLink="/dashboard/settings" class="action-card">
+        <a routerLink="/dashboard/addFlight" class="action-card">
 <div class="action-icon">⚙️</div>
 <div class="action-content">
-<h4>System Settings</h4>
-<p>Configure system preferences</p>
+<h4>Add Flights</h4>
+<p>Configure flight preferences</p>
 </div>
 <div class="action-arrow">→</div>
 </a>

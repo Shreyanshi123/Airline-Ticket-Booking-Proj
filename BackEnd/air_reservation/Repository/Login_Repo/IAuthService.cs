@@ -7,5 +7,6 @@ namespace air_reservation.Repository.Login_Repo
         Task<AuthResponseDTO> LoginAsync(LoginDTO loginDto);
         Task<AuthResponseDTO> RegisterAsync(RegisterDTO registerDto);
         string GenerateJwtToken(int userId, string email, UserRole role);
+        Task<AuthResponseDTO> LoginWithGoogleAsync(string idToken);
     }
 }

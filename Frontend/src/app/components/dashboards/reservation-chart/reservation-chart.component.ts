@@ -189,6 +189,7 @@ Chart.register(...registerables);
     <div class="chart-header">
       <div class="flight-info">
         <h3 class="flight-number">{{ flightChart.flightNumber }}</h3>
+          <h3 class="flight-number">{{ flightChart.origin }} - {{flightChart.destination}}</h3>
         
         <!-- Flight Status Indicators -->
         <div class="flight-status-indicators">
@@ -522,7 +523,7 @@ Chart.register(...registerables);
   `]
 })
 export class ReservationChartComponent implements OnInit {
-  public flightCharts: { flightNumber: string; chartData: ChartData<'bar'> }[] = [];
+  public flightCharts: { flightNumber: string; origin:string;destination:string;chartData: ChartData<'bar'> }[] = [];
   
   public barChartOptions: ChartConfiguration['options'] = {
     responsive: true,
@@ -594,43 +595,94 @@ export class ReservationChartComponent implements OnInit {
   }
 
   loadReservationData(): void {
-    this.bookingService.getReservationStatusSummary().subscribe((data) => {
-      this.flightCharts = data.map((flight) => ({
+  this.bookingService.getReservationStatusSummary().subscribe((data) => {
+    console.log('Raw API Response:', data); // ✅ Debugging log
+
+    this.flightCharts = data.map((flight) => {
+      const statusLabels = ['Pending', 'Confirmed', 'Cancelled', 'Refunded'];
+
+      // ✅ Ensure all statuses exist
+      const statusData = statusLabels.map((label, index) => {
+        const statusEntry = flight.statusCounts.find((s: { status: number }) => s.status === index);
+        return statusEntry ? statusEntry.count : 0; // ✅ Default to 0 if missing
+      });
+
+      return {
         flightNumber: flight.flightNumber,
+        origin: flight.origin,
+        destination: flight.destination,
         chartData: {
-          labels: ['Confirmed', 'Pending', 'Cancelled', 'Refunded'],
+          labels: statusLabels,
           datasets: [
             {
               label: 'Reservations',
-              data: flight.statusCounts.map(
-                (s: { status: number; count: number }) => s.count
-              ),
+              data: statusData,
               backgroundColor: [
-                'rgba(39, 174, 96, 0.8)',   // Confirmed
                 'rgba(243, 156, 17, 0.8)',  // Pending
+                'rgba(39, 174, 96, 0.8)',   // Confirmed
                 'rgba(231, 76, 60, 0.8)',   // Cancelled
                 'rgba(52, 152, 219, 0.8)'   // Refunded
               ],
-              borderColor: [
-                '#27ae60',
-                '#f39c11', 
-                '#e74c3c',
-                '#3498db'
-              ],
+              borderColor: ['#f39c11', '#27ae60', '#e74c3c', '#3498db'],
               borderWidth: 2,
-              hoverBackgroundColor: [
-                '#27ae60',
-                '#f39c11',
-                '#e74c3c', 
-                '#3498db'
-              ],
+              hoverBackgroundColor: ['#f39c11', '#27ae60', '#e74c3c', '#3498db'],
               hoverBorderWidth: 3
             }
           ]
         }
-      }));
+      };
     });
-  }
+
+    console.log('Processed Flight Charts:', this.flightCharts); // ✅ Debugging log
+  });
+}
+  // loadReservationData(): void {
+
+  //   this.bookingService.getReservationStatusSummary().subscribe((data) => {
+  //     console.log(data);
+  //     data.forEach((flight) => {
+  //   console.log(`Processing flight: ${flight.flightNumber}`, flight.statusCounts); // ✅ Debugging log
+  // });
+
+
+  //     this.flightCharts = data.map((flight) => ({
+  //       flightNumber: flight.flightNumber,
+  //       origin:flight.origin,
+  //       destination:flight.destination,
+  //       chartData: {
+  //         labels: ['Confirmed', 'Pending', 'Cancelled', 'Refunded'],
+  //         datasets: [
+  //           {
+  //             label: 'Reservations',
+  //             data: flight.statusCounts.map(
+  //               (s: { status: number; count: number }) => s.count
+  //             ),
+  //             backgroundColor: [
+  //               'rgba(39, 174, 96, 0.8)',   // Confirmed
+  //               'rgba(243, 156, 17, 0.8)',  // Pending
+  //               'rgba(231, 76, 60, 0.8)',   // Cancelled
+  //               'rgba(52, 152, 219, 0.8)'   // Refunded
+  //             ],
+  //             borderColor: [
+  //               '#27ae60',
+  //               '#f39c11', 
+  //               '#e74c3c',
+  //               '#3498db'
+  //             ],
+  //             borderWidth: 2,
+  //             hoverBackgroundColor: [
+  //               '#27ae60',
+  //               '#f39c11',
+  //               '#e74c3c', 
+  //               '#3498db'
+  //             ],
+  //             hoverBorderWidth: 3
+  //           }
+  //         ]
+  //       }
+  //     }));
+  //   });
+  // }
 
   trackByFlightNumber(index: number, item: any): string {
     return item.flightNumber;

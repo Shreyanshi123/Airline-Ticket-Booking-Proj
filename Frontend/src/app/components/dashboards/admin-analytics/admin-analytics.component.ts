@@ -359,44 +359,73 @@ export class AdminAnalyticsComponent implements OnInit {
     });
  
     // Load Cancellations
+this.analyticsService.getCancellations().subscribe({
+  next: (data) => {
+    // ✅ Calculate total cancellations
+    const totalCancellations = data.reduce((sum, item) => sum + item.cancellations, 0);
 
-    this.analyticsService.getCancellations().subscribe({
+    // ✅ Ensure totalBookings is calculated before using it
+    this.calculateTotalBookings(); // Call function to get total bookings
 
-      next: (data) => {
+    // ✅ Calculate confirmed bookings
+    const confirmedBookings = this.totalBookings - totalCancellations;
 
-        this.cancellationsData = [
+    // ✅ Prepare data for pie chart
+    this.cancellationsData = [
+      { name: 'Confirmed', value: confirmedBookings },
+      { name: 'Cancelled', value: totalCancellations }
+    ];
 
-          {
+    console.log('Total Bookings:', this.totalBookings);
+    console.log('Total Cancellations:', totalCancellations);
+    console.log('Confirmed Bookings:', confirmedBookings);
 
-            name: 'Confirmed',
+    this.calculateCancellationRate();
+  },
+  error: (error) => console.error('Error loading cancellations:', error),
+  complete: () => {
+    this.isLoading = false;
+  }
+});
 
-            value: data.reduce((sum, item) => sum + (item.totalBookings - item.cancellations), 0)
 
-          },
+    // this.analyticsService.getCancellations().subscribe({
 
-          {
+    //   next: (data) => {
 
-            name: 'Cancelled',
+    //     this.cancellationsData = [
 
-            value: data.reduce((sum, item) => sum + item.cancellations, 0)
+    //       {
 
-          }
+    //         name: 'Confirmed',
 
-        ];
+    //         value: data.reduce((sum, item) => sum + (item.totalBookings - item.cancellations), 0)
 
-        this.calculateCancellationRate();
+    //       },
 
-      },
+    //       {
 
-      error: (error) => console.error('Error loading cancellations:', error),
+    //         name: 'Cancelled',
 
-      complete: () => {
+    //         value: data.reduce((sum, item) => sum + item.cancellations, 0)
 
-        this.isLoading = false;
+    //       }
 
-      }
+    //     ];
 
-    });
+    //     this.calculateCancellationRate();
+
+    //   },
+
+    //   error: (error) => console.error('Error loading cancellations:', error),
+
+    //   complete: () => {
+
+    //     this.isLoading = false;
+
+    //   }
+
+    // });
 
   }
  

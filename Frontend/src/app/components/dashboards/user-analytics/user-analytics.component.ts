@@ -209,6 +209,8 @@ export class UserAnalyticsComponent implements OnInit {
   roleDistribution: any[] = [];
   activeUserData: any[] = [];
   isLoading = true;
+  selectedView: 'daily' | 'weekly' = 'daily'; // ✅ Default to daily view
+// userSignupData: any[] = [];
 
   // Color schemes for charts
   barChartColorScheme = {
@@ -246,7 +248,7 @@ export class UserAnalyticsComponent implements OnInit {
           this.generateSignupData(users);
           this.generateRoleDistribution(users);
           this.generateActiveUserData(users);
-          
+       
           this.isLoading = false;
         },
         error: (error) => {
@@ -257,25 +259,53 @@ export class UserAnalyticsComponent implements OnInit {
     }, 1000); // 1 second delay for smooth loading experience
   }
 
+setView(view: 'daily' | 'weekly'): void {
+  this.selectedView = view;
+  this.generateSignupData(this.recentUsers); // ✅ Regenerate data based on selection
+}
+
+
   private generateSignupData(users: any[]): void {
     // Check if signup trends are generated correctly
     const signupMap: { [key: string]: number } = {};
     users.forEach(user => {
       if (user.createdAt) {
         const date = user.createdAt.split('T')[0];
-        signupMap[date] = (signupMap[date] || 0) + 1;
+        const weekStart = this.getWeekStartDate(date); // ✅ Get week start date
+
+          const key = this.selectedView === 'daily' ? date : weekStart; // ✅ Use daily or weekly grouping
+      signupMap[key] = (signupMap[key] || 0) + 1;
+
+        // signupMap[date] = (signupMap[date] || 0) + 1;
       }
     });
     
     this.userSignupData = Object.keys(signupMap)
       .sort() // Sort dates chronologically
       .map(date => ({
-        name: this.formatDate(date),
-        value: signupMap[date]
+        name: this.selectedView === 'daily' ? this.formatDate(date) : this.formatWeekLabel(date), // ✅ Format weekly labels
+      value: signupMap[date]
       }));
     
     console.log("📊 Signup Data Generated:", this.userSignupData);
   }
+
+  private formatWeekLabel(weekStart: string): string {
+  const startDate = new Date(weekStart);
+  const endDate = new Date(startDate);
+  endDate.setDate(startDate.getDate() + 6); // ✅ Get end of the week
+
+  return `${startDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${endDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
+}
+  // ✅ Helper function to get the start of the week
+private getWeekStartDate(dateStr: string): string {
+  const date = new Date(dateStr);
+  const dayOfWeek = date.getDay();
+  const offset = dayOfWeek === 0 ? -6 : 1 - dayOfWeek; // ✅ Move to Monday
+  date.setDate(date.getDate() + offset);
+
+  return date.toISOString().split('T')[0]; // ✅ Return formatted date
+}
 
   private generateRoleDistribution(users: any[]): void {
     // Role distribution

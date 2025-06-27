@@ -1,11 +1,14 @@
 ﻿using air_reservation.Data_Access_Layer;
 using air_reservation.Models.Registration_Model_;
 using air_reservation.Models.Users_Model_;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Google.Apis.Auth;
+
 
 namespace air_reservation.Repository.Login_Repo
 {
@@ -19,6 +22,45 @@ namespace air_reservation.Repository.Login_Repo
             _context = context;
             _configuration = configuration;
         }
+
+
+        public async Task<AuthResponseDTO> LoginWithGoogleAsync(string idToken)
+        {
+            var payload = await GoogleJsonWebSignature.ValidateAsync(idToken);
+            if (payload == null)
+                throw new UnauthorizedAccessException("Invalid Google token");
+
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == payload.Email);
+            if (user == null)
+            {
+                user = new User
+                {
+                    Email = payload.Email,
+                    FirstName = payload.GivenName,
+                    LastName = payload.FamilyName,
+                    Password = BCrypt.Net.BCrypt.HashPassword(Guid.NewGuid().ToString()), // ✅ Generate a random password
+                    Role = UserRole.User
+                };
+
+                _context.Users.Add(user);
+                await _context.SaveChangesAsync();
+            }
+            var token = GenerateJwtToken(user.Id, user.Email, user.Role);
+            return new AuthResponseDTO
+            {
+                Token = token,
+                User = new UserDTO
+                {
+                    Id = user.Id,
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Role = user.Role,
+                    CreatedAt = user.CreatedAt
+                }
+            };
+        }
+
 
         public async Task<AuthResponseDTO> LoginAsync(LoginDTO loginDto)
         {
@@ -152,4 +194,5 @@ namespace air_reservation.Repository.Login_Repo
         }
     }
 }
+
 

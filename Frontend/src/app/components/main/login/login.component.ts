@@ -1,10 +1,13 @@
-import { Component, inject } from "@angular/core"
+import { AfterViewInit, Component, CUSTOM_ELEMENTS_SCHEMA, inject, OnInit } from "@angular/core"
 import { AuthService } from "../../../services/auth.service"
 import {  Router, RouterLink } from "@angular/router"
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms"
 import { CommonModule } from "@angular/common"
 import {RecaptchaModule} from 'ng-recaptcha'
 import Swal from "sweetalert2"
+import { SocialAuthService, GoogleLoginProvider, SocialUser } from '@abacritt/angularx-social-login';
+import { HttpClient } from "@angular/common/http"
+
 
 
 
@@ -13,14 +16,18 @@ interface FormErrors {
 }
 declare const grecaptcha:any;
 
+declare const google: any;
+
+
 @Component({
   selector: "app-login",
   standalone: true,
   imports: [ReactiveFormsModule, RouterLink, CommonModule,RecaptchaModule],
   templateUrl: "./login.component.html",
   styleUrl: "./login.component.css",
+  schemas:[CUSTOM_ELEMENTS_SCHEMA]
 })
-export class LoginComponent {
+export class LoginComponent implements AfterViewInit {
   authService = inject(AuthService)
 
   // UI State Management
@@ -30,7 +37,7 @@ export class LoginComponent {
   isLoading = false
   errors: FormErrors = {}
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private http:HttpClient) {}
 
   // Form Definition (keeping your original structure)
   formData: FormGroup = new FormGroup({
@@ -39,6 +46,39 @@ export class LoginComponent {
     captchaToken : new FormControl('')
   })
 
+  /** ✅ Sign in with Google */
+  signInWithGoogle(): void {
+    this.authService.signInWithGoogle();
+    this.isLoading = false;
+  }
+
+  ngAfterViewInit(): void {
+   google.accounts.id.initialize({
+      client_id: '503737234528-153ofdt1ul26iu028adba3ar17fjd9jd.apps.googleusercontent.com',
+      callback: this.handleCredentialResponse.bind(this),
+ ux_mode: 'popup',
+   });
+   
+google.accounts.id.renderButton(
+      document.getElementById('google-signin-button'),
+      {
+        theme: 'outline',
+        size: 'large',
+        text: 'signin_with',
+        shape: 'pill'
+      }
+    );
+
+  }
+
+handleCredentialResponse(response: any): void {
+    console.log('Google ID Token:', response.credential);
+   this.authService.sendTokenToBackend(response.credential);
+
+  }
+
+
+ 
   // Field validation methods
   validateField(fieldName: string, value: string): string {
     switch (fieldName) {

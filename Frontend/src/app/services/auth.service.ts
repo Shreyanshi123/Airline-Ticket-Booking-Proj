@@ -94,6 +94,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { jwtDecode } from 'jwt-decode';
+import { SocialAuthService, GoogleLoginProvider, SocialUser } from '@abacritt/angularx-social-login';
+
  
 @Injectable({
   providedIn: 'root',
@@ -115,7 +117,7 @@ export class AuthService {
   // User data storage
   userData: any;
  
-  constructor(private router: Router, private http: HttpClient) {
+  constructor(private router: Router, private http: HttpClient, private authService:SocialAuthService) {
     // Initialize userData from localStorage if available
     this.userData = this.getUserDataFromStorage();
  
@@ -191,6 +193,8 @@ export class AuthService {
         // Update auth state
         this.authStateSubject.next(true);
         this.authStateSignal.set(true);
+         // ✅ Navigate after login
+   
       })
     );
   }
@@ -269,7 +273,37 @@ export class AuthService {
  
   return this.userData;
 }
- 
+
+
+/** ✅ Sign in with Google */
+  signInWithGoogle():void{
+    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID).then((user: SocialUser) => {
+      console.log('Google User:', user);
+      this.sendTokenToBackend(user.idToken);
+    });
+    
+  }
+
+  //https://localhost:7035/api/Auth/google-login
+  /** ✅ Send Google Token to Backend */
+  sendTokenToBackend(idToken: string): void {
+    this.http.post(`${this.API_URL}/Auth/google-login`, { idToken }).subscribe((response: any) => {
+      console.log('Backend Response:', response);
+      localStorage.setItem('token', response.token);
+        // ✅ Store user data
+    localStorage.setItem('userData', JSON.stringify(response.user));
+
+    // ✅ Debugging logs
+    console.log('Stored Token:', localStorage.getItem('token'));
+    console.log('Stored User Data:', localStorage.getItem('userData'));
+
+
+      this.authStateSubject.next(true);
+       this.authStateSignal.set(true);
+        this.router.navigateByUrl(''); 
+    });
+  }
+
  
   /**
    * Get user name

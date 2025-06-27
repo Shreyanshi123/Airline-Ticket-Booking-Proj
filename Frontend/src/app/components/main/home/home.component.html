@@ -348,23 +348,60 @@
     </div>
   </section>
 
+
+
 <div class="recommended-flights" *ngIf="recommendedFlights.length > 0">
-  <h2 class="recommended-title">Popular Destination </h2>
+  <h2 class="recommended-title">Popular Destinations</h2>
   <div class="recommended-grid">
-    <div class="flight-card" *ngFor="let flight of recommendedFlights">
+    <div class="flight-card" *ngFor="let flight of recommendedFlights | slice:0:3">
       <div class="flight-info">
-        <h3 class="flight-name">{{ flight.airline }}</h3>
+        <h3 class="flight-name">{{ flight.airline ? flight.airline : "ABC Airline"}}</h3>
         <p class="flight-route">{{ flight.origin }} → {{ flight.destination }}</p>
-        <p class="flight-price">Starting at ECONOMY ${{ flight.economyPrice }}</p>
+        <p class="flight-price">Starting at <strong>${{ flight.economyPrice ? flight.economyPrice : "ABC" }}</strong></p>
       </div>
-      <button class="book-btn">Book Now</button>
+
+
+      <!-- <div *ngIf="checkFlight(flight.id)" ; else elseBlock>   -->
+        <button class="book-btn" [routerLink]="['/booking', flight.id]" (click)="BookFlight(flight.id)">
+       <span class="btn-text">Book Flight</span>
+        <i class="btn-arrow">→</i>
+      </button>
+      <!-- </div> -->
+<!-- 
+      <ng-template #elseBlock>
+        <button class="book-btn">
+       <span class="btn-text">Plan Your Next Destination</span>
+        <i class="btn-arrow">→</i>
+      </button>
+      </ng-template> -->
+     
     </div>
   </div>
 </div>
 
 
   <!-- Features Section -->
-  <section class="features-section">
+   <section class="features-section">
+  <div class="features-container" data-aos="fade-up">
+    <h2 class="section-title">Why Choose Us</h2>
+    <div class="features-grid">
+      <div
+        class="feature-card"
+        *ngFor="let feature of features; trackBy: trackByIndex"
+        data-aos="fade-up"
+        [attr.data-aos-delay]="100"
+      >
+        <div class="feature-icon">
+          <i [class]="feature.icon"></i>
+        </div>
+        <h3 class="feature-title">{{ feature.title }}</h3>
+        <p class="feature-description">{{ feature.description }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+  <!-- <section class="features-section">
     <div class="features-container" data-aos="fade-up">
       <h2 class="section-title">Why Choose Us</h2>
       <div class="features-grid">
@@ -382,7 +419,7 @@
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
 
   <!-- Newsletter Section -->
   <!-- <section class="newsletter-section">
@@ -412,7 +449,7 @@
   </section> -->
 
   <!-- Footer -->
-  <footer class="footer">
+  <!-- <footer class="footer">
     <div class="footer-container">
       <div class="footer-content">
         <div class="footer-brand">
@@ -444,5 +481,5 @@
         </div>
       </div>
     </div>
-  </footer>
+  </footer> -->
 </div>

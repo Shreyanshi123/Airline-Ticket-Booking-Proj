@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FlightsService } from '../../../services/flights.service';
 import Swal from 'sweetalert2';
@@ -41,7 +41,7 @@ interface Flight {
   selector: 'app-home',
   standalone: true,
   providers: [DatePipe],
-  imports: [ReactiveFormsModule, CommonModule, FormsModule],
+  imports: [ReactiveFormsModule, CommonModule, FormsModule,RouterLink],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -50,6 +50,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   private flightService = inject(FlightsService);
   recommendedFlights: any[] = [];
   userId: number | null = null;
+  id:any;
 
  
 
@@ -115,22 +116,41 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   ];
 
-  constructor(private router: Router, private datePipe: DatePipe,private recommendationService: AnalyticsService, private authService: AuthService) {
+  constructor(private router: Router, private datePipe: DatePipe,private recommendationService: AnalyticsService, private authService: AuthService, private userRecommendation:RecommendationService) {
     this.initializeComponent();
   }
 
-  ngOnInit(): void {
-    this.userId = this.authService.getUserData().user.id; // ✅ Get user ID from AuthService
-    if (this.userId) {
-      this.fetchRecommendations();
-    }
 
-    this.loadFlightData();
-    this.setupFormListeners();
-    this.generateParticles();
+  // checkFlight(flightId:any){
+  //   if(flightId){
+  //     return true;
+  //   }
+  //   else{
+  //     return false;
+  //   }
+  // }
+
+   BookFlight(flightId: number): void {
+    console.log(`Booking flight ${flightId} in ${this.selectedClass} class`);
+    
+    Swal.fire({
+      title: "Flight Booking",
+      text: `Booking flight ${flightId} in ${this.selectedClass} class`,
+      icon: "success",
+      confirmButtonText: "OK"
+    });
   }
-  fetchRecommendations() {
-    this.recommendationService.getPopularFlights().subscribe({
+  ngOnInit(): void {
+    this.userId = this.authService.getUserData().user.id;
+    this.id = this.userId ;// ✅ Get user ID from AuthService
+    this.userRecommendation.getUserRecommendations(this.id).subscribe({
+      next:(flights)=>{
+         const now = new Date();
+        this.recommendedFlights = flights.filter(f => new Date(f.departureDateTime) > now);
+    console.log("User Recommended Flights:", this.recommendedFlights);
+  },
+      error:(error)=>{
+      this.recommendationService.getPopularFlights().subscribe({
       next: (flights) => {
         this.recommendedFlights = flights;
         console.log("Recommended Flights:", this.recommendedFlights);
@@ -138,7 +158,17 @@ export class HomeComponent implements OnInit, OnDestroy {
       error: (error) => {
         console.error("Error fetching recommendations:", error);
       }
-    });
+    })
+      }
+   })
+
+    this.loadFlightData();
+    this.setupFormListeners();
+    this.generateParticles();
+  }
+  fetchRecommendations() {
+
+   
   }
 
 
@@ -417,6 +447,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   // Flight Booking
   bookFlight(flight: Flight): void {
+    // this.router.navigateByUrl(`/booking/${flight.id}`)
     Swal.fire({
       icon: 'success',
       title: 'Flight Selected!',
@@ -430,6 +461,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.proceedToBooking(flight);
       }
     });
+
+    
   }
 
   private proceedToBooking(flight: Flight): void {

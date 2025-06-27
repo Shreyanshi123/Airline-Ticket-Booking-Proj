@@ -305,6 +305,7 @@ private determineNotificationType(message: string): string {
   this.signalRService.startConnection().then(() => {
     this.signalRService.listenForNotifications((message: string) => {
       // Create notification object from SignalR message
+       console.log('%c[SignalR] Message received:', 'color: limegreen', message);
       const newNotification = {
         message: message,
         timestamp: new Date(),

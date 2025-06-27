@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Dropdown } from 'bootstrap';
 import Swal from 'sweetalert2';
+import { SignalrService } from '../../../services/signalr.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-booking-history',
@@ -13,16 +15,28 @@ import Swal from 'sweetalert2';
   styleUrls: ['./booking-history.component.css'],
 })
 export class BookingHistoryComponent implements OnInit {
-  bookingService = inject(BookingService);
-  router = inject(Router);
 
   bookingList: any[] = [];
   filteredBookingList: any[] = [];
   currentFilter = 'all';
   currentStatusFilter = 'all';
   isLoading = true;
+ 
+ constructor(
+    private bookingService: BookingService,
+    private router: Router,
+    private signalRservice: SignalrService,
+    private toastr: ToastrService // ✅ Inject via constructor
+  ) {}
+
+
 
   ngOnInit() {
+    this.signalRservice.startConnection().then(()=>{
+      this.signalRservice.listenForNotifications(message=>{
+     this.toastr.info(message);
+    })
+    })
      window.scrollTo(0, 0); // Scrolls to the top of the page
     this.checkExpiredReservations();
     this.fetchAllReservations();

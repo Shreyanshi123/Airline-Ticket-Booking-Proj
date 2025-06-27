@@ -6,7 +6,7 @@ namespace air_reservation.Repository.Reservation_Repo
 {
     public interface IReservationService
     {
-
+        Task<List<ReservationDTO>> CreateRoundTripReservationAsync(int userId, CreateRoundTripReservationDTO dto);
         Task<List<ReservationDTO>> GetReservationsByFlightIdAsync(int flightId);
             Task<List<FlightReservationSummaryDTO>> GetReservationStatusSummaryAsync();
             Task<List<UserDTO>> GetUsersWithReservationsAsync();

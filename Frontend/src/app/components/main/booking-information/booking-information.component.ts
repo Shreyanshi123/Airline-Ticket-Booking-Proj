@@ -438,6 +438,8 @@ export class BookingInformationComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.showToastMessage("success", "Ticket downloaded successfully!")
     }, 2000)
+
+    this.router.navigate(["payment-success", this.bookingId ])
   }
 
   shareBooking(): void {

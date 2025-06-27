@@ -83,6 +83,7 @@ import { FlightsService } from '../../../services/flights.service';
 import Swal from 'sweetalert2';
 
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
  
 @Component({
 
@@ -114,7 +115,7 @@ export class AddFlightComponent {
 
   };
  
-  constructor(private flightService: FlightsService) {
+  constructor(private flightService: FlightsService, private router :Router) {
 
     this.initializeForm();
 
@@ -231,6 +232,9 @@ export class AddFlightComponent {
       }
 
     });
+
+
+    this.router.navigateByUrl("/dashboard/schedule")
 
   }
 

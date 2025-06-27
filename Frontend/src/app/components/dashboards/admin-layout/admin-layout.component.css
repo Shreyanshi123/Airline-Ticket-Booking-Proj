@@ -978,3 +978,44 @@
 }
 
 
+.admin-container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.admin-content {
+  flex: 1;
+  margin-left: 0;
+  transition: margin-left 0.3s ease;
+  width: 100%;
+}
+
+.sidebar-open .admin-content {
+  margin-left: 260px;
+}
+
+.content-wrapper {
+  padding: 24px;
+  overflow-y: auto;
+  height: 100%;
+}
+
+.sidebar-toggle-btn {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 1100;
+  background: #667eea;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar{
+  width:17vw;
+}

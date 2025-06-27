@@ -5,6 +5,7 @@ using air_reservation.Models.Flight_Model_;
 using air_reservation.Models.Reservation_Model_;
 using air_reservation.Models.Users_Model_;
 using air_reservation.Repository.Reservation_Repo;
+using air_reservation.Repository.SMS_Repo;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -26,14 +27,16 @@ namespace air_reservation.Controllers
         private readonly IHubContext<NotificationHub> _hubContext;
         private readonly IReservationService _reservationService;
         private readonly ApplicationDbContext _context;
+        private readonly SmsService _smsService;
 
-        public ReservationsController(IReservationService reservationService, ApplicationDbContext context, IHubContext<NotificationHub> hubContext)
+        public ReservationsController(IReservationService reservationService, ApplicationDbContext context, IHubContext<NotificationHub> hubContext,SmsService smsService)
 
         {
 
             _reservationService = reservationService;
             _context = context;
             _hubContext = hubContext;
+            _smsService = smsService;
 
         }
 
@@ -85,6 +88,38 @@ namespace air_reservation.Controllers
 
 
 
+        [HttpPost("roundtrip")]
+        [Authorize]
+        public async Task<ActionResult<List<ReservationDTO>>> CreateRoundTripReservation([FromBody] CreateRoundTripReservationDTO dto)
+        {
+            int userId = GetCurrentUserId();
+
+            try
+            {
+                var reservations = await _reservationService.CreateRoundTripReservationAsync(userId, dto);
+
+                // Send notifications for both flights
+                foreach (var reservation in reservations)
+                {
+                    await _hubContext.Clients.User(userId.ToString()).SendAsync(
+                        "ReceiveNotification",
+                        $"Flight {reservation?.Flight?.Airline} has been booked from {reservation?.Flight?.Origin} to {reservation?.Flight?.Destination}"
+                    );
+                }
+
+                return Ok(reservations);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+
+
+
+
+
         [HttpPost]
         [Authorize]
 
@@ -95,10 +130,17 @@ namespace air_reservation.Controllers
             try
 
             {
-
                 var reservation = await _reservationService.CreateReservationAsync(userId, createReservationDto);
+                var user =  _context.Users.Where(u=>u.Id==userId).FirstOrDefault();
 
-                await _hubContext.Clients.All.SendAsync("ReceiveNotification", $"Flight {reservation?.Flight?.Airline} has been booked for origin {reservation?.Flight?.Origin} and destination {reservation?.Flight?.Destination}");
+                await _hubContext.Clients.User(userId.ToString()).SendAsync("ReceiveNotification", $"Flight {reservation?.Flight?.Airline} has been booked for origin {reservation?.Flight?.Origin} and destination {reservation?.Flight?.Destination}");
+                //await _hubContext.Clients.All.SendAsync("ReceiveNotification", $"Flight {reservation?.Flight?.Airline} has been booked for origin {reservation?.Flight?.Origin} and destination {reservation?.Flight?.Destination}");
+
+
+
+                // Send SMS Notification
+                string message = $"Your flight booking is confirmed! Flight: {reservation?.Flight?.Airline}, From: {reservation?.Flight?.Origin}, To: {reservation?.Flight?.Destination}.";
+                await _smsService.SendSmsAsync(user?.PhoneNumber, message);
 
 
                 return CreatedAtAction(nameof(GetReservation), new { id = reservation?.Id }, reservation);

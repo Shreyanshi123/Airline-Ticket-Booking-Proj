@@ -373,7 +373,8 @@ import { TicketComponent } from '../ticket/ticket.component';
 import { CommonModule } from '@angular/common';
 import { trigger, style, animate, transition } from '@angular/animations';
 import { jwtDecode } from 'jwt-decode';
-import html2canvas from "html2canvas"
+import html2canvas from "html2canvas";
+import jsPDF from 'jspdf';
 import { AuthService } from '../../../services/auth.service';
 
 interface Particle {
@@ -482,58 +483,172 @@ export class PaymentSuccessComponent implements OnInit {
     }));
   }
 
+  /** Safely converts a large Uint8Array to Base64 without exceeding call stack */
+private toBase64(uint8: Uint8Array): string {
+  let binary = '';
+  for (let i = 0; i < uint8.length; i += 1024) {
+    const slice = uint8.subarray(i, i + 1024);
+    binary += String.fromCharCode.apply(null, Array.from(slice));
+  }
+  return btoa(binary);
+}
+
   printTicket(): void {
     window.print();
   }
 
-  emailTicket(): void {
-    if (!this.userEmail) {
-      this.showErrorMessage("User email not found!");
-      return;
-    }
-     const ticketElement = document.getElementById("ticketContainer");
-  if (!ticketElement) {
-    console.error("❌ Ticket container not found!");
-    this.showErrorMessage("Ticket data is missing!");
+//   emailTicket(): void {
+//   const ticketElement = document.getElementById("ticketContainer");
+//   if (!ticketElement || !this.userEmail) {
+//     this.showErrorMessage("Missing ticket content or user email.");
+//     return;
+//   }
+
+//   html2canvas(ticketElement, { scale: 2 }).then((canvas) => {
+//     const imgData = canvas.toDataURL("image/png");
+//     const pdf = new jsPDF({ unit: "mm", format: "a4", orientation: "portrait" });
+
+//     const pdfWidth = 190;
+//     const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+//     const x = (pdf.internal.pageSize.getWidth() - pdfWidth) / 2;
+//     const y = 10;
+
+//     pdf.addImage(imgData, "PNG", x, y, pdfWidth, pdfHeight);
+
+//     const arrayBuffer = pdf.output("arraybuffer");
+//     const uint8Array = new Uint8Array(arrayBuffer);
+//     const base64PDF = this.toBase64(uint8Array);
+
+//     const emailData = {
+//       to: this.userEmail,
+//       subject: "Booking Confirmation & E-Ticket",
+//       body: `
+//         Dear ${this.username},<br><br>
+//         Your flight booking is confirmed! Please find your ticket attached.<br><br>
+//         <b>Flight Number:</b> ${this.bookingInfo?.flight?.flightNumber ?? 'N/A'}<br>
+//         <b>Departure:</b> ${this.bookingInfo?.flight?.departureDateTime ?? 'N/A'}<br>
+//         <b>Arrival:</b> ${this.bookingInfo?.flight?.arrivalDateTime ?? 'N/A'}<br><br>
+//         Thank you for choosing our service!<br>`,
+//       attachmentBase64: base64PDF,
+//       attachmentFilename: "ticket.pdf"
+//     };
+
+//     this.bookingService.sendEmail(emailData).subscribe({
+//       next: (res) => {
+//         console.log("✅ Email sent!", res);
+//         alert("Your ticket has been emailed successfully.");
+//       },
+//       error: (err) => {
+//         console.error("❌ Failed to send email:", err);
+//         this.showErrorMessage("Email failed. Please try again.");
+//       }
+//     });
+//   });
+// }
+
+// working code attachment issues 
+//   emailTicket(): void {
+//     if (!this.userEmail) {
+//       this.showErrorMessage("User email not found!");
+//       return;
+//     }
+//      const ticketElement = document.getElementById("ticketContainer");
+//   if (!ticketElement) {
+//     console.error("❌ Ticket container not found!");
+//     this.showErrorMessage("Ticket data is missing!");
+//     return;
+//   }
+
+//     html2canvas(ticketElement, { scale: 2 }).then((canvas) => {
+//      let ticketBase64 = canvas.toDataURL("image/png"); // ✅ Convert ticket to Base64
+
+//       // ✅ Remove Base64 prefix (data:image/png;base64,)
+//       ticketBase64 = ticketBase64.replace(/^data:image\/png;base64,/, "");
+
+
+//     const emailData = {
+//       to: this.userEmail,
+//       subject: "Booking Confirmation & E-Ticket",
+//       body: `
+//         Dear ${this.username},<br><br>
+//         Your flight booking is confirmed! Your ticket is attached below.<br><br>
+//         <b>Booking Reference:</b> ${this.bookingInfo?.bookingReference ?? 'N/A'}<br>
+//         <b>Flight Details:</b><br>
+//         Flight Number: ${this.bookingInfo?.flight?.flightNumber ?? 'N/A'}<br>
+//         Departure: ${this.bookingInfo?.flight?.departureDateTime ?? 'N/A'}<br>
+//         Arrival: ${this.bookingInfo?.flight?.arrivalDateTime ?? 'N/A'}<br><br>
+//         Please find your e-ticket attached below.<br>`,
+//       attachmentBase64: ticketBase64,
+//     };
+
+//     console.log("📩 Sending email with data:", emailData);
+
+//     this.bookingService.sendEmail(emailData).subscribe({
+//       next: (response) => {
+//         console.log("✅ Email sent successfully!", response);
+//         alert('Ticket has been sent to your email address!');
+//       },
+//       error: (err) => {
+//         console.error("❌ Error sending email:", err);
+//         this.showErrorMessage("Failed to send email. Please try again.");
+//       },
+//     });
+//   })
+// }
+
+emailTicket(): void {
+  const ticketElement = document.getElementById("ticketContainer");
+  if (!ticketElement || !this.userEmail) {
+    this.showErrorMessage("Missing ticket content or user email.");
     return;
   }
 
-    html2canvas(ticketElement, { scale: 2 }).then((canvas) => {
-     let ticketBase64 = canvas.toDataURL("image/png"); // ✅ Convert ticket to Base64
+  html2canvas(ticketElement, { scale: 1 }).then((canvas) => {
+    const imgData = canvas.toDataURL("image/png"); // ✅ Convert ticket to PNG
 
-      // ✅ Remove Base64 prefix (data:image/png;base64,)
-      ticketBase64 = ticketBase64.replace(/^data:image\/png;base64,/, "");
+    // ✅ Create a REAL PDF using jsPDF
+    const pdf = new jsPDF({ unit: "mm", format: "a4", orientation: "portrait" ,compress:true});
+    const pdfWidth = 190;
+    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+    const x = (pdf.internal.pageSize.getWidth() - pdfWidth) / 2;
+    const y = 10;
 
+    pdf.addImage(imgData, "PNG", x, y, pdfWidth, pdfHeight);
 
+    // ✅ Convert PDF to Base64
+    const arrayBuffer = pdf.output("arraybuffer");
+    const uint8Array = new Uint8Array(arrayBuffer);
+    const base64PDF = this.toBase64(uint8Array); // Convert to Base64
+
+    // ✅ Send email with REAL PDF
     const emailData = {
       to: this.userEmail,
       subject: "Booking Confirmation & E-Ticket",
       body: `
         Dear ${this.username},<br><br>
-        Your flight booking is confirmed! Your ticket is attached below.<br><br>
-        <b>Booking Reference:</b> ${this.bookingInfo?.bookingReference ?? 'N/A'}<br>
-        <b>Flight Details:</b><br>
-        Flight Number: ${this.bookingInfo?.flight?.flightNumber ?? 'N/A'}<br>
-        Departure: ${this.bookingInfo?.flight?.departureDateTime ?? 'N/A'}<br>
-        Arrival: ${this.bookingInfo?.flight?.arrivalDateTime ?? 'N/A'}<br><br>
-        Please find your e-ticket attached below.<br>`,
-      attachmentBase64: ticketBase64,
+        Your flight booking is confirmed! Please find your ticket attached.<br><br>
+        <b>Flight Number:</b> ${this.bookingInfo?.flight?.flightNumber ?? 'N/A'}<br>
+        <b>Departure:</b> ${this.bookingInfo?.flight?.departureDateTime ?? 'N/A'}<br>
+        <b>Arrival:</b> ${this.bookingInfo?.flight?.arrivalDateTime ?? 'N/A'}<br><br>
+        Thank you for choosing our service!<br>`,
+      attachmentBase64: base64PDF,
+      attachmentFilename: "ticket.pdf"
     };
 
-    console.log("📩 Sending email with data:", emailData);
-
     this.bookingService.sendEmail(emailData).subscribe({
-      next: (response) => {
-        console.log("✅ Email sent successfully!", response);
-        alert('Ticket has been sent to your email address!');
+      next: (res) => {
+        console.log("✅ Email sent!", res);
+        alert("Your ticket has been emailed successfully.");
       },
       error: (err) => {
-        console.error("❌ Error sending email:", err);
-        this.showErrorMessage("Failed to send email. Please try again.");
-      },
+        console.error("❌ Failed to send email:", err);
+        this.showErrorMessage("Email failed. Please try again.");
+      }
     });
-  })
+  });
 }
+
+
 
   downloadTicket(): void {
     alert('Ticket PDF download started!');

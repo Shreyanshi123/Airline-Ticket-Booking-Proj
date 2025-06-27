@@ -16,6 +16,7 @@ interface FAQ {
   answer: string
   isOpen: boolean
 }
+ declare var Tawk_API: any;
 
 @Component({
   selector: "app-contact",
@@ -103,11 +104,16 @@ export class ContactComponent implements OnInit {
     this.faqs[index].isOpen = !this.faqs[index].isOpen
   }
 
-  startLiveChat(): void {
-    // Implement live chat functionality
-    console.log("Starting live chat...")
-    alert("Live chat feature coming soon!")
+
+
+startLiveChat(): void {
+  if (typeof Tawk_API !== 'undefined' && typeof Tawk_API.maximize === 'function') {
+    Tawk_API.maximize(); // Opens the chat widget
+  } else {
+    alert("Live chat is loading or not available.");
   }
+}
+
 
   getDirections(): void {
     // Open Google Maps or similar

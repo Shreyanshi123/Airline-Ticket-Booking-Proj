@@ -1,5 +1,3 @@
-
-
 <!-- <div class="container mt-4">
     <div class="card shadow-sm border-0">
       <div class="card-body">
@@ -124,7 +122,7 @@
     </div>
   </div> -->
 
-  <!-- <ng-template #editProfileModal let-modal>
+<!-- <ng-template #editProfileModal let-modal>
     <div class="modal-header">
       <h5 class="modal-title">Update Flight Schedule</h5>
       <button type="button" class="close" (click)="modal.dismiss()">
@@ -177,227 +175,265 @@
     </div>
   </ng-template> -->
 
-
 <div class="schedule-container">
-<!-- Header Section -->
-<div class="header-section">
-<div class="header-content">
-<div class="header-icon">
-<i class="fas fa-plane"></i>
-</div>
-<div class="header-text">
-<h1 class="header-title">Flight Schedule Management</h1>
-<p class="header-subtitle">Monitor and manage all flight schedules in real-time</p>
-</div>
-</div>
-<div class="stats-cards">
-<div class="stat-card">
-<div class="stat-icon scheduled">
-<i class="fas fa-calendar-check"></i>
-</div>
-<div class="stat-content">
-<div class="stat-number">{{ scheduleList.length }}</div>
-<div class="stat-label">Total Flights</div>
-</div>
-</div>
-</div>
-</div>
- 
+  <!-- Header Section -->
+  <div class="header-section">
+    <div class="header-content">
+      <div class="header-icon">
+        <i class="fas fa-plane"></i>
+      </div>
+      <div class="header-text">
+        <h1 class="header-title">Flight Schedule Management</h1>
+        <p class="header-subtitle">
+          Monitor and manage all flight schedules in real-time
+        </p>
+      </div>
+    </div>
+    <div class="stats-cards">
+      <div class="stat-card">
+        <div class="stat-icon scheduled">
+          <i class="fas fa-calendar-check"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number">{{ scheduleList.length }}</div>
+          <div class="stat-label">Total Flights</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Loading State -->
-<div *ngIf="isLoading" class="loading-container">
-<div class="loading-spinner">
-<div class="spinner"></div>
-<p>Loading flight schedules...</p>
-</div>
-</div>
- 
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="loading-spinner">
+      <div class="spinner"></div>
+      <p>Loading flight schedules...</p>
+    </div>
+  </div>
+
   <!-- Main Content -->
-<div *ngIf="!isLoading" class="main-content">
-<div class="table-container">
-<div class="table-header">
-<h3 class="table-title">
-<i class="fas fa-list-ul"></i>
+  <div *ngIf="!isLoading" class="main-content">
+    <div class="table-container">
+      <div class="table-header">
+        <h3 class="table-title">
+          <i class="fas fa-list-ul"></i>
 
           Flight Schedules
-</h3>
-<div class="table-actions">
-<button class="btn-refresh" (click)="loadFlights()">
-<i class="fas fa-sync-alt"></i>
+        </h3>
+            <div class="search-container">
+  <div class="search-box dual-inputs">
+    <input
+      type="text"
+      class="search-input"
+      placeholder="Origin..."
+      [(ngModel)]="originQuery"
+    />
+    <input
+      type="text"
+      class="search-input"
+      placeholder="Destination..."
+      [(ngModel)]="destinationQuery"
+    />
+    <button class="btn-refresh" (click)="filterFlights()">
+  <i class="fas fa-search"></i>
+  Search Flights
+</button>
+
+  </div>
+</div>
+        <div class="table-actions">
+          <button class="btn-refresh" (click)="loadFlights()">
+            <i class="fas fa-sync-alt"></i>
 
             Refresh
-</button>
-</div>
-</div>
- 
+          </button>
+        </div>
+    
+
+      </div>
+
+     
+
       <div class="table-wrapper" *ngIf="scheduleList.length > 0; else noData">
-<table class="modern-table">
-<thead>
-<tr>
-<th class="flight-number">
-<i class="fas fa-hashtag"></i>
+        <table class="modern-table">
+          <thead>
+            <tr>
+              <th class="flight-number">
+                <i class="fas fa-hashtag"></i>
 
                 Flight
-</th>
-<th class="airline">
-<i class="fas fa-building"></i>
+              </th>
+              <th class="airline">
+                <i class="fas fa-building"></i>
 
                 Airline
-</th>
-<th class="route">
-<i class="fas fa-route"></i>
+              </th>
+              <th class="route">
+                <i class="fas fa-route"></i>
 
                 Route
-</th>
-<th class="schedule">
-<i class="fas fa-clock"></i>
+              </th>
+              <th class="schedule">
+                <i class="fas fa-clock"></i>
 
                 Schedule
-</th>
-<th class="pricing">
-<i class="fas fa-dollar-sign"></i>
+              </th>
+              <th class="pricing">
+                <i class="fas fa-dollar-sign"></i>
 
                 Pricing
-</th>
-<th class="seats">
-<i class="fas fa-chair"></i>
+              </th>
+              <th class="seats">
+                <i class="fas fa-chair"></i>
 
                 Seats
-</th>
-<th class="status">
-<i class="fas fa-info-circle"></i>
+              </th>
+              <th class="status">
+                <i class="fas fa-info-circle"></i>
 
                 Status
-</th>
-<th class="actions">
-<i class="fas fa-cog"></i>
+              </th>
+              <th class="actions">
+                <i class="fas fa-cog"></i>
 
                 Actions
-</th>
-</tr>
-</thead>
-<tbody>
-<tr *ngFor="let schedule of scheduleList" class="table-row">
-<td class="flight-number">
-<div class="flight-code">
-<span class="flight-icon">✈️</span>
-<strong>{{ schedule.flightNumber }}</strong>
-</div>
-</td>
-<td class="airline">
-<div class="airline-info">
-<div class="airline-logo">{{ schedule.airline.charAt(0).toUpperCase() }}</div>
-<span>{{ schedule.airline }}</span>
-</div>
-</td>
-<td class="route">
-<div class="route-info">
-<div class="route-item">
-<span class="location-pin">📍</span>
-<span>{{ schedule.origin }}</span>
-</div>
-<div class="route-arrow">
-<i class="fas fa-arrow-right"></i>
-</div>
-<div class="route-item">
-<span class="location-pin">🎯</span>
-<span>{{ schedule.destination }}</span>
-</div>
-</div>
-</td>
-<td class="schedule">
-<div class="schedule-info">
-<div class="departure">
-<small class="time-label">Departure</small>
-<div class="time-value">{{ formatDate(schedule.departureDateTime) }}</div>
-</div>
-<div class="arrival">
-<small class="time-label">Arrival</small>
-<div class="time-value">{{ formatDate(schedule.arrivalDateTime) }}</div>
-</div>
-</div>
-</td>
-<td class="pricing">
-<div class="price-info">
-<div class="price-item economy">
-<span class="price-label">Economy</span>
-<span class="price-value">{{ formatCurrency(schedule.economyPrice) }}</span>
-</div>
-<div class="price-item business">
-<span class="price-label">Business</span>
-<span class="price-value">{{ formatCurrency(schedule.businessPrice) }}</span>
-</div>
-</div>
-</td>
-<td class="seats">
-<div class="seats-info">
-<div class="seat-item economy">
-<span class="seat-icon">🪑</span>
-<span class="seat-count">{{ schedule.availableEconomySeats }}</span>
-<small>Economy</small>
-</div>
-<div class="seat-item business">
-<span class="seat-icon">💺</span>
-<span class="seat-count">{{ schedule.availableBusinessSeats }}</span>
-<small>Business</small>
-</div>
-</div>
-</td>
-<td class="status">
-<span [class]="'status-badge ' + getFlightStatus(schedule.status).class">
-
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let schedule of filteredScheduleList" class="table-row">
+              <td class="flight-number">
+                <div class="flight-code">
+                  <span class="flight-icon">✈️</span>
+                  <strong>{{ schedule.flightNumber }}</strong>
+                </div>
+              </td>
+              <td class="airline">
+                <div class="airline-info">
+                  <div class="airline-logo">
+                    {{ schedule.airline.charAt(0).toUpperCase() }}
+                  </div>
+                  <span>{{ schedule.airline }}</span>
+                </div>
+              </td>
+              <td class="route">
+                <div class="route-info">
+                  <div class="route-item">
+                    <span class="location-pin">📍</span>
+                    <span>{{ schedule.origin }}</span>
+                  </div>
+                  <div class="route-arrow">
+                    <i class="fas fa-arrow-right"></i>
+                  </div>
+                  <div class="route-item">
+                    <span class="location-pin">🎯</span>
+                    <span>{{ schedule.destination }}</span>
+                  </div>
+                </div>
+              </td>
+              <td class="schedule">
+                <div class="schedule-info">
+                  <div class="departure">
+                    <small class="time-label">Departure</small>
+                    <div class="time-value">
+                      {{ formatDate(schedule.departureDateTime) }}
+                    </div>
+                  </div>
+                  <div class="arrival">
+                    <small class="time-label">Arrival</small>
+                    <div class="time-value">
+                      {{ formatDate(schedule.arrivalDateTime) }}
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td class="pricing">
+                <div class="price-info">
+                  <div class="price-item economy">
+                    <span class="price-label">Economy</span>
+                    <span class="price-value">{{
+                      formatCurrency(schedule.economyPrice)
+                    }}</span>
+                  </div>
+                  <div class="price-item business">
+                    <span class="price-label">Business</span>
+                    <span class="price-value">{{
+                      formatCurrency(schedule.businessPrice)
+                    }}</span>
+                  </div>
+                </div>
+              </td>
+              <td class="seats">
+                <div class="seats-info">
+                  <div class="seat-item economy">
+                    <span class="seat-icon">🪑</span>
+                    <span class="seat-count">{{
+                      schedule.availableEconomySeats
+                    }}</span>
+                    <small>Economy</small>
+                  </div>
+                  <div class="seat-item business">
+                    <span class="seat-icon">💺</span>
+                    <span class="seat-count">{{
+                      schedule.availableBusinessSeats
+                    }}</span>
+                    <small>Business</small>
+                  </div>
+                </div>
+              </td>
+              <td class="status">
+                <span
+                  [class]="
+                    'status-badge ' + getFlightStatus(schedule.status).class
+                  "
+                >
                   {{ getFlightStatus(schedule.status).text }}
-</span>
-</td>
-<td class="actions">
-<div class="action-buttons">
-<button class="btn-action btn-edit" 
+                </span>
+              </td>
+              <td class="actions">
+                <div class="action-buttons">
+                  <button
+                    class="btn-action btn-edit"
+                    (click)="onEdit(schedule.id)"
+                    title="Edit Flight"
+                  >
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button
+                    class="btn-action btn-reschedule"
+                    (click)="onReschedule(schedule.id)"
+                    title="Reschedule Flight"
+                  >
+                    <i class="fas fa-calendar-alt"></i>
+                  </button>
+                  <button
+                    class="btn-action btn-delete"
+                    (click)="onDelete(schedule.id)"
+                    title="Delete Flight"
+                  >
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-                          (click)="onEdit(schedule.id)"
-
-                          title="Edit Flight">
-<i class="fas fa-edit"></i>
-</button>
-<button class="btn-action btn-reschedule" 
-
-                          (click)="onReschedule(schedule.id)"
-
-                          title="Reschedule Flight">
-<i class="fas fa-calendar-alt"></i>
-</button>
-<button class="btn-action btn-delete" 
-
-                          (click)="onDelete(schedule.id)"
-
-                          title="Delete Flight">
-<i class="fas fa-trash"></i>
-</button>
-</div>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
- 
       <!-- No Data State -->
-<ng-template #noData>
-<div class="no-data">
-<div class="no-data-icon">
-<i class="fas fa-plane-slash"></i>
-</div>
-<h3>No Flight Schedules Found</h3>
-<p>There are currently no flight schedules to display.</p>
-<button class="btn-primary" (click)="loadFlights()">
-<i class="fas fa-refresh"></i>
+      <ng-template #noData>
+        <div class="no-data">
+          <div class="no-data-icon">
+            <i class="fas fa-plane-slash"></i>
+          </div>
+          <h3>No Flight Schedules Found</h3>
+          <p>There are currently no flight schedules to display.</p>
+          <button class="btn-primary" (click)="loadFlights()">
+            <i class="fas fa-refresh"></i>
 
             Refresh Data
-</button>
+          </button>
+        </div>
+      </ng-template>
+    </div>
+  </div>
 </div>
-</ng-template>
-</div>
-</div>
-</div>
- 
-
-
-
-

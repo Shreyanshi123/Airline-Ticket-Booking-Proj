@@ -32,8 +32,85 @@ namespace air_reservation.Repository.Reservation_Repo
             return reservations.Select(MapToReservationDTO).ToList();
         }
 
+        public async Task<List<ReservationDTO>> CreateRoundTripReservationAsync(int userId, CreateRoundTripReservationDTO dto)
+        {
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            var reservations = new List<Reservation>();
+
+            try
+            {
+                foreach (var flightId in new[] { dto.OutboundFlightId, dto.ReturnFlightId })
+                {
+                    var flight = await _context.Flights.FindAsync(flightId);
+                    if (flight == null || flight.DepartureDateTime <= DateTime.UtcNow)
+                        throw new InvalidOperationException("Invalid flight");
+
+                    var economyCount = dto.Passengers.Count(p => p.SeatClass == SeatClass.Economy);
+                    var businessCount = dto.Passengers.Count(p => p.SeatClass == SeatClass.Business);
+
+                    if (flight.AvailableEconomySeats < economyCount || flight.AvailableBusinessSeats < businessCount)
+                        throw new InvalidOperationException("Not enough seats");
+
+                    var totalAmount = await CalculateTotalAmountAsync(flightId, dto.Passengers);
+
+                    var reservation = new Reservation
+                    {
+                        BookingReference = GenerateBookingReference(),
+                        UserId = userId,
+                        FlightId = flightId,
+                        TotalAmount = totalAmount,
+                        Status = ReservationStatus.Pending,
+                        BookingDate = DateTime.UtcNow,
+                        ExpiresAt = DateTime.UtcNow.AddMinutes(15)
+                    };
+
+                    _context.Reservations.Add(reservation);
+                    await _context.SaveChangesAsync();
+
+                    foreach (var passenger in dto.Passengers)
+                    {
+                        _context.Passengers.Add(new Passenger
+                        {
+                            FirstName = passenger.FirstName,
+                            LastName = passenger.LastName,
+                            Age = passenger.Age,
+                            Gender = passenger.Gender,
+                            SeatClass = passenger.SeatClass,
+                            ReservationId = reservation.Id
+                        });
+                    }
+
+                    await _context.SaveChangesAsync();
+                    reservations.Add(reservation);
+                }
+
+                await transaction.CommitAsync();
+
+
+
+                var resultArray = await Task.WhenAll(reservations.Select(async r =>
+                 MapToReservationDTO(await _context.Reservations
+                 .Include(x => x.Flight)
+                 .Include(x => x.Passengers)
+                 .Include(x => x.Payment)
+                 .FirstOrDefaultAsync(x => x.Id == r.Id))
+                ));
+
+                return resultArray.ToList();
+
+
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
+        }
+
+
         public async Task<List<FlightReservationSummaryDTO>> GetReservationStatusSummaryAsync()
         {
+            var allStatuses = Enum.GetValues(typeof(ReservationStatus)).Cast<ReservationStatus>().ToList(); // ✅ Ensure all statuses exist
             var reservationSummary = await _context.Reservations
                 .GroupBy(r => new { r.FlightId, r.Flight.FlightNumber, r.Flight.Airline, r.Flight.Origin, r.Flight.Destination })
                 .Select(g => new FlightReservationSummaryDTO
@@ -43,12 +120,11 @@ namespace air_reservation.Repository.Reservation_Repo
                     Airline = g.Key.Airline,
                     Origin = g.Key.Origin,
                     Destination = g.Key.Destination,
-                    StatusCounts = g.GroupBy(r => r.Status)
-                        .Select(s => new ReservationStatusCountDTO
-                        {
-                            Status = s.Key,
-                            Count = s.Count()
-                        }).ToList()
+                    StatusCounts = allStatuses.Select(status => new ReservationStatusCountDTO
+                    {
+                        Status = status,
+                        Count = g.Count(r => r.Status == status) // ✅ Ensure missing statuses return 0
+                    }).ToList()
                 })
                 .ToListAsync();
 
@@ -124,6 +200,10 @@ namespace air_reservation.Repository.Reservation_Repo
                 var flight = await _context.Flights.FindAsync(createReservationDto.FlightId);
                 if (flight == null)
                     throw new InvalidOperationException("Flight not found");
+
+                if (flight.DepartureDateTime <= DateTime.UtcNow)
+                    throw new InvalidOperationException("Cannot book a flight that has already departed");
+
 
                 // Check seat availability
                 var economyPassengers = createReservationDto.Passengers.Count(p => p.SeatClass == SeatClass.Economy);
